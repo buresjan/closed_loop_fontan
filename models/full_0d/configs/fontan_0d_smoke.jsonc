@@ -1,0 +1,863 @@
+{
+  "type": "forward_simulation",
+  "time": {
+    "type": "time",
+    "step_size": 0.001,
+    "min_step": 6.25e-05,
+    "start": 0.0,
+    "duration": 0.25
+  },
+  "solver": {
+    "type": "newton_solver",
+    "tolerance": 1e-09,
+    "iteration_max": 20
+  },
+  "plots": {},
+  "net": {
+    "type": "net",
+    "flux_dof_definitions": {
+      "blood_flow": "blood_pressure"
+    },
+    "nodes": [
+      "atrial",
+      "cavity",
+      "aao",
+      "aortic_arch",
+      "bca",
+      "lcca",
+      "lsa",
+      "upper_art",
+      "upper_ven",
+      "dao",
+      "lower_art",
+      "lower_ven",
+      "svc",
+      "svc_conduit",
+      "ivc",
+      "ivc_conduit",
+      "tcpc",
+      "rpa_conduit",
+      "lpa_conduit",
+      "rpa",
+      "lpa"
+    ],
+    "blocks": {
+      "cavity": {
+        "type": "block_description",
+        "model_type": "spherical_cavity_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "disp": "cavity.dynamics.disp",
+        "radius": "heart_radius",
+        "thickness": "heart_thickness",
+        "alternative_types": {
+          "cavity.asymptotic": "spherical_cavity_block_asymptotic"
+        },
+        "submodels": {
+          "dynamics": {
+            "type": "model_description",
+            "model_type": "spherical_dynamics",
+            "time": "time",
+            "fib_deform": "cavity.rheology.fib_deform",
+            "pressure": "cavity.blood_pressure",
+            "pressure_external": "pleural.pressure",
+            "vel": "cavity.velocity_law.vel",
+            "radius": "heart_radius",
+            "thickness": "heart_thickness",
+            "series_stiffness": "cavity.rheology.series_stiffness",
+            "alternative_types": {
+              "cavity.asymptotic": "spherical_dynamics_asymptotic"
+            }
+          },
+          "velocity_law": {
+            "type": "model_description",
+            "model_type": "velocity_law_hht",
+            "time": "time",
+            "disp": "cavity.dynamics.disp"
+          },
+          "rheology": {
+            "type": "model_description",
+            "model_type": "rheology_fiber_additive",
+            "time": "time",
+            "disp": "cavity.dynamics.disp",
+            "active_tension_discr": "cavity.rheology.active_law.active_tension_discr",
+            "radius": "heart_radius",
+            "alternative_types": {
+              "cavity.asymptotic": "rheology_fiber_additive_asymptotic"
+            },
+            "submodels": {
+              "active_law": {
+                "type": "model_description",
+                "model_type": "active_law_macro_huxley_two_moments",
+                "time": "time",
+                "fib_deform": "cavity.rheology.fib_deform",
+                "contractility": "heart_contractility",
+                "alternative_types": {
+                  "cavity.asymptotic": "active_law_macro_huxley_two_moments_asymptotic"
+                }
+              }
+            }
+          }
+        },
+        "nodes": {
+          "1": "cavity"
+        }
+      },
+      "valve_atrium": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "backward_conductance": "valves.backward_conductance",
+        "nodes": {
+          "1": "atrial",
+          "2": "cavity"
+        }
+      },
+      "valve_arterial": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "backward_conductance": "valves.backward_conductance",
+        "nodes": {
+          "1": "cavity",
+          "2": "aao"
+        }
+      },
+      "capacitance_valve": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "cavity"
+        }
+      },
+      "active_atrium": {
+        "type": "block_description",
+        "model_type": "time_varying_elastance_atrium_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "pressure_external": "pleural.pressure",
+        "elastance_min": "active_atrium.elastance_min",
+        "elastance_max": "active_atrium.elastance_max",
+        "unstressed_volume": "active_atrium.unstressed_volume",
+        "activation_start": "active_atrium.activation_start",
+        "activation_peak": "active_atrium.activation_peak",
+        "activation_end": "active_atrium.activation_end",
+        "heartbeat_duration": "heartbeat_duration",
+        "nodes": {
+          "1": "atrial"
+        }
+      },
+      "aao_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "aao"
+        }
+      },
+      "aortic_arch_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "aortic_arch"
+        }
+      },
+      "bca_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "bca"
+        }
+      },
+      "lcca_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lcca"
+        }
+      },
+      "lsa_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lsa"
+        }
+      },
+      "upper_ca1": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "upper_art"
+        }
+      },
+      "upper_cv1": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "upper_ven"
+        }
+      },
+      "dao_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "dao"
+        }
+      },
+      "lower_ca2": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lower_art"
+        }
+      },
+      "lower_cv2": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lower_ven"
+        }
+      },
+      "svc_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "svc"
+        }
+      },
+      "ivc_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "ivc"
+        }
+      },
+      "tcpc_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "tcpc"
+        }
+      },
+      "svc_conduit_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "svc_conduit"
+        }
+      },
+      "ivc_conduit_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "ivc_conduit"
+        }
+      },
+      "rpa_conduit_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "rpa_conduit"
+        }
+      },
+      "lpa_conduit_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lpa_conduit"
+        }
+      },
+      "rpa_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "rpa"
+        }
+      },
+      "lpa_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lpa"
+        }
+      },
+      "svc_conduit_rl": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "conductance": "svc_conduit_rl.conductance",
+        "backward_conductance": "svc_conduit_rl.backward_conductance",
+        "scheme_ts_flux": "conduit.scheme_ts_flux",
+        "nodes": {
+          "1": "svc",
+          "2": "svc_conduit"
+        }
+      },
+      "svc_conduit_junction": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "tcpc",
+          "2": "svc_conduit"
+        }
+      },
+      "aao_arch": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "aortic_arch",
+          "2": "aao"
+        }
+      },
+      "arch_bca": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "bca",
+          "2": "aortic_arch"
+        }
+      },
+      "upper_bca_to_ca1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_art",
+          "2": "bca"
+        }
+      },
+      "arch_lcca": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lcca",
+          "2": "aortic_arch"
+        }
+      },
+      "upper_lcca_to_ca1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_art",
+          "2": "lcca"
+        }
+      },
+      "arch_lsa": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lsa",
+          "2": "aortic_arch"
+        }
+      },
+      "upper_lsa_to_ca1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_art",
+          "2": "lsa"
+        }
+      },
+      "upper_rc1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_ven",
+          "2": "upper_art"
+        }
+      },
+      "upper_rv1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "svc",
+          "2": "upper_ven"
+        }
+      },
+      "arch_dao": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "dao",
+          "2": "aortic_arch"
+        }
+      },
+      "lower_ra4": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lower_art",
+          "2": "dao"
+        }
+      },
+      "lower_rc2": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lower_ven",
+          "2": "lower_art"
+        }
+      },
+      "lower_rv2": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "ivc",
+          "2": "lower_ven"
+        }
+      },
+      "ivc_conduit_rl": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "conductance": "ivc_conduit_rl.conductance",
+        "backward_conductance": "ivc_conduit_rl.backward_conductance",
+        "scheme_ts_flux": "conduit.scheme_ts_flux",
+        "nodes": {
+          "1": "ivc",
+          "2": "ivc_conduit"
+        }
+      },
+      "ivc_conduit_junction": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "tcpc",
+          "2": "ivc_conduit"
+        }
+      },
+      "rpa_conduit_rl": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "conductance": "rpa_conduit_rl.conductance",
+        "backward_conductance": "rpa_conduit_rl.backward_conductance",
+        "scheme_ts_flux": "conduit.scheme_ts_flux",
+        "nodes": {
+          "1": "tcpc",
+          "2": "rpa_conduit"
+        }
+      },
+      "rpa_conduit_out": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "rpa",
+          "2": "rpa_conduit"
+        }
+      },
+      "lpa_conduit_rl": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "conductance": "lpa_conduit_rl.conductance",
+        "backward_conductance": "lpa_conduit_rl.backward_conductance",
+        "scheme_ts_flux": "conduit.scheme_ts_flux",
+        "nodes": {
+          "1": "tcpc",
+          "2": "lpa_conduit"
+        }
+      },
+      "lpa_conduit_out": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lpa",
+          "2": "lpa_conduit"
+        }
+      },
+      "right_lung": {
+        "type": "block_description",
+        "model_type": "rcr_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "pressure_mid": "right_lung.pressure_mid",
+        "resistance_1": "right_lung.resistance_1",
+        "resistance_2": "right_lung.resistance_2",
+        "capacitance": "right_lung.capacitance",
+        "nodes": {
+          "1": "rpa",
+          "2": "atrial"
+        }
+      },
+      "left_lung": {
+        "type": "block_description",
+        "model_type": "rcr_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "pressure_mid": "left_lung.pressure_mid",
+        "resistance_1": "left_lung.resistance_1",
+        "resistance_2": "left_lung.resistance_2",
+        "capacitance": "left_lung.capacitance",
+        "nodes": {
+          "1": "lpa",
+          "2": "atrial"
+        }
+      },
+      "fenestration": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "atrial",
+          "2": "ivc"
+        }
+      }
+    },
+    "boundaries_conditions": {}
+  },
+  "variables_initialization": {
+    "valve_atrium.flux": 0.0,
+    "valve_arterial.flux": 0.0,
+    "svc_conduit_rl.flux": 0.0,
+    "ivc_conduit_rl.flux": 0.0,
+    "rpa_conduit_rl.flux": 0.0,
+    "lpa_conduit_rl.flux": 0.0,
+    "cavity.dynamics.disp": 0.0,
+    "cavity.velocity_law.vel": 0.0,
+    "cavity.velocity_law.accel": 0.0,
+    "cavity.rheology.fib_deform": 0.0,
+    "cavity.rheology.active_law.active_stiffness": 1.0,
+    "cavity.rheology.active_law.active_energy_sqrt": 0.0,
+    "cavity.rheology.active_law.active_tension_discr": 0.0,
+    "atrial.blood_pressure": 666.61,
+    "cavity.blood_pressure": 799.932,
+    "svc.blood_pressure": 1599.864,
+    "svc_conduit.blood_pressure": 1588.0,
+    "ivc.blood_pressure": 1599.864,
+    "ivc_conduit.blood_pressure": 1588.0,
+    "tcpc.blood_pressure": 1599.864,
+    "rpa_conduit.blood_pressure": 1533.0,
+    "lpa_conduit.blood_pressure": 1533.0,
+    "rpa.blood_pressure": 1466.542,
+    "right_lung.pressure_mid": 1146.5692,
+    "lpa.blood_pressure": 1466.542,
+    "left_lung.pressure_mid": 1146.5692,
+    "aao.blood_pressure": 10665.76,
+    "aortic_arch.blood_pressure": 10132.472,
+    "bca.blood_pressure": 9332.54,
+    "lcca.blood_pressure": 9332.54,
+    "lsa.blood_pressure": 9332.54,
+    "upper_art.blood_pressure": 9200.0,
+    "upper_ven.blood_pressure": 3880.0,
+    "dao.blood_pressure": 9332.54,
+    "lower_art.blood_pressure": 7800.0,
+    "lower_ven.blood_pressure": 2760.0
+  },
+  "variables_magnitudes": {
+    "valve_atrium.flux": 0.001,
+    "valve_arterial.flux": 0.001,
+    "svc_conduit_rl.flux": 0.001,
+    "ivc_conduit_rl.flux": 0.001,
+    "rpa_conduit_rl.flux": 0.001,
+    "lpa_conduit_rl.flux": 0.001,
+    "cavity.dynamics.disp": 0.01,
+    "cavity.rheology.fib_deform": 0.1,
+    "cavity.velocity_law.vel": 0.1,
+    "cavity.velocity_law.accel": 1.0,
+    "cavity.blood_pressure": 10000.0,
+    "atrial.blood_pressure": 2000.0,
+    "svc.blood_pressure": 2000.0,
+    "svc_conduit.blood_pressure": 2000.0,
+    "ivc.blood_pressure": 2000.0,
+    "ivc_conduit.blood_pressure": 2000.0,
+    "tcpc.blood_pressure": 2000.0,
+    "rpa_conduit.blood_pressure": 2000.0,
+    "lpa_conduit.blood_pressure": 2000.0,
+    "rpa.blood_pressure": 2000.0,
+    "right_lung.pressure_mid": 2000.0,
+    "lpa.blood_pressure": 2000.0,
+    "left_lung.pressure_mid": 2000.0,
+    "cavity.rheology.active_law.active_stiffness": 100000.0,
+    "cavity.rheology.active_law.active_energy_sqrt": 10.0,
+    "cavity.rheology.active_law.active_tension_discr": 10000.0,
+    "aao.blood_pressure": 10000.0,
+    "aortic_arch.blood_pressure": 10000.0,
+    "bca.blood_pressure": 10000.0,
+    "lcca.blood_pressure": 10000.0,
+    "lsa.blood_pressure": 10000.0,
+    "upper_art.blood_pressure": 10000.0,
+    "upper_ven.blood_pressure": 10000.0,
+    "dao.blood_pressure": 10000.0,
+    "lower_art.blood_pressure": 10000.0,
+    "lower_ven.blood_pressure": 10000.0
+  },
+  "parameters": {
+    "heartbeat_duration": {
+      "type": "product",
+      "factors": [
+        60.0
+      ],
+      "inverses": [
+        "heart_rate"
+      ]
+    },
+    "pleural.pressure": 0.0,
+    "diastole_scaling_factor": 0.8,
+    "cavity.dynamics.vol_mass": 1000.0,
+    "cavity.dynamics.damping_coef": 70.0,
+    "cavity.velocity_law.scheme_ts_hht": 0.4,
+    "cavity.rheology.series_stiffness": 100000000.0,
+    "cavity.rheology.damping_parallel": 70.0,
+    "cavity.rheology.active_law.starling_abscissas": [
+      -0.1668,
+      -0.0073,
+      0.0534,
+      0.0969,
+      0.1326,
+      0.2016,
+      0.4663,
+      0.9187,
+      1.1762
+    ],
+    "cavity.rheology.active_law.starling_ordinates": [
+      0.0,
+      0.5614,
+      0.7748,
+      0.8933,
+      0.9618,
+      1.0,
+      1.0,
+      0.1075,
+      0.0
+    ],
+    "cavity.rheology.active_law.destruction_rate": 12.0,
+    "cavity.rheology.active_law.crossbridge_stiffness": 273000.0,
+    "active_law.activation.min": -20.0,
+    "active_law.activation.max": 35.0,
+    "cavity.rheology.active_law.activation": {
+      "type": "rescale_two_phases_function",
+      "rescaled_period": "heartbeat_duration",
+      "alpha": "diastole_scaling_factor",
+      "reference_function": [
+        [
+          0.0,
+          "active_law.activation.min"
+        ],
+        [
+          0.027,
+          "active_law.activation.min"
+        ],
+        [
+          0.037,
+          0.0
+        ],
+        [
+          0.145,
+          "active_law.activation.max"
+        ],
+        [
+          0.309,
+          "active_law.activation.max"
+        ],
+        [
+          0.417,
+          0.0
+        ],
+        [
+          0.427,
+          "active_law.activation.min"
+        ],
+        [
+          0.9,
+          "active_law.activation.min"
+        ]
+      ],
+      "phases": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "valves.backward_conductance": 5e-12,
+    "valve_atrium.inductance": 1000.0,
+    "valve_atrium.conductance": 9e-06,
+    "valve_arterial.inductance": 30000.0,
+    "valve_arterial.conductance": 1.3e-05,
+    "valve_atrium.scheme_ts_flux": 0.25,
+    "valve_arterial.scheme_ts_flux": 0.25,
+    "conduit.scheme_ts_flux": 0.25,
+    "heart_radius": 0.034,
+    "heart_thickness": 0.0113,
+    "heart_contractility": 90000.0,
+    "heart_rate": 60.0,
+    "cavity.dynamics.hyperelastic_cst": [
+      444.0,
+      2.9,
+      69.0,
+      6.5
+    ],
+    "zero_capacitance": 0.0,
+    "capacitance_valve.capacitance": 5e-12,
+    "active_atrium.elastance_min": 16665250.0,
+    "active_atrium.elastance_max": 66661000.0,
+    "active_atrium.unstressed_volume": 1e-05,
+    "active_atrium.activation_start": 0.78,
+    "active_atrium.activation_peak": 0.9,
+    "active_atrium.activation_end": 0.98,
+    "svc_compliance.capacitance": 1.500127510838421e-07,
+    "ivc_compliance.capacitance": 2.2501912662576316e-07,
+    "tcpc_compliance.capacitance": 1.200102008670737e-09,
+    "svc_conduit_rl.conductance": 9.869259939726454e-08,
+    "svc_conduit_rl.backward_conductance": 9.869259939726454e-08,
+    "svc_conduit_rl.inductance": 80000.0,
+    "svc_conduit_junction.resistance": 533288.0000000001,
+    "ivc_conduit_rl.conductance": 1.3159013252968608e-07,
+    "ivc_conduit_rl.backward_conductance": 1.3159013252968608e-07,
+    "ivc_conduit_rl.inductance": 80000.0,
+    "ivc_conduit_junction.resistance": 399966.0,
+    "rpa_conduit_rl.conductance": 1.9738519879452907e-07,
+    "rpa_conduit_rl.backward_conductance": 1.9738519879452907e-07,
+    "rpa_conduit_rl.inductance": 60000.0,
+    "rpa_conduit_out.resistance": 266644.00000000006,
+    "lpa_conduit_rl.conductance": 1.9738519879452907e-07,
+    "lpa_conduit_rl.backward_conductance": 1.9738519879452907e-07,
+    "lpa_conduit_rl.inductance": 60000.0,
+    "lpa_conduit_out.resistance": 266644.00000000006,
+    "svc_conduit_compliance.capacitance": 1.200102008670737e-09,
+    "ivc_conduit_compliance.capacitance": 1.200102008670737e-09,
+    "rpa_conduit_compliance.capacitance": 1.200102008670737e-09,
+    "lpa_conduit_compliance.capacitance": 1.200102008670737e-09,
+    "rpa_compliance.capacitance": 1.125095633128816e-08,
+    "lpa_compliance.capacitance": 1.125095633128816e-08,
+    "right_lung.resistance_1": 12798912.0,
+    "right_lung.resistance_2": 19198368.0,
+    "right_lung.capacitance": 3.000255021676842e-08,
+    "left_lung.resistance_1": 12798912.0,
+    "left_lung.resistance_2": 19198368.0,
+    "left_lung.capacitance": 3.000255021676842e-08,
+    "fenestration.resistance": 133322000000000.0,
+    "aao_compliance.capacitance": 4.000340028902456e-09,
+    "aortic_arch_compliance.capacitance": 5.00042503612807e-09,
+    "bca_compliance.capacitance": 3.0002550216768422e-09,
+    "lcca_compliance.capacitance": 1.5001275108384211e-09,
+    "lsa_compliance.capacitance": 1.5001275108384211e-09,
+    "dao_compliance.capacitance": 9.000765065030526e-09,
+    "upper_ca1.capacitance": 1.500127510838421e-08,
+    "upper_cv1.capacitance": 6.000510043353684e-08,
+    "lower_ca2.capacitance": 2.500212518064035e-08,
+    "lower_cv2.capacitance": 9.000765065030527e-08,
+    "aao_arch.resistance": 5332880.000000001,
+    "arch_bca.resistance": 10665760.000000002,
+    "upper_bca_to_ca1.resistance": 99191568.0,
+    "arch_lcca.resistance": 15998640.000000002,
+    "upper_lcca_to_ca1.resistance": 198916424.0,
+    "arch_lsa.resistance": 15998640.000000002,
+    "upper_lsa_to_ca1.resistance": 198916424.0,
+    "upper_rc1.resistance": 312878041.1425767,
+    "upper_rv1.resistance": 134090589.0611043,
+    "arch_dao.resistance": 21331520.000000004,
+    "lower_ra4.resistance": 47995920.00000001,
+    "lower_rc2.resistance": 155986740.00000003,
+    "lower_rv2.resistance": 35996940.0
+  },
+  "output_functions": {
+    "active_law.activation": {
+      "type": "watch_quantity",
+      "quantity": "cavity.rheology.active_law.activation"
+    }
+  },
+  "pre-processes": {},
+  "post-processes": {}
+}

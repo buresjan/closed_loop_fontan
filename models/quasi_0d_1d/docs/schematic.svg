@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#f8fafc"/>
+  <text x="80" y="95" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#0f172a">Quasi 0-D/1-D Fontan schematic</text>
+  <text x="80" y="140" font-family="Arial, sans-serif" font-size="20" fill="#475569">Placeholder for the future PhysioBlocks-only quasi 0-D/1-D model.</text>
+  <rect x="90" y="230" width="320" height="150" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="4"/>
+  <text x="250" y="300" font-family="Arial, sans-serif" font-size="26" font-weight="700" text-anchor="middle" fill="#172554">0-D heart</text>
+  <text x="250" y="336" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#1e3a8a">PhysioBlocks</text>
+  <rect x="640" y="230" width="320" height="150" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="4"/>
+  <text x="800" y="300" font-family="Arial, sans-serif" font-size="26" font-weight="700" text-anchor="middle" fill="#14532d">Quasi-1-D</text>
+  <text x="800" y="336" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#166534">PhysioBlocks states</text>
+  <rect x="1190" y="230" width="320" height="150" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="4"/>
+  <text x="1350" y="300" font-family="Arial, sans-serif" font-size="26" font-weight="700" text-anchor="middle" fill="#7f1d1d">Fontan return</text>
+  <text x="1350" y="336" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#991b1b">planned topology</text>
+  <path d="M410 305 H640" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M960 305 H1190" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M1350 380 C1350 610 250 610 250 380" fill="none" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <text x="800" y="500" font-family="Arial, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#334155">Detailed topology pending user specification</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,124 @@
+measurements:
+- source: t
+  canonical: time
+  quantity: time
+  source_unit: s
+  si_unit: s
+  conversion: identity
+- source: P_IVC
+  canonical: ivc_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_LPA
+  canonical: lpa_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_RPA
+  canonical: rpa_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_SVC
+  canonical: svc_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_arch
+  canonical: aortic_arch_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_ascAo
+  canonical: ascending_aorta_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_dAo
+  canonical: descending_aorta_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_fem_art
+  canonical: femoral_artery_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_ventricle
+  canonical: ventricle_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: P_wedge
+  canonical: wedge_pressure
+  quantity: pressure
+  source_unit: mmHg
+  si_unit: Pa
+  conversion: Pa = mmHg * 133.33
+- source: Q_IVC
+  canonical: ivc_flow
+  quantity: flow
+  source_unit: ml/s
+  si_unit: m3/s
+  conversion: m3/s = ml/s * 1e-6
+- source: Q_LPA
+  canonical: lpa_flow
+  quantity: flow
+  source_unit: ml/s
+  si_unit: m3/s
+  conversion: m3/s = ml/s * 1e-6
+- source: Q_RPA
+  canonical: rpa_flow
+  quantity: flow
+  source_unit: ml/s
+  si_unit: m3/s
+  conversion: m3/s = ml/s * 1e-6
+- source: Q_SVC
+  canonical: svc_flow
+  quantity: flow
+  source_unit: ml/s
+  si_unit: m3/s
+  conversion: m3/s = ml/s * 1e-6
+- source: Q_ascAo
+  canonical: ascending_aorta_flow
+  quantity: flow
+  source_unit: ml/s
+  si_unit: m3/s
+  conversion: m3/s = ml/s * 1e-6
+- source: Q_dAo
+  canonical: descending_aorta_flow
+  quantity: flow
+  source_unit: ml/s
+  si_unit: m3/s
+  conversion: m3/s = ml/s * 1e-6
+- source: V_ventricle
+  canonical: ventricle_volume
+  quantity: volume
+  source_unit: ml
+  si_unit: m3
+  conversion: m3 = ml * 1e-6
+nektar_selected_fields:
+- source: P
+  canonical: pressure_pa
+- source: Pe
+  canonical: elastic_pressure_pa
+- source: Q
+  canonical: flow_m3_s
+- source: U
+  canonical: velocity_m_s
+- source: A
+  canonical: area_m2
+- source: Pavg
+  canonical: pressure_avg_pa
+- source: Qavg
+  canonical: flow_avg_m3_s

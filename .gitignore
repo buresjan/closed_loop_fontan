@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# PhysioBlocks launcher/runtime outputs
+runs/
+
+# Local raw third-party data and archives. Processed, standardized data is tracked.
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+
+# Local scratch/output folders
+tmp/
+scratch/
+*.log
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

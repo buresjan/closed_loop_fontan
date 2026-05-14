@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#f8fafc"/>
+  <text x="80" y="95" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#0f172a">Coupled 0-D/1-D Fontan schematic</text>
+  <text x="80" y="140" font-family="Arial, sans-serif" font-size="20" fill="#475569">Placeholder for the future coupled model with 1-D aorta and TCPC subdomains.</text>
+  <rect x="90" y="240" width="300" height="140" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="4"/>
+  <text x="240" y="305" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle" fill="#172554">0-D heart</text>
+  <text x="240" y="340" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#1e3a8a">closed loop</text>
+  <rect x="550" y="200" width="500" height="220" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="4"/>
+  <text x="800" y="290" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle" fill="#78350f">1-D aorta</text>
+  <text x="800" y="330" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#92400e">future coupled submodel</text>
+  <rect x="550" y="560" width="500" height="220" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="4"/>
+  <text x="800" y="650" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle" fill="#14532d">1-D TCPC</text>
+  <text x="800" y="690" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#166534">future coupled submodel</text>
+  <rect x="1210" y="390" width="300" height="160" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="4"/>
+  <text x="1360" y="460" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle" fill="#7f1d1d">0-D beds</text>
+  <text x="1360" y="496" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#991b1b">systemic and pulmonary</text>
+  <path d="M390 305 H550" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M1050 310 C1160 310 1160 470 1210 470" fill="none" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M1210 500 C1160 500 1160 670 1050 670" fill="none" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M550 670 C380 670 240 520 240 380" fill="none" stroke="#334155" stroke-width="5" marker-end="url(#arrow)"/>
+  <text x="800" y="500" font-family="Arial, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#334155">Coupling variables and interfaces pending user specification</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+  </defs>
+</svg>

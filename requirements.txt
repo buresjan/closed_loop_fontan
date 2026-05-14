@@ -1,0 +1,7 @@
+physioblocks
+pandas
+numpy
+pytest
+scipy
+openpyxl
+pyyaml

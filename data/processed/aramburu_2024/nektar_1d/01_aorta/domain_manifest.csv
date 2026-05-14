@@ -1,0 +1,5 @@
+domain_no,fs_hz,distances_m,output_file,columns
+1,1000.0,"[0.0, 0.0145, 0.029]",domain_01.csv.gz,"[""time_s"", ""position_index"", ""distance_m"", ""pressure_pa"", ""elastic_pressure_pa"", ""flow_m3_s"", ""velocity_m_s"", ""area_m2"", ""pressure_avg_pa"", ""flow_avg_m3_s""]"
+2,1000.0,"[0.0, 0.045, 0.09]",domain_02.csv.gz,"[""time_s"", ""position_index"", ""distance_m"", ""pressure_pa"", ""elastic_pressure_pa"", ""flow_m3_s"", ""velocity_m_s"", ""area_m2"", ""pressure_avg_pa"", ""flow_avg_m3_s""]"
+3,1000.0,"[0.0, 0.0125, 0.025]",domain_03.csv.gz,"[""time_s"", ""position_index"", ""distance_m"", ""pressure_pa"", ""elastic_pressure_pa"", ""flow_m3_s"", ""velocity_m_s"", ""area_m2"", ""pressure_avg_pa"", ""flow_avg_m3_s""]"
+4,1000.0,"[0.0, 0.015, 0.03]",domain_04.csv.gz,"[""time_s"", ""position_index"", ""distance_m"", ""pressure_pa"", ""elastic_pressure_pa"", ""flow_m3_s"", ""velocity_m_s"", ""area_m2"", ""pressure_avg_pa"", ""flow_avg_m3_s""]"

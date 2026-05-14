@@ -1,0 +1,5 @@
+segment_name,domain_id,node_1,node_2,length_m,radius_in_m,radius_out_m
+Ascending aorta,1,1,2,0.029,0.0125,0.00775
+Thoracic aorta,2,2,3,0.09,0.00775,0.00525
+Brachiocephalic,3,2,4,0.025,0.0045,0.00525
+Carotic left,4,2,5,0.03,0.00325,0.0025
