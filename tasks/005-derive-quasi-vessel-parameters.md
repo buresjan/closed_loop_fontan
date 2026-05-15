@@ -1,6 +1,6 @@
 # 005 - Derive Quasi Vessel Parameters
 
-Status: planned
+Status: completed
 
 Depends on: Tasks 002, 003, 004, and 004.5
 
@@ -52,3 +52,39 @@ Derive first-pass R-L-C chain parameters for the quasi 0-D/1-D model from geomet
 ## PhysioBlocks Impact
 
 No PhysioBlocks internal changes.
+
+## Completion Notes
+
+Completed on 2026-05-15.
+
+- Added `scripts/modeling/derive_quasi_vessel_parameters.py`.
+- Generated `models/quasi_0d_1d/calibration/parameter_priors.yaml`.
+- Generated `models/quasi_0d_1d/config_fragments/quasi_vessel_chains.json`.
+- Updated `models/quasi_0d_1d/README.md` and
+  `models/quasi_0d_1d/docs/schematic.svg`.
+- Added `tests/test_quasi_parameter_derivation.py`.
+
+Selected first-pass chain counts:
+
+- AAo/arch: 4 R-L-C cells.
+- DAo: 6 R-L-C cells.
+- SVC: 3 R-L-C cells.
+- IVC: 5 R-L-C cells.
+- RPA: 3 R-L-C cells.
+- LPA: 4 R-L-C cells with explicit `quasi_lpa.narrowing_radius_m`.
+
+Policy decisions:
+
+- Aortic chain resistance is geometry/friction based and does not preserve the
+  excessive full 0-D AAo-to-DAo pressure drop.
+- Fontan-limb chain resistance starts from the calibrated full 0-D pathway
+  resistance because the full 0-D Fontan pressures and pulmonary split are
+  accepted baseline physiology.
+- Direct DAo pressure remains diagnostic/low-weight.
+- IVC flow remains mass-closure dependent.
+
+Validation:
+
+- `.venv/bin/python scripts/modeling/derive_quasi_vessel_parameters.py`
+- `.venv/bin/pytest tests/test_quasi_parameter_derivation.py -q`
+- `.venv/bin/pytest -q`

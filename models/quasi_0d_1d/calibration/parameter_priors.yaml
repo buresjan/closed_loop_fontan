@@ -1,0 +1,616 @@
+model_family: quasi_0d_1d
+status: first_pass_parameter_priors
+generated_by: scripts/modeling/derive_quasi_vessel_parameters.py
+inputs:
+  aorta_geometry: data/processed/aramburu_2024/model_inputs/aorta_geometry.csv
+  fontan_cross_geometry: data/processed/aramburu_2024/model_inputs/fontan_cross_geometry.csv
+  target_policy: data/processed/aramburu_2024/targets/target_policy.csv
+  full_0d_baseline: models/full_0d/configs/fontan_0d_baseline.jsonc
+constants:
+  density_kg_m3: 1060.0
+  dynamic_viscosity_pa_s: 0.0035
+  aortic_wave_speed_m_s: 5.35
+  fontan_wave_speed_m_s: 2.81
+units:
+  length_m: m
+  radius_m: m
+  area_m2: m^2
+  resistance_pa_s_m3: Pa*s/m^3
+  inertance_pa_s2_m3: Pa*s^2/m^3
+  capacitance_m3_pa: m^3/Pa
+  wave_speed_m_s: m/s
+  density_kg_m3: kg/m^3
+  dynamic_viscosity_pa_s: Pa*s
+target_policy_summary:
+  direct_dao_pressure: diagnostic/low-weight
+  ivc_flow: soft; compare raw direct and mass-closure implied values
+  aortic_profile: use paper/Nektar profile as quasi/1-D guide
+  full_0d_parameters: priors, not immutable constraints
+target_policy_rows:
+- quantity: EDV
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Primary ventricular volume target.
+- quantity: ESV
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Primary ventricular volume target.
+- quantity: SV
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Primary pump target.
+- quantity: CO
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Primary closed-loop output.
+- quantity: AAo pressure
+  source: direct_measurement_or_paper_nektar
+  role: calibration
+  weight_class: medium-hard
+  reason: Important afterload target; source choice depends on model family.
+- quantity: Arch pressure
+  source: paper_nektar_preferred_for_profile
+  role: calibration
+  weight_class: medium
+  reason: Source differences exist in the aortic pressure profile.
+- quantity: Direct DAo pressure
+  source: direct_measurement
+  role: diagnostic
+  weight_class: low/diagnostic
+  reason: Violates passive downstream pressure ordering.
+- quantity: Paper/Nektar DAo pressure
+  source: paper_model_or_nektar_closed_loop_1d
+  role: calibration
+  weight_class: medium-hard for quasi/1-D
+  reason: Physically consistent aortic profile for quasi and coupled models.
+- quantity: SVC pressure
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Fontan pressure target.
+- quantity: IVC pressure
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Fontan pressure target.
+- quantity: RPA pressure
+  source: direct_measurement
+  role: calibration
+  weight_class: medium
+  reason: Pulmonary pressure target.
+- quantity: LPA pressure
+  source: direct_measurement
+  role: calibration
+  weight_class: medium
+  reason: Pulmonary pressure target.
+- quantity: SVC flow
+  source: direct_measurement
+  role: calibration
+  weight_class: medium-hard
+  reason: Good direct flow target.
+- quantity: IVC flow
+  source: direct_measurement
+  role: calibration
+  weight_class: soft
+  reason: Direct flow table is not mass-closed.
+- quantity: RPA flow
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Pulmonary flow target.
+- quantity: LPA flow
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Pulmonary flow target.
+- quantity: RPA/LPA flow fraction
+  source: direct_measurement
+  role: calibration
+  weight_class: hard
+  reason: Important pulmonary split target.
+- quantity: Wedge / atrial proxy
+  source: direct_measurement
+  role: calibration
+  weight_class: medium
+  reason: Useful but model-dependent interpretation.
+chains:
+  aao_arch:
+    label: AAo/arch quasi chain
+    geometry_source: aorta_geometry.csv
+    source_segments:
+    - Ascending aorta
+    inlet_node: aao
+    outlet_node: aortic_arch
+    segment_count: 4
+    wave_speed_m_s: 5.35
+    totals:
+      length_m: 0.029
+      area_bar_m2: 0.00032870753915128674
+      geometry_resistance_pa_s_m3: 29679.335651102985
+      selected_resistance_pa_s_m3: 29679.335651102985
+      selected_resistance_source: geometry_poiseuille
+      inertance_pa_s2_m3: 100223.49611174603
+      capacitance_m3_pa: 3.1419135675975057e-10
+      full_0d_resistance_prior_pa_s_m3: 2133152.0000000005
+      full_0d_compliance_prior_m3_pa: 9.000765065030526e-09
+      full_0d_inertance_prior_pa_s2_m3: null
+    cells:
+    - source_segment: Ascending aorta
+      length_m: 0.00725
+      radius_in_m: 0.0125
+      radius_out_m: 0.0113125
+      area_bar_m2: 0.0004464559044293886
+      geometry_resistance_pa_s_m3: 3242.2777045329494
+      inertance_pa_s2_m3: 17213.346097017424
+      capacitance_m3_pa: 1.0668494758916303e-10
+      index: 1
+      resistance_pa_s_m3: 3242.2777045329494
+      parameter_names:
+        resistance: quasi_aao_arch_rl_01.resistance
+        inertance: quasi_aao_arch_rl_01.inductance
+        capacitance: quasi_aao_arch_c_01.capacitance
+    - source_segment: Ascending aorta
+      length_m: 0.00725
+      radius_in_m: 0.0113125
+      radius_out_m: 0.010125
+      area_bar_m2: 0.00036205014555676905
+      geometry_resistance_pa_s_m3: 4945.583660713183
+      inertance_pa_s2_m3: 21226.341417932123
+      capacitance_m3_pa: 8.651537681585692e-11
+      index: 2
+      resistance_pa_s_m3: 4945.583660713183
+      parameter_names:
+        resistance: quasi_aao_arch_rl_02.resistance
+        inertance: quasi_aao_arch_rl_02.inductance
+        capacitance: quasi_aao_arch_c_02.capacitance
+    - source_segment: Ascending aorta
+      length_m: 0.00725
+      radius_in_m: 0.010125
+      radius_out_m: 0.008937500000000001
+      area_bar_m2: 0.000286504659714977
+      geometry_resistance_pa_s_m3: 7931.841910838785
+      inertance_pa_s2_m3: 26823.298467973458
+      capacitance_m3_pa: 6.846305380328459e-11
+      index: 3
+      resistance_pa_s_m3: 7931.841910838785
+      parameter_names:
+        resistance: quasi_aao_arch_rl_03.resistance
+        inertance: quasi_aao_arch_rl_03.inductance
+        capacitance: quasi_aao_arch_c_03.capacitance
+    - source_segment: Ascending aorta
+      length_m: 0.00725
+      radius_in_m: 0.008937500000000001
+      radius_out_m: 0.00775
+      area_bar_m2: 0.0002198194469040124
+      geometry_resistance_pa_s_m3: 13559.632375018069
+      inertance_pa_s2_m3: 34960.51012882303
+      capacitance_m3_pa: 5.252797855144604e-11
+      index: 4
+      resistance_pa_s_m3: 13559.632375018069
+      parameter_names:
+        resistance: quasi_aao_arch_rl_04.resistance
+        inertance: quasi_aao_arch_rl_04.inductance
+        capacitance: quasi_aao_arch_c_04.capacitance
+  dao:
+    label: DAo quasi chain
+    geometry_source: aorta_geometry.csv
+    source_segments:
+    - Thoracic aorta
+    inlet_node: aortic_arch
+    outlet_node: dao
+    segment_count: 6
+    wave_speed_m_s: 5.35
+    totals:
+      length_m: 0.09
+      area_bar_m2: 0.0001344594383531215
+      geometry_resistance_pa_s_m3: 509348.887991762
+      selected_resistance_pa_s_m3: 509348.887991762
+      selected_resistance_source: geometry_poiseuille
+      inertance_pa_s2_m3: 744674.0261482986
+      capacitance_m3_pa: 3.988598971906893e-10
+      full_0d_resistance_prior_pa_s_m3: 19198368.000000004
+      full_0d_compliance_prior_m3_pa: 9.000765065030526e-09
+      full_0d_inertance_prior_pa_s2_m3: null
+    cells:
+    - source_segment: Thoracic aorta
+      length_m: 0.015
+      radius_in_m: 0.00775
+      radius_out_m: 0.007333333333333333
+      area_bar_m2: 0.000178819890174644
+      geometry_resistance_pa_s_m3: 41431.92907269491
+      inertance_pa_s2_m3: 88916.2832192286
+      capacitance_m3_pa: 8.840842497967723e-11
+      index: 1
+      resistance_pa_s_m3: 41431.92907269491
+      parameter_names:
+        resistance: quasi_dao_rl_01.resistance
+        inertance: quasi_dao_rl_01.inductance
+        capacitance: quasi_dao_c_01.capacitance
+    - source_segment: Thoracic aorta
+      length_m: 0.015
+      radius_in_m: 0.007333333333333333
+      radius_out_m: 0.0069166666666666664
+      area_bar_m2: 0.0001596212684027064
+      geometry_resistance_pa_s_m3: 52023.32293433646
+      inertance_pa_s2_m3: 99610.78595044176
+      capacitance_m3_pa: 7.891664019566993e-11
+      index: 2
+      resistance_pa_s_m3: 52023.32293433646
+      parameter_names:
+        resistance: quasi_dao_rl_02.resistance
+        inertance: quasi_dao_rl_02.inductance
+        capacitance: quasi_dao_c_02.capacitance
+    - source_segment: Thoracic aorta
+      length_m: 0.015
+      radius_in_m: 0.0069166666666666664
+      radius_out_m: 0.006500000000000001
+      area_bar_m2: 0.00014151347741326524
+      geometry_resistance_pa_s_m3: 66227.39551960243
+      inertance_pa_s2_m3: 112356.78954850952
+      capacitance_m3_pa: 6.996416136529939e-11
+      index: 3
+      resistance_pa_s_m3: 66227.39551960243
+      parameter_names:
+        resistance: quasi_dao_rl_03.resistance
+        inertance: quasi_dao_rl_03.inductance
+        capacitance: quasi_dao_c_03.capacitance
+    - source_segment: Thoracic aorta
+      length_m: 0.015
+      radius_in_m: 0.006500000000000001
+      radius_out_m: 0.006083333333333334
+      area_bar_m2: 0.00012449651720632053
+      geometry_resistance_pa_s_m3: 85629.73778372616
+      inertance_pa_s2_m3: 127714.41608804118
+      capacitance_m3_pa: 6.155098848856565e-11
+      index: 4
+      resistance_pa_s_m3: 85629.73778372616
+      parameter_names:
+        resistance: quasi_dao_rl_04.resistance
+        inertance: quasi_dao_rl_04.inductance
+        capacitance: quasi_dao_c_04.capacitance
+    - source_segment: Thoracic aorta
+      length_m: 0.015
+      radius_in_m: 0.006083333333333334
+      radius_out_m: 0.005666666666666667
+      area_bar_m2: 0.00010857038778187227
+      geometry_resistance_pa_s_m3: 112691.02222804709
+      inertance_pa_s2_m3: 146448.77231114378
+      capacitance_m3_pa: 5.367712156546866e-11
+      index: 5
+      resistance_pa_s_m3: 112691.02222804709
+      parameter_names:
+        resistance: quasi_dao_rl_05.resistance
+        inertance: quasi_dao_rl_05.inductance
+        capacitance: quasi_dao_c_05.capacitance
+    - source_segment: Thoracic aorta
+      length_m: 0.015
+      radius_in_m: 0.005666666666666667
+      radius_out_m: 0.00525
+      area_bar_m2: 9.373508913992047e-05
+      geometry_resistance_pa_s_m3: 151345.48045335492
+      inertance_pa_s2_m3: 169626.97903093378
+      capacitance_m3_pa: 4.6342560596008456e-11
+      index: 6
+      resistance_pa_s_m3: 151345.48045335492
+      parameter_names:
+        resistance: quasi_dao_rl_06.resistance
+        inertance: quasi_dao_rl_06.inductance
+        capacitance: quasi_dao_c_06.capacitance
+  svc:
+    label: SVC quasi chain
+    geometry_source: fontan_cross_geometry.csv
+    source_segments:
+    - SVC
+    inlet_node: svc
+    outlet_node: tcpc
+    segment_count: 3
+    wave_speed_m_s: 2.81
+    totals:
+      length_m: 0.015
+      area_bar_m2: 0.0002660863527743605
+      geometry_resistance_pa_s_m3: 22255.77432429419
+      selected_resistance_pa_s_m3: 5866168.000000002
+      selected_resistance_source: calibrated_full_0d_pathway
+      inertance_pa_s2_m3: 62815.83663494505
+      capacitance_m3_pa: 4.768648974326958e-10
+      full_0d_resistance_prior_pa_s_m3: 5866168.000000002
+      full_0d_compliance_prior_m3_pa: 1.5121285309251285e-07
+      full_0d_inertance_prior_pa_s2_m3: 80000.0
+    cells:
+    - source_segment: SVC
+      length_m: 0.005
+      radius_in_m: 0.011
+      radius_out_m: 0.00975
+      area_bar_m2: 0.00033939018135812233
+      geometry_resistance_pa_s_m3: 3893.0277680309127
+      inertance_pa_s2_m3: 15616.24434387356
+      capacitance_m3_pa: 2.0274528968451965e-10
+      index: 1
+      resistance_pa_s_m3: 1026122.6854284531
+      parameter_names:
+        resistance: quasi_svc_rl_01.resistance
+        inertance: quasi_svc_rl_01.inductance
+        capacitance: quasi_svc_c_01.capacitance
+    - source_segment: SVC
+      length_m: 0.005
+      radius_in_m: 0.00975
+      radius_out_m: 0.0085
+      area_bar_m2: 0.00026281386042687117
+      geometry_resistance_pa_s_m3: 6529.078518906117
+      inertance_pa_s2_m3: 20166.364100400035
+      capacitance_m3_pa: 1.570000406379691e-10
+      index: 2
+      resistance_pa_s_m3: 1720931.8767797635
+      parameter_names:
+        resistance: quasi_svc_rl_02.resistance
+        inertance: quasi_svc_rl_02.inductance
+        capacitance: quasi_svc_c_02.capacitance
+    - source_segment: SVC
+      length_m: 0.005
+      radius_in_m: 0.0085
+      radius_out_m: 0.00725
+      area_bar_m2: 0.00019605501653808806
+      geometry_resistance_pa_s_m3: 11833.668037357162
+      inertance_pa_s2_m3: 27033.228190671452
+      capacitance_m3_pa: 1.1711956711020705e-10
+      index: 3
+      resistance_pa_s_m3: 3119113.437791785
+      parameter_names:
+        resistance: quasi_svc_rl_03.resistance
+        inertance: quasi_svc_rl_03.inductance
+        capacitance: quasi_svc_c_03.capacitance
+  ivc:
+    label: IVC quasi chain
+    geometry_source: fontan_cross_geometry.csv
+    source_segments:
+    - IVC
+    inlet_node: ivc
+    outlet_node: tcpc
+    segment_count: 5
+    wave_speed_m_s: 2.81
+    totals:
+      length_m: 0.05499999999999999
+      area_bar_m2: 0.0005572714128570255
+      geometry_resistance_pa_s_m3: 17530.081774990045
+      selected_resistance_pa_s_m3: 4399626.0
+      selected_resistance_source: calibrated_full_0d_pathway
+      inertance_pa_s2_m3: 108573.81139546292
+      capacitance_m3_pa: 3.6619376830090708e-09
+      full_0d_resistance_prior_pa_s_m3: 4399626.0
+      full_0d_compliance_prior_m3_pa: 2.262192286344339e-07
+      full_0d_inertance_prior_pa_s2_m3: 80000.0
+    cells:
+    - source_segment: IVC
+      length_m: 0.011
+      radius_in_m: 0.0155
+      radius_out_m: 0.0146
+      area_bar_m2: 0.000712214762532074
+      geometry_resistance_pa_s_m3: 1916.6798917047222
+      inertance_pa_s2_m3: 16371.466323649674
+      capacitance_m3_pa: 9.360200495268161e-10
+      index: 1
+      resistance_pa_s_m3: 481040.2366321003
+      parameter_names:
+        resistance: quasi_ivc_rl_01.resistance
+        inertance: quasi_ivc_rl_01.inductance
+        capacitance: quasi_ivc_c_01.capacitance
+    - source_segment: IVC
+      length_m: 0.011
+      radius_in_m: 0.0146
+      radius_out_m: 0.0137
+      area_bar_m2: 0.0006296537075957344
+      geometry_resistance_pa_s_m3: 2453.803838726243
+      inertance_pa_s2_m3: 18518.115369355113
+      capacitance_m3_pa: 8.275151338806473e-10
+      index: 2
+      resistance_pa_s_m3: 615845.3398182119
+      parameter_names:
+        resistance: quasi_ivc_rl_02.resistance
+        inertance: quasi_ivc_rl_02.inductance
+        capacitance: quasi_ivc_c_02.capacitance
+    - source_segment: IVC
+      length_m: 0.011
+      radius_in_m: 0.0137
+      radius_out_m: 0.012799999999999999
+      area_bar_m2: 0.00055218203275821
+      geometry_resistance_pa_s_m3: 3193.0662890551457
+      inertance_pa_s2_m3: 21116.224919085136
+      capacitance_m3_pa: 7.256988774181462e-10
+      index: 3
+      resistance_pa_s_m3: 801382.3121517362
+      parameter_names:
+        resistance: quasi_ivc_rl_03.resistance
+        inertance: quasi_ivc_rl_03.inductance
+        capacitance: quasi_ivc_c_03.capacitance
+    - source_segment: IVC
+      length_m: 0.011
+      radius_in_m: 0.012799999999999999
+      radius_out_m: 0.011899999999999999
+      area_bar_m2: 0.000479799738019501
+      geometry_resistance_pa_s_m3: 4233.076564411124
+      inertance_pa_s2_m3: 24301.805682782782
+      capacitance_m3_pa: 6.30571280139313e-10
+      index: 4
+      resistance_pa_s_m3: 1062399.7053650045
+      parameter_names:
+        resistance: quasi_ivc_rl_04.resistance
+        inertance: quasi_ivc_rl_04.inductance
+        capacitance: quasi_ivc_c_04.capacitance
+    - source_segment: IVC
+      length_m: 0.011
+      radius_in_m: 0.011899999999999999
+      radius_out_m: 0.011
+      area_bar_m2: 0.00041250682337960775
+      geometry_resistance_pa_s_m3: 5733.455191092809
+      inertance_pa_s2_m3: 28266.199100590227
+      capacitance_m3_pa: 5.42132342044148e-10
+      index: 5
+      resistance_pa_s_m3: 1438958.4060329474
+      parameter_names:
+        resistance: quasi_ivc_rl_05.resistance
+        inertance: quasi_ivc_rl_05.inductance
+        capacitance: quasi_ivc_c_05.capacitance
+  rpa:
+    label: RPA quasi chain
+    geometry_source: fontan_cross_geometry.csv
+    source_segments:
+    - RPA
+    inlet_node: tcpc
+    outlet_node: rpa
+    segment_count: 3
+    wave_speed_m_s: 2.81
+    totals:
+      length_m: 0.012
+      area_bar_m2: 0.00013273228961416876
+      geometry_resistance_pa_s_m3: 59915.057180212854
+      selected_resistance_pa_s_m3: 2399796.0000000005
+      selected_resistance_source: calibrated_full_0d_pathway
+      inertance_pa_s2_m3: 95831.99413627971
+      capacitance_m3_pa: 1.9030023603365037e-10
+      full_0d_resistance_prior_pa_s_m3: 2399796.0000000005
+      full_0d_compliance_prior_m3_pa: 1.2451058339958897e-08
+      full_0d_inertance_prior_pa_s2_m3: 60000.0
+    cells:
+    - source_segment: RPA
+      length_m: 0.004
+      radius_in_m: 0.0065
+      radius_out_m: 0.0065
+      area_bar_m2: 0.00013273228961416876
+      geometry_resistance_pa_s_m3: 19971.685726737618
+      inertance_pa_s2_m3: 31943.998045426568
+      capacitance_m3_pa: 6.343341201121679e-11
+      index: 1
+      resistance_pa_s_m3: 799932.0000000001
+      parameter_names:
+        resistance: quasi_rpa_rl_01.resistance
+        inertance: quasi_rpa_rl_01.inductance
+        capacitance: quasi_rpa_c_01.capacitance
+    - source_segment: RPA
+      length_m: 0.004
+      radius_in_m: 0.0065
+      radius_out_m: 0.0065
+      area_bar_m2: 0.00013273228961416876
+      geometry_resistance_pa_s_m3: 19971.685726737618
+      inertance_pa_s2_m3: 31943.998045426568
+      capacitance_m3_pa: 6.343341201121679e-11
+      index: 2
+      resistance_pa_s_m3: 799932.0000000001
+      parameter_names:
+        resistance: quasi_rpa_rl_02.resistance
+        inertance: quasi_rpa_rl_02.inductance
+        capacitance: quasi_rpa_c_02.capacitance
+    - source_segment: RPA
+      length_m: 0.004
+      radius_in_m: 0.0065
+      radius_out_m: 0.0065
+      area_bar_m2: 0.00013273228961416876
+      geometry_resistance_pa_s_m3: 19971.685726737618
+      inertance_pa_s2_m3: 31943.998045426568
+      capacitance_m3_pa: 6.343341201121679e-11
+      index: 3
+      resistance_pa_s_m3: 799932.0000000001
+      parameter_names:
+        resistance: quasi_rpa_rl_03.resistance
+        inertance: quasi_rpa_rl_03.inductance
+        capacitance: quasi_rpa_c_03.capacitance
+  lpa:
+    label: LPA quasi chain
+    geometry_source: fontan_cross_geometry.csv
+    source_segments:
+    - LPA I
+    - LPA II
+    inlet_node: tcpc
+    outlet_node: lpa
+    segment_count: 4
+    wave_speed_m_s: 2.81
+    totals:
+      length_m: 0.036
+      area_bar_m2: 4.900148228821893e-05
+      geometry_resistance_pa_s_m3: 1765711.614487579
+      selected_resistance_pa_s_m3: 3466372.000000001
+      selected_resistance_source: calibrated_full_0d_pathway
+      inertance_pa_s2_m3: 841348.2857261584
+      capacitance_m3_pa: 2.107624378187036e-10
+      full_0d_resistance_prior_pa_s_m3: 3466372.000000001
+      full_0d_compliance_prior_m3_pa: 1.2451058339958897e-08
+      full_0d_inertance_prior_pa_s2_m3: 60000.0
+    cells:
+    - source_segment: LPA I
+      length_m: 0.011
+      radius_in_m: 0.00525
+      radius_out_m: 0.004125
+      area_bar_m2: 7.002315500540375e-05
+      geometry_resistance_pa_s_m3: 213114.6292110786
+      inertance_pa_s2_m3: 166516.3473296824
+      capacitance_m3_pa: 9.20271250530703e-11
+      index: 1
+      resistance_pa_s_m3: 418377.8242304028
+      parameter_names:
+        resistance: quasi_lpa_rl_01.resistance
+        inertance: quasi_lpa_rl_01.inductance
+        capacitance: quasi_lpa_c_01.capacitance
+    - source_segment: LPA I
+      length_m: 0.011
+      radius_in_m: 0.004125
+      radius_out_m: 0.003
+      area_bar_m2: 4.0865248189273484e-05
+      geometry_resistance_pa_s_m3: 662017.0105061106
+      inertance_pa_s2_m3: 285328.01137032063
+      capacitance_m3_pa: 5.3706681813306006e-11
+      index: 2
+      resistance_pa_s_m3: 1299644.4096042565
+      parameter_names:
+        resistance: quasi_lpa_rl_02.resistance
+        inertance: quasi_lpa_rl_02.inductance
+        capacitance: quasi_lpa_c_02.capacitance
+    - source_segment: LPA II
+      length_m: 0.007
+      radius_in_m: 0.003
+      radius_out_m: 0.0035
+      area_bar_m2: 3.3379421944391556e-05
+      geometry_resistance_pa_s_m3: 570375.3868831244
+      inertance_pa_s2_m3: 222292.64522199778
+      capacitance_m3_pa: 2.791633146943343e-11
+      index: 3
+      resistance_pa_s_m3: 1119737.365013939
+      parameter_names:
+        resistance: quasi_lpa_rl_03.resistance
+        inertance: quasi_lpa_rl_03.inductance
+        capacitance: quasi_lpa_c_03.capacitance
+    - source_segment: LPA II
+      length_m: 0.007
+      radius_in_m: 0.0035
+      radius_out_m: 0.004
+      area_bar_m2: 4.437499623195583e-05
+      geometry_resistance_pa_s_m3: 320204.5878872655
+      inertance_pa_s2_m3: 167211.28180415765
+      capacitance_m3_pa: 3.711229948289385e-11
+      index: 4
+      resistance_pa_s_m3: 628612.4011514025
+      parameter_names:
+        resistance: quasi_lpa_rl_04.resistance
+        inertance: quasi_lpa_rl_04.inductance
+        capacitance: quasi_lpa_c_04.capacitance
+metadata:
+  lpa_narrowing:
+    parameter_name: quasi_lpa.narrowing_radius_m
+    radius_m: 0.003
+    area_m2: 2.8274333882308137e-05
+    source_segments:
+    - LPA I
+    - LPA II
+    location: shared LPA I outlet / LPA II inlet
+    default_resistance_scale_parameter: quasi_lpa.narrowing_resistance_scale
+    default_resistance_scale: 1.0
+    notes: Explicit baseline narrowing prior for later LPA-obstruction and quasi-chain
+      calibration work.
+  excluded_geometry_segments:
+    aorta:
+    - Brachiocephalic
+    - Carotic left
+    reason: Task 005 derives first-pass main aortic and Fontan chains. Upper arch
+      branch chains remain out of scope for the first quasi release.
