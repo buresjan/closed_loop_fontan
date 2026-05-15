@@ -93,6 +93,26 @@ The validation summaries are tracked in `scenario_validation_summary.txt`.
 - Waveform-shape fitting is not active yet. This should wait for the
   model-family-aware metrics planned in later tasks.
 
+## Target Consistency Note
+
+Task 004.5 added `target_consistency_report.md`,
+`target_consistency.json`, and
+`data/processed/aramburu_2024/targets/target_policy.csv`.
+
+The IVC-flow mismatch is mainly target-closure dependent: the direct flow
+targets are not mutually closed, while the calibrated model is internally
+mass-balanced. Direct IVC flow therefore remains a soft target and should be
+compared against raw direct, implied-from-CO, and implied-from-pulmonary-closure
+values.
+
+Direct DAo mean pressure is not a hard target for a passive full 0-D aortic
+tree, because the direct target table implies mean pressure rising downstream
+from AAo to arch to DAo. For quasi 0-D/1-D and coupled 0-D/1-D aortic
+parameter derivation, use the physically consistent paper/Nektar aortic
+pressure profile as the preferred guide and derive aortic R/L/C from geometry
+and wave-speed priors rather than preserving the full 0-D AAo-to-DAo pressure
+drop.
+
 ## Reproduction
 
 ```bash
@@ -101,4 +121,5 @@ python scripts/calibration/run_calibration.py --run-reference-scenarios
 python scripts/calibration/objective.py models/full_0d/reference_outputs/baseline_metrics.json --out models/full_0d/calibration/baseline_objective.json
 python scripts/calibration/compare_to_paper.py models/full_0d/reference_outputs/baseline_metrics.json --source-id paper_model --out models/full_0d/calibration/baseline_vs_paper.json
 python scripts/calibration/plot_calibration.py models/full_0d/reference_outputs/baseline_metrics.json --out models/full_0d/calibration/baseline_target_errors.svg
+python scripts/calibration/check_target_consistency.py
 ```

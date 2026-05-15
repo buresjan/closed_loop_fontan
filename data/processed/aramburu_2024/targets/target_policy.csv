@@ -1,0 +1,19 @@
+quantity,source,role,weight_class,reason
+EDV,direct_measurement,calibration,hard,Primary ventricular volume target.
+ESV,direct_measurement,calibration,hard,Primary ventricular volume target.
+SV,direct_measurement,calibration,hard,Primary pump target.
+CO,direct_measurement,calibration,hard,Primary closed-loop output.
+AAo pressure,direct_measurement_or_paper_nektar,calibration,medium-hard,Important afterload target; source choice depends on model family.
+Arch pressure,paper_nektar_preferred_for_profile,calibration,medium,Source differences exist in the aortic pressure profile.
+Direct DAo pressure,direct_measurement,diagnostic,low/diagnostic,Violates passive downstream pressure ordering.
+Paper/Nektar DAo pressure,paper_model_or_nektar_closed_loop_1d,calibration,medium-hard for quasi/1-D,Physically consistent aortic profile for quasi and coupled models.
+SVC pressure,direct_measurement,calibration,hard,Fontan pressure target.
+IVC pressure,direct_measurement,calibration,hard,Fontan pressure target.
+RPA pressure,direct_measurement,calibration,medium,Pulmonary pressure target.
+LPA pressure,direct_measurement,calibration,medium,Pulmonary pressure target.
+SVC flow,direct_measurement,calibration,medium-hard,Good direct flow target.
+IVC flow,direct_measurement,calibration,soft,Direct flow table is not mass-closed.
+RPA flow,direct_measurement,calibration,hard,Pulmonary flow target.
+LPA flow,direct_measurement,calibration,hard,Pulmonary flow target.
+RPA/LPA flow fraction,direct_measurement,calibration,hard,Important pulmonary split target.
+Wedge / atrial proxy,direct_measurement,calibration,medium,Useful but model-dependent interpretation.

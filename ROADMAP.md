@@ -34,6 +34,7 @@ The roadmap therefore defers any PhysioBlocks fork/upstream work until Task 009 
 | 002 | completed | [Add hydraulic lumped blocks](tasks/002-add-hydraulic-lumped-blocks.md) | Add clean local resistor/RL blocks and tests. | No |
 | 003 | completed | [Build calibration targets](tasks/003-build-calibration-targets.md) | Extract shared summary and waveform targets from processed Aramburu data. | No |
 | 004 | completed | [Calibrate full 0-D baseline](tasks/004-calibrate-full-0d.md) | Tune the current model to patient-level means and volumes. | No |
+| 004.5 | completed | [Target consistency and target policy check](tasks/004-5-target-consistency-policy.md) | Document target conflicts before quasi-vessel derivation. | No |
 | 005 | planned | [Derive quasi vessel parameters](tasks/005-derive-quasi-vessel-parameters.md) | Convert geometry and priors into R-L-C chain parameters. | No |
 | 006 | planned | [Implement quasi model](tasks/006-implement-quasi-model.md) | Build PhysioBlocks-only quasi 0-D/1-D configs and docs. | No |
 | 007 | planned | [Add quasi metrics and scenarios](tasks/007-quasi-metrics-and-scenarios.md) | Make metrics/scenario comparison model-family aware. | No |

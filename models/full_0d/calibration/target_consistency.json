@@ -1,0 +1,401 @@
+{
+  "flow_closure": {
+    "direct_measurement": {
+      "co_ml_s": 42.89037840614596,
+      "svc_flow_ml_s": 20.589040012646816,
+      "ivc_flow_ml_s": 18.84377590619485,
+      "rpa_flow_ml_s": 24.42959968662995,
+      "lpa_flow_ml_s": 16.87701189855381,
+      "svc_plus_ivc_ml_s": 39.43281591884167,
+      "rpa_plus_lpa_ml_s": 41.30661158518376,
+      "systemic_minus_pulmonary_ml_s": -1.8737956663420903,
+      "co_minus_systemic_return_ml_s": 3.457562487304294,
+      "co_minus_pulmonary_flow_ml_s": 1.5837668209622038
+    },
+    "paper_model": {
+      "co_ml_s": 44.28932400932397,
+      "svc_flow_ml_s": 23.516950244755254,
+      "ivc_flow_ml_s": 17.77682237762238,
+      "rpa_flow_ml_s": 25.988797319347327,
+      "lpa_flow_ml_s": 15.685366550116555,
+      "svc_plus_ivc_ml_s": 41.29377262237763,
+      "rpa_plus_lpa_ml_s": 41.67416386946388,
+      "systemic_minus_pulmonary_ml_s": -0.3803912470862514,
+      "co_minus_systemic_return_ml_s": 2.995551386946339,
+      "co_minus_pulmonary_flow_ml_s": 2.6151601398600874
+    },
+    "nektar_closed_loop_1d": {
+      "co_ml_s": 44.28932400932397,
+      "svc_flow_ml_s": 23.516950244755254,
+      "ivc_flow_ml_s": 17.77682237762238,
+      "rpa_flow_ml_s": 25.988797319347327,
+      "lpa_flow_ml_s": 15.685366550116555,
+      "svc_plus_ivc_ml_s": 41.29377262237763,
+      "rpa_plus_lpa_ml_s": 41.67416386946388,
+      "systemic_minus_pulmonary_ml_s": -0.3803912470862514,
+      "co_minus_systemic_return_ml_s": 2.995551386946339,
+      "co_minus_pulmonary_flow_ml_s": 2.6151601398600874
+    }
+  },
+  "implied_ivc": {
+    "direct_measurement": {
+      "raw_direct_ivc_ml_s": 18.84377590619485,
+      "from_pulmonary_closure_ml_s": 20.717571572536944,
+      "from_co_closure_ml_s": 22.301338393499147
+    }
+  },
+  "aortic_pressure_order": {
+    "direct_measurement": {
+      "aao_pressure_mmHg": 50.40287288772364,
+      "arch_pressure_mmHg": 51.73248330480455,
+      "dao_pressure_mmHg": 53.146443563458895,
+      "aao_ge_arch_ge_dao": false,
+      "aao_to_arch_drop_mmHg": -1.3296104170809144,
+      "arch_to_dao_drop_mmHg": -1.4139602586543418,
+      "aao_to_dao_drop_mmHg": -2.7435706757352563
+    },
+    "paper_model": {
+      "aao_pressure_mmHg": 50.66208569549903,
+      "arch_pressure_mmHg": 50.32511564537365,
+      "dao_pressure_mmHg": 50.058321650348944,
+      "aao_ge_arch_ge_dao": true,
+      "aao_to_arch_drop_mmHg": 0.3369700501253803,
+      "arch_to_dao_drop_mmHg": 0.266793995024706,
+      "aao_to_dao_drop_mmHg": 0.6037640451500863
+    },
+    "nektar_closed_loop_1d": {
+      "aao_pressure_mmHg": 50.66208569549903,
+      "arch_pressure_mmHg": 50.32511564537365,
+      "dao_pressure_mmHg": 50.058321650348944,
+      "aao_ge_arch_ge_dao": true,
+      "aao_to_arch_drop_mmHg": 0.3369700501253803,
+      "arch_to_dao_drop_mmHg": 0.266793995024706,
+      "aao_to_dao_drop_mmHg": 0.6037640451500863
+    }
+  },
+  "source_conflicts": [
+    {
+      "quantity": "CO",
+      "canonical_name": "cardiac_output",
+      "statistic": "from_stroke_volume",
+      "unit": "ml/s",
+      "values": {
+        "direct_measurement": 42.89037840614596,
+        "paper_model": 44.28932400932397,
+        "nektar_closed_loop_1d": 44.28932400932397
+      },
+      "min": 42.89037840614596,
+      "max": 44.28932400932397,
+      "range": 1.3989456031780065
+    },
+    {
+      "quantity": "SVC flow",
+      "canonical_name": "svc_flow",
+      "statistic": "beat_integral",
+      "unit": "ml/s",
+      "values": {
+        "direct_measurement": 20.589040012646816,
+        "paper_model": 23.516950244755254,
+        "nektar_closed_loop_1d": 23.516950244755254
+      },
+      "min": 20.589040012646816,
+      "max": 23.516950244755254,
+      "range": 2.927910232108438
+    },
+    {
+      "quantity": "IVC flow",
+      "canonical_name": "ivc_flow",
+      "statistic": "beat_integral",
+      "unit": "ml/s",
+      "values": {
+        "direct_measurement": 18.84377590619485,
+        "paper_model": 17.77682237762238,
+        "nektar_closed_loop_1d": 17.77682237762238
+      },
+      "min": 17.77682237762238,
+      "max": 18.84377590619485,
+      "range": 1.0669535285724692
+    },
+    {
+      "quantity": "RPA flow",
+      "canonical_name": "rpa_flow",
+      "statistic": "beat_integral",
+      "unit": "ml/s",
+      "values": {
+        "direct_measurement": 24.42959968662995,
+        "paper_model": 25.988797319347327,
+        "nektar_closed_loop_1d": 25.988797319347327
+      },
+      "min": 24.42959968662995,
+      "max": 25.988797319347327,
+      "range": 1.5591976327173782
+    },
+    {
+      "quantity": "LPA flow",
+      "canonical_name": "lpa_flow",
+      "statistic": "beat_integral",
+      "unit": "ml/s",
+      "values": {
+        "direct_measurement": 16.87701189855381,
+        "paper_model": 15.685366550116555,
+        "nektar_closed_loop_1d": 15.685366550116555
+      },
+      "min": 15.685366550116555,
+      "max": 16.87701189855381,
+      "range": 1.1916453484372553
+    },
+    {
+      "quantity": "AAo pressure",
+      "canonical_name": "ascending_aorta_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 50.40287288772364,
+        "paper_model": 50.66208569549903,
+        "nektar_closed_loop_1d": 50.66208569549903
+      },
+      "min": 50.40287288772364,
+      "max": 50.66208569549903,
+      "range": 0.25921280777539124
+    },
+    {
+      "quantity": "Arch pressure",
+      "canonical_name": "aortic_arch_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 51.73248330480455,
+        "paper_model": 50.32511564537365,
+        "nektar_closed_loop_1d": 50.32511564537365
+      },
+      "min": 50.32511564537365,
+      "max": 51.73248330480455,
+      "range": 1.4073676594309035
+    },
+    {
+      "quantity": "DAo pressure",
+      "canonical_name": "descending_aorta_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 53.146443563458895,
+        "paper_model": 50.058321650348944,
+        "nektar_closed_loop_1d": 50.058321650348944
+      },
+      "min": 50.058321650348944,
+      "max": 53.146443563458895,
+      "range": 3.0881219131099513
+    },
+    {
+      "quantity": "SVC pressure",
+      "canonical_name": "svc_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 8.869404209404498,
+        "paper_model": 8.623401424196443,
+        "nektar_closed_loop_1d": 8.623401424196443
+      },
+      "min": 8.623401424196443,
+      "max": 8.869404209404498,
+      "range": 0.24600278520805574
+    },
+    {
+      "quantity": "IVC pressure",
+      "canonical_name": "ivc_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 8.539233256374764,
+        "paper_model": 8.729534147444594,
+        "nektar_closed_loop_1d": 8.729534147444594
+      },
+      "min": 8.539233256374764,
+      "max": 8.729534147444594,
+      "range": 0.19030089106983006
+    },
+    {
+      "quantity": "RPA pressure",
+      "canonical_name": "rpa_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 8.482440768563476,
+        "paper_model": 8.577487951184793,
+        "nektar_closed_loop_1d": 8.577487951184793
+      },
+      "min": 8.482440768563476,
+      "max": 8.577487951184793,
+      "range": 0.0950471826213164
+    },
+    {
+      "quantity": "LPA pressure",
+      "canonical_name": "lpa_pressure",
+      "statistic": "mean",
+      "unit": "mmHg",
+      "values": {
+        "direct_measurement": 8.45525641025641,
+        "paper_model": 7.925917291288925,
+        "nektar_closed_loop_1d": 7.925917291288925
+      },
+      "min": 7.925917291288925,
+      "max": 8.45525641025641,
+      "range": 0.5293391189674859
+    }
+  ],
+  "model_interpretation": {
+    "flow_closure": {
+      "co_ml_s": 41.91487361003064,
+      "svc_plus_ivc_ml_s": 41.80463273237582,
+      "rpa_plus_lpa_ml_s": 41.80240188234765,
+      "systemic_minus_pulmonary_ml_s": 0.0022308500281695842,
+      "co_minus_systemic_return_ml_s": 0.11024087765481738,
+      "co_minus_pulmonary_flow_ml_s": 0.11247172768298697
+    },
+    "ivc_flow": {
+      "model_ivc_ml_s": 21.57354998245344,
+      "raw_direct_ivc_ml_s": 18.84377590619485,
+      "direct_implied_from_pulmonary_closure_ml_s": 20.717571572536944,
+      "direct_implied_from_co_closure_ml_s": 22.301338393499147,
+      "model_minus_raw_direct_ml_s": 2.7297740762585896,
+      "model_minus_pulmonary_implied_ml_s": 0.8559784099164958,
+      "model_minus_co_implied_ml_s": -0.727788411045708
+    },
+    "aortic_profile": {
+      "model_aao_pressure_mmHg": 47.79287334285191,
+      "model_arch_pressure_mmHg": 47.12221271513976,
+      "model_dao_pressure_mmHg": 44.00272147875028,
+      "model_aao_to_dao_drop_mmHg": 3.790151864101631,
+      "paper_nektar_aao_to_dao_drop_mmHg": 0.6037640451500863
+    },
+    "assessment": "The calibrated full-0D model is acceptable as the baseline physiological reference for moving to quasi 0-D/1-D. The IVC-flow mismatch is mostly a consequence of enforcing mass conservation on target flows that are not mutually closed. The DAo-pressure mismatch is partly a direct-target inconsistency and partly a limitation of the full-0D aortic representation."
+  },
+  "target_policy": [
+    {
+      "quantity": "EDV",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Primary ventricular volume target."
+    },
+    {
+      "quantity": "ESV",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Primary ventricular volume target."
+    },
+    {
+      "quantity": "SV",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Primary pump target."
+    },
+    {
+      "quantity": "CO",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Primary closed-loop output."
+    },
+    {
+      "quantity": "AAo pressure",
+      "source": "direct_measurement_or_paper_nektar",
+      "role": "calibration",
+      "weight_class": "medium-hard",
+      "reason": "Important afterload target; source choice depends on model family."
+    },
+    {
+      "quantity": "Arch pressure",
+      "source": "paper_nektar_preferred_for_profile",
+      "role": "calibration",
+      "weight_class": "medium",
+      "reason": "Source differences exist in the aortic pressure profile."
+    },
+    {
+      "quantity": "Direct DAo pressure",
+      "source": "direct_measurement",
+      "role": "diagnostic",
+      "weight_class": "low/diagnostic",
+      "reason": "Violates passive downstream pressure ordering."
+    },
+    {
+      "quantity": "Paper/Nektar DAo pressure",
+      "source": "paper_model_or_nektar_closed_loop_1d",
+      "role": "calibration",
+      "weight_class": "medium-hard for quasi/1-D",
+      "reason": "Physically consistent aortic profile for quasi and coupled models."
+    },
+    {
+      "quantity": "SVC pressure",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Fontan pressure target."
+    },
+    {
+      "quantity": "IVC pressure",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Fontan pressure target."
+    },
+    {
+      "quantity": "RPA pressure",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "medium",
+      "reason": "Pulmonary pressure target."
+    },
+    {
+      "quantity": "LPA pressure",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "medium",
+      "reason": "Pulmonary pressure target."
+    },
+    {
+      "quantity": "SVC flow",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "medium-hard",
+      "reason": "Good direct flow target."
+    },
+    {
+      "quantity": "IVC flow",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "soft",
+      "reason": "Direct flow table is not mass-closed."
+    },
+    {
+      "quantity": "RPA flow",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Pulmonary flow target."
+    },
+    {
+      "quantity": "LPA flow",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Pulmonary flow target."
+    },
+    {
+      "quantity": "RPA/LPA flow fraction",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "hard",
+      "reason": "Important pulmonary split target."
+    },
+    {
+      "quantity": "Wedge / atrial proxy",
+      "source": "direct_measurement",
+      "role": "calibration",
+      "weight_class": "medium",
+      "reason": "Useful but model-dependent interpretation."
+    }
+  ]
+}
