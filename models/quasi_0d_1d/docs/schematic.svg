@@ -1,94 +1,368 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1050" viewBox="0 0 1800 1050">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="3400" height="1650" viewBox="0 0 3400 1650" role="img" aria-labelledby="title desc">
+  <title id="title">Quasi 0-D/1-D Fontan schematic with R-L-C vessel chains</title>
+  <desc id="desc">Closed-loop Fontan network with active atrium, AAo, aortic arch, upper and lower vascular beds, quasi R-L-C aortic and Fontan chains, and pulmonary Windkessel beds.</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#182230"/>
     </marker>
-    <style>
-      .title { font: 700 38px Arial, Helvetica, sans-serif; fill: #0f172a; }
-      .note { font: 18px Arial, Helvetica, sans-serif; fill: #475569; }
-      .box { fill: #f8fafc; stroke: #334155; stroke-width: 3; rx: 8; }
-      .heart { fill: #dbeafe; stroke: #2563eb; }
-      .aorta { fill: #dcfce7; stroke: #16a34a; }
-      .fontan { fill: #fee2e2; stroke: #dc2626; }
-      .bed { fill: #fef3c7; stroke: #d97706; }
-      .txt { font: 700 20px Arial, Helvetica, sans-serif; fill: #111827; text-anchor: middle; }
-      .sub { font: 15px Arial, Helvetica, sans-serif; fill: #374151; text-anchor: middle; }
-      .small { font: 14px Arial, Helvetica, sans-serif; fill: #334155; }
-      .edge { fill: none; stroke: #334155; stroke-width: 4; marker-end: url(#arrow); }
-      .thin { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrow); }
-    </style>
+    <style><![CDATA[
+      .page { fill: #ffffff; }
+      .title { font: 700 34px Arial, Helvetica, sans-serif; fill: #101828; }
+      .subtitle { font: 18px Arial, Helvetica, sans-serif; fill: #475467; }
+      .band-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #344054; }
+      .wire { fill: none; stroke: #182230; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+      .flow { fill: none; stroke: #182230; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .resistor { fill: none; stroke: #182230; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+      .inductor { fill: none; stroke: #182230; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+      .dash { stroke-dasharray: 11 8; }
+      .node { fill: #f8fbff; stroke: #182230; stroke-width: 3; }
+      .pump { fill: #fff7ed; stroke: #9a3412; stroke-width: 3; }
+      .node-label { font: 700 22px Arial, Helvetica, sans-serif; fill: #101828; text-anchor: middle; dominant-baseline: middle; }
+      .small { font: 15px Arial, Helvetica, sans-serif; fill: #667085; text-anchor: middle; dominant-baseline: middle; }
+      .label { font: 17px Arial, Helvetica, sans-serif; fill: #101828; text-anchor: middle; dominant-baseline: middle; }
+      .note { font: 14px Arial, Helvetica, sans-serif; fill: #667085; text-anchor: middle; dominant-baseline: middle; }
+      .cap { fill: none; stroke: #182230; stroke-width: 3; stroke-linecap: round; }
+      .ground { fill: none; stroke: #182230; stroke-width: 2.3; stroke-linecap: round; }
+      .valve { fill: #e8f3ff; stroke: #182230; stroke-width: 3; stroke-linejoin: round; }
+      .valve-line { stroke: #182230; stroke-width: 3; stroke-linecap: round; }
+      .legend { fill: #f8fafc; stroke: #d0d5dd; stroke-width: 2; rx: 10; }
+      .legend-text { font: 16px Arial, Helvetica, sans-serif; fill: #344054; dominant-baseline: middle; }
+      .section-line { stroke: #eaecf0; stroke-width: 2; }
+      .calibration { font: 16px Arial, Helvetica, sans-serif; fill: #344054; }
+    ]]></style>
+
+    <g id="cap-down">
+      <line x1="0" y1="0" x2="0" y2="22" class="wire"/>
+      <line x1="-25" y1="22" x2="25" y2="22" class="cap"/>
+      <line x1="-25" y1="38" x2="25" y2="38" class="cap"/>
+      <line x1="0" y1="38" x2="0" y2="58" class="wire"/>
+      <line x1="-22" y1="58" x2="22" y2="58" class="ground"/>
+      <line x1="-15" y1="65" x2="15" y2="65" class="ground"/>
+      <line x1="-8" y1="72" x2="8" y2="72" class="ground"/>
+    </g>
   </defs>
 
-  <rect width="1800" height="1050" fill="#ffffff"/>
-  <text class="title" x="80" y="80">Quasi 0-D/1-D Fontan schematic</text>
-  <text class="note" x="80" y="120">Task 005 derived R-L-C chain priors; executable quasi configs are built in later tasks.</text>
+  <rect class="page" x="0" y="0" width="3400" height="1650"/>
+  <text class="title" x="70" y="72">Quasi 0-D/1-D Fontan schematic</text>
+  <text class="subtitle" x="70" y="107">Same closed-loop components as full 0-D, with aortic and Fontan pathways replaced by PhysioBlocks R-L-C chains. Nominal flow follows the arrows.</text>
+  <text class="calibration" x="70" y="129">Task 005 priors: AAo/arch x4 and DAo x6 geometry-based chains; SVC x3, IVC x5, RPA x3, LPA x4 chains inherit calibrated Fontan pathway R.</text>
+  <line class="section-line" x1="70" y1="138" x2="3330" y2="138"/>
 
-  <rect class="box heart" x="90" y="240" width="240" height="120"/>
-  <text class="txt" x="210" y="292">active atrium</text>
-  <text class="sub" x="210" y="322">0-D elastance</text>
+  <text class="band-title" x="360" y="185">Pump</text>
+  <text class="band-title" x="1280" y="185">Aortic tree and systemic vascular beds</text>
+  <text class="band-title" x="2550" y="185">Fontan R-L-C chains and pulmonary return</text>
 
-  <rect class="box heart" x="430" y="240" width="240" height="120"/>
-  <text class="txt" x="550" y="292">single ventricle</text>
-  <text class="sub" x="550" y="322">0-D spherical cavity</text>
+  <g transform="translate(0 80)">
+  <!-- Pump and atrial return -->
+  <circle class="node" cx="190" cy="610" r="58"/>
+  <text class="node-label" x="190" y="598">Active</text>
+  <text class="node-label" x="190" y="625">atrium</text>
+  <line class="wire" x1="190" y1="668" x2="190" y2="675"/>
+  <use href="#cap-down" transform="translate(190 675)"/>
+  <line class="flow" x1="162" y1="735" x2="218" y2="702"/>
+  <text class="label" x="190" y="770">Atrial E(t)</text>
 
-  <rect class="box aorta" x="770" y="190" width="260" height="130"/>
-  <text class="txt" x="900" y="242">AAo/arch chain</text>
-  <text class="sub" x="900" y="274">4 R-L-C cells</text>
-  <text class="sub" x="900" y="300">geometry R, c=5.35 m/s</text>
+  <line class="wire" x1="248" y1="610" x2="305" y2="610"/>
+  <polygon class="valve" points="305,585 305,635 348,610"/>
+  <line class="valve-line" x1="356" y1="585" x2="356" y2="635"/>
+  <line class="flow" x1="356" y1="610" x2="407" y2="610"/>
+  <text class="label" x="330" y="555">Atrioventricular valve</text>
 
-  <rect class="box aorta" x="1120" y="190" width="260" height="130"/>
-  <text class="txt" x="1250" y="242">DAo chain</text>
-  <text class="sub" x="1250" y="274">6 R-L-C cells</text>
-  <text class="sub" x="1250" y="300">geometry R, c=5.35 m/s</text>
+  <circle class="pump" cx="470" cy="610" r="60"/>
+  <text class="node-label" x="470" y="597">Single</text>
+  <text class="node-label" x="470" y="624">ventricle</text>
+  <line class="wire" x1="470" y1="670" x2="470" y2="700"/>
+  <use href="#cap-down" transform="translate(470 700)"/>
+  <text class="label" x="570" y="792">Small cavity C</text>
 
-  <rect class="box bed" x="1460" y="170" width="230" height="110"/>
-  <text class="txt" x="1575" y="218">upper bed</text>
-  <text class="sub" x="1575" y="248">0-D systemic</text>
+  <line class="wire" x1="530" y1="610" x2="585" y2="610"/>
+  <polygon class="valve" points="585,585 585,635 628,610"/>
+  <line class="valve-line" x1="636" y1="585" x2="636" y2="635"/>
+  <line class="flow" x1="636" y1="610" x2="694" y2="610"/>
+  <text class="label" x="610" y="555">Aortic valve</text>
 
-  <rect class="box bed" x="1460" y="330" width="230" height="110"/>
-  <text class="txt" x="1575" y="378">lower bed</text>
-  <text class="sub" x="1575" y="408">0-D systemic</text>
+  <circle class="node" cx="748" cy="610" r="46"/>
+  <text class="node-label" x="748" y="610">AAo</text>
+  <line class="wire" x1="748" y1="656" x2="748" y2="680"/>
+  <use href="#cap-down" transform="translate(748 680)"/>
+  <text class="label" x="815" y="760">AAo C</text>
 
-  <rect class="box fontan" x="1120" y="590" width="250" height="130"/>
-  <text class="txt" x="1245" y="642">TCPC junction</text>
-  <text class="sub" x="1245" y="674">0-D node in quasi v1</text>
-  <text class="sub" x="1245" y="700">limbs are R-L-C chains</text>
+  <line class="wire" x1="794" y1="610" x2="825" y2="610"/>
+  <polyline class="resistor" points="825,610 837,593 854,627 871,593 888,627 905,593 922,627 939,593 951,610"/>
+  <line class="flow" x1="951" y1="610" x2="995" y2="610"/>
+  <text class="label" x="888" y="570">AAo/arch R-L-C x4</text>
 
-  <rect class="box fontan" x="760" y="520" width="260" height="120"/>
-  <text class="txt" x="890" y="570">SVC chain</text>
-  <text class="sub" x="890" y="600">3 cells, full 0-D R prior</text>
+  <circle class="node" cx="1045" cy="610" r="48"/>
+  <text class="node-label" x="1045" y="600">Aortic</text>
+  <text class="node-label" x="1045" y="626">arch</text>
+  <line class="wire" x1="1045" y1="658" x2="1045" y2="690"/>
+  <use href="#cap-down" transform="translate(1045 690)"/>
+  <text class="label" x="1045" y="790">Arch C</text>
 
-  <rect class="box fontan" x="760" y="710" width="260" height="120"/>
-  <text class="txt" x="890" y="760">IVC chain</text>
-  <text class="sub" x="890" y="790">5 cells, full 0-D R prior</text>
+  <!-- Aortic arch branches and systemic vascular beds -->
+  <path class="wire" d="M 1093 610 L 1120 610 L 1120 230 L 1145 230"/>
+  <path class="wire" d="M 1120 610 L 1120 420 L 1145 420"/>
+  <path class="wire" d="M 1120 610 L 1145 610"/>
+  <path class="wire" d="M 1120 610 L 1120 900 L 1145 900"/>
+  <circle class="node" cx="1120" cy="610" r="7"/>
 
-  <rect class="box fontan" x="1460" y="520" width="260" height="120"/>
-  <text class="txt" x="1590" y="570">RPA chain</text>
-  <text class="sub" x="1590" y="600">3 cells, full 0-D R prior</text>
+  <polyline class="resistor" points="1145,230 1157,213 1174,247 1191,213 1208,247 1225,213 1242,247 1259,213 1271,230"/>
+  <line class="flow" x1="1271" y1="230" x2="1310" y2="230"/>
+  <text class="label" x="1208" y="190">BCA branch R</text>
+  <circle class="node" cx="1360" cy="230" r="45"/>
+  <text class="node-label" x="1360" y="230">BCA</text>
+  <line class="wire" x1="1360" y1="275" x2="1360" y2="288"/>
+  <use href="#cap-down" transform="translate(1360 288)"/>
+  <text class="label" x="1418" y="370">BCA C</text>
 
-  <rect class="box fontan" x="1460" y="710" width="260" height="120"/>
-  <text class="txt" x="1590" y="760">LPA chain</text>
-  <text class="sub" x="1590" y="790">4 cells, narrow r=0.003 m</text>
+  <line class="wire" x1="1405" y1="230" x2="1440" y2="230"/>
+  <polyline class="resistor" points="1440,230 1452,213 1469,247 1486,213 1503,247 1520,213 1537,247 1554,213 1566,230"/>
+  <line class="flow" x1="1566" y1="230" x2="1615" y2="230"/>
+  <text class="label" x="1503" y="190">BCA to Ca1 R</text>
 
-  <rect class="box bed" x="1120" y="850" width="250" height="110"/>
-  <text class="txt" x="1245" y="898">pulmonary beds</text>
-  <text class="sub" x="1245" y="928">0-D RCR compartments</text>
+  <polyline class="resistor" points="1145,420 1157,403 1174,437 1191,403 1208,437 1225,403 1242,437 1259,403 1271,420"/>
+  <line class="flow" x1="1271" y1="420" x2="1310" y2="420"/>
+  <text class="label" x="1208" y="380">LCCA branch R</text>
+  <circle class="node" cx="1360" cy="420" r="45"/>
+  <text class="node-label" x="1360" y="420">LCCA</text>
+  <line class="wire" x1="1360" y1="465" x2="1360" y2="478"/>
+  <use href="#cap-down" transform="translate(1360 478)"/>
+  <text class="label" x="1285" y="525">LCCA C</text>
 
-  <path class="edge" d="M330 300 H430"/>
-  <path class="edge" d="M670 300 H770"/>
-  <path class="edge" d="M1030 255 H1120"/>
-  <path class="thin" d="M1030 235 C1210 130 1370 125 1460 205"/>
-  <path class="thin" d="M1380 255 C1440 265 1470 315 1575 330"/>
-  <path class="edge" d="M1575 440 C1575 500 1340 520 1245 590"/>
-  <path class="edge" d="M1575 280 C1510 470 1030 430 890 520"/>
-  <path class="edge" d="M1575 440 C1480 650 1050 660 890 710"/>
-  <path class="edge" d="M1020 580 H1120"/>
-  <path class="edge" d="M1020 770 C1060 725 1100 690 1120 670"/>
-  <path class="edge" d="M1370 620 H1460"/>
-  <path class="edge" d="M1370 690 C1410 730 1440 750 1460 770"/>
-  <path class="edge" d="M1590 640 C1570 870 1380 900 1370 900"/>
-  <path class="edge" d="M1590 830 C1530 930 1400 925 1370 910"/>
-  <path class="edge" d="M1120 900 C760 1000 240 790 210 360"/>
+  <line class="wire" x1="1405" y1="420" x2="1440" y2="420"/>
+  <polyline class="resistor" points="1440,420 1452,403 1469,437 1486,403 1503,437 1520,403 1537,437 1554,403 1566,420"/>
+  <line class="flow" x1="1566" y1="420" x2="1615" y2="420"/>
+  <text class="label" x="1503" y="380">LCCA to Ca1 R</text>
 
-  <text class="small" x="80" y="1010">Aortic R is geometry-based per target policy; Fontan limb R starts from calibrated full 0-D pathway priors. Schematic shows planned Task 006 topology.</text>
+  <polyline class="resistor" points="1145,610 1157,593 1174,627 1191,593 1208,627 1225,593 1242,627 1259,593 1271,610"/>
+  <line class="flow" x1="1271" y1="610" x2="1310" y2="610"/>
+  <text class="label" x="1208" y="570">LSA branch R</text>
+  <circle class="node" cx="1360" cy="610" r="45"/>
+  <text class="node-label" x="1360" y="610">LSA</text>
+  <line class="wire" x1="1360" y1="655" x2="1360" y2="668"/>
+  <use href="#cap-down" transform="translate(1360 668)"/>
+  <text class="label" x="1360" y="760">LSA C</text>
+
+  <line class="wire" x1="1405" y1="610" x2="1440" y2="610"/>
+  <polyline class="resistor" points="1440,610 1452,593 1469,627 1486,593 1503,627 1520,593 1537,627 1554,593 1566,610"/>
+  <line class="flow" x1="1566" y1="610" x2="1615" y2="610"/>
+  <text class="label" x="1503" y="568">LSA to Ca1 R</text>
+
+  <path class="wire" d="M 1615 230 L 1660 230 L 1660 420"/>
+  <path class="wire" d="M 1615 420 L 1660 420"/>
+  <path class="wire" d="M 1615 610 L 1660 610 L 1660 420"/>
+  <line class="flow" x1="1660" y1="420" x2="1715" y2="420"/>
+  <circle class="node" cx="1765" cy="420" r="48"/>
+  <text class="node-label" x="1765" y="409">Ca1</text>
+  <text class="small" x="1765" y="437">upper arterial</text>
+  <line class="wire" x1="1765" y1="468" x2="1765" y2="482"/>
+  <use href="#cap-down" transform="translate(1765 482)"/>
+  <text class="label" x="1765" y="585">Upper arterial C</text>
+
+  <line class="wire" x1="1813" y1="420" x2="1850" y2="420"/>
+  <polyline class="resistor" points="1850,420 1862,403 1879,437 1896,403 1913,437 1930,403 1947,437 1964,403 1976,420"/>
+  <line class="flow" x1="1976" y1="420" x2="2062" y2="420"/>
+  <text class="label" x="1913" y="380">Rc1 capillary R</text>
+  <circle class="node" cx="2110" cy="420" r="48"/>
+  <text class="node-label" x="2110" y="409">Cv1</text>
+  <text class="small" x="2110" y="437">upper venous</text>
+  <line class="wire" x1="2110" y1="468" x2="2110" y2="482"/>
+  <use href="#cap-down" transform="translate(2110 482)"/>
+  <text class="label" x="2110" y="585">Upper venous C</text>
+
+  <line class="wire" x1="2158" y1="420" x2="2195" y2="420"/>
+  <polyline class="resistor" points="2195,420 2207,403 2224,437 2241,403 2258,437 2275,403 2292,437 2309,403 2321,420"/>
+  <line class="flow" x1="2321" y1="420" x2="2402" y2="420"/>
+  <text class="label" x="2258" y="380">Rv1 venous R</text>
+  <circle class="node" cx="2450" cy="420" r="48"/>
+  <text class="node-label" x="2450" y="420">SVC</text>
+  <line class="wire" x1="2450" y1="468" x2="2450" y2="482"/>
+  <use href="#cap-down" transform="translate(2450 482)"/>
+  <text class="label" x="2450" y="585">SVC C</text>
+
+  <polyline class="resistor" points="1145,900 1157,883 1174,917 1191,883 1208,917 1225,883 1242,917 1259,883 1271,900"/>
+  <line class="flow" x1="1271" y1="900" x2="1310" y2="900"/>
+  <text class="label" x="1208" y="858">DAo R-L-C x6</text>
+  <circle class="node" cx="1360" cy="900" r="45"/>
+  <text class="node-label" x="1360" y="900">DAo</text>
+  <line class="wire" x1="1360" y1="945" x2="1360" y2="958"/>
+  <use href="#cap-down" transform="translate(1360 958)"/>
+  <text class="label" x="1425" y="1040">DAo C</text>
+
+  <line class="wire" x1="1405" y1="900" x2="1440" y2="900"/>
+  <polyline class="resistor" points="1440,900 1452,883 1469,917 1486,883 1503,917 1520,883 1537,917 1554,883 1566,900"/>
+  <line class="flow" x1="1566" y1="900" x2="1715" y2="900"/>
+  <text class="label" x="1503" y="858">Ra4 arterial R</text>
+  <circle class="node" cx="1765" cy="900" r="48"/>
+  <text class="node-label" x="1765" y="889">Ca2</text>
+  <text class="small" x="1765" y="917">lower arterial</text>
+  <line class="wire" x1="1765" y1="948" x2="1765" y2="962"/>
+  <use href="#cap-down" transform="translate(1765 962)"/>
+  <text class="label" x="1765" y="1068">Lower arterial C</text>
+
+  <line class="wire" x1="1813" y1="900" x2="1850" y2="900"/>
+  <polyline class="resistor" points="1850,900 1862,883 1879,917 1896,883 1913,917 1930,883 1947,917 1964,883 1976,900"/>
+  <line class="flow" x1="1976" y1="900" x2="2062" y2="900"/>
+  <text class="label" x="1913" y="858">Rc2 capillary R</text>
+  <circle class="node" cx="2110" cy="900" r="48"/>
+  <text class="node-label" x="2110" y="889">Cv2</text>
+  <text class="small" x="2110" y="917">lower venous</text>
+  <line class="wire" x1="2110" y1="948" x2="2110" y2="962"/>
+  <use href="#cap-down" transform="translate(2110 962)"/>
+  <text class="label" x="2110" y="1068">Lower venous C</text>
+
+  <line class="wire" x1="2158" y1="900" x2="2195" y2="900"/>
+  <polyline class="resistor" points="2195,900 2207,883 2224,917 2241,883 2258,917 2275,883 2292,917 2309,883 2321,900"/>
+  <line class="flow" x1="2321" y1="900" x2="2402" y2="900"/>
+  <text class="label" x="2258" y="858">Rv2 venous R</text>
+  <circle class="node" cx="2450" cy="900" r="48"/>
+  <text class="node-label" x="2450" y="900">IVC</text>
+  <line class="wire" x1="2450" y1="948" x2="2450" y2="962"/>
+  <use href="#cap-down" transform="translate(2450 962)"/>
+  <text class="label" x="2450" y="1068">IVC C</text>
+
+  <!-- Fontan pathway with four derived R-L-C chains -->
+  <circle class="node" cx="2540" cy="660" r="48"/>
+  <text class="node-label" x="2540" y="648">TCPC</text>
+  <text class="small" x="2540" y="675">junction</text>
+  <path class="wire" d="M 2505 694 L 2385 694 L 2385 720"/>
+  <use href="#cap-down" transform="translate(2385 720)"/>
+  <text class="label" x="2320" y="812">TCPC C</text>
+
+  <path class="wire" d="M 2498 420 L 2575 420"/>
+  <polyline class="resistor" points="2575,420 2587,403 2604,437 2621,403 2638,437 2655,403 2672,437 2689,403 2701,420"/>
+  <path class="inductor" d="M 2701 420 C 2713 396 2737 396 2749 420 C 2761 444 2785 444 2797 420"/>
+  <line class="flow" x1="2797" y1="420" x2="2832" y2="420"/>
+  <text class="label" x="2686" y="380">SVC R-L-C x3</text>
+  <circle class="node" cx="2868" cy="420" r="34"/>
+  <text class="small" x="2868" y="412">SVC</text>
+  <text class="small" x="2868" y="431">chain p</text>
+  <line class="wire" x1="2868" y1="386" x2="2868" y2="386"/>
+  <use href="#cap-down" transform="translate(2868 386) rotate(180)"/>
+  <text class="label" x="2980" y="355">SVC chain C nodes</text>
+  <path class="flow" d="M 2868 454 L 2868 470 L 2605 470 L 2605 620 L 2572 620"/>
+
+  <path class="wire" d="M 2498 900 L 2575 900"/>
+  <polyline class="resistor" points="2575,900 2587,883 2604,917 2621,883 2638,917 2655,883 2672,917 2689,883 2701,900"/>
+  <path class="inductor" d="M 2701 900 C 2713 876 2737 876 2749 900 C 2761 924 2785 924 2797 900"/>
+  <line class="flow" x1="2797" y1="900" x2="2832" y2="900"/>
+  <text class="label" x="2686" y="832">IVC R-L-C x5</text>
+  <circle class="node" cx="2868" cy="900" r="34"/>
+  <text class="small" x="2868" y="892">IVC</text>
+  <text class="small" x="2868" y="911">chain p</text>
+  <line class="wire" x1="2868" y1="934" x2="2868" y2="948"/>
+  <use href="#cap-down" transform="translate(2868 948)"/>
+  <text class="label" x="2868" y="1042">IVC chain C nodes</text>
+  <path class="flow" d="M 2868 866 L 2868 850 L 2605 850 L 2605 700 L 2572 700"/>
+
+  <path class="wire" d="M 2588 660 L 2700 660 L 2700 545 L 2730 545"/>
+  <polyline class="resistor" points="2730,545 2742,528 2759,562 2776,528 2793,562 2810,528 2827,562 2844,528 2856,545"/>
+  <path class="inductor" d="M 2856 545 C 2868 521 2892 521 2904 545 C 2916 569 2940 569 2952 545"/>
+  <line class="flow" x1="2952" y1="545" x2="2982" y2="545"/>
+  <text class="label" x="2841" y="503">RPA R-L-C x3</text>
+  <circle class="node" cx="3018" cy="545" r="34"/>
+  <text class="small" x="3018" y="537">RPA</text>
+  <text class="small" x="3018" y="556">chain p</text>
+  <line class="wire" x1="3018" y1="579" x2="3018" y2="593"/>
+  <use href="#cap-down" transform="translate(3018 593)"/>
+  <text class="label" x="3018" y="680">RPA chain C nodes</text>
+  <line class="wire" x1="3052" y1="545" x2="3075" y2="545"/>
+  <polyline class="resistor" points="3075,545 3083,533 3095,557 3107,533 3119,557 3127,545"/>
+  <line class="flow" x1="3127" y1="545" x2="3162" y2="545"/>
+  <circle class="node" cx="3210" cy="545" r="45"/>
+  <text class="node-label" x="3210" y="545">RPA</text>
+  <line class="wire" x1="3210" y1="590" x2="3210" y2="604"/>
+  <use href="#cap-down" transform="translate(3210 604)"/>
+  <text class="label" x="3210" y="690">RPA C</text>
+
+  <path class="wire" d="M 2700 660 L 2700 775 L 2730 775"/>
+  <polyline class="resistor" points="2730,775 2742,758 2759,792 2776,758 2793,792 2810,758 2827,792 2844,758 2856,775"/>
+  <path class="inductor" d="M 2856 775 C 2868 751 2892 751 2904 775 C 2916 799 2940 799 2952 775"/>
+  <line class="flow" x1="2952" y1="775" x2="2982" y2="775"/>
+  <text class="label" x="2841" y="733">LPA R-L-C x4</text>
+  <circle class="node" cx="3018" cy="775" r="34"/>
+  <text class="small" x="3018" y="767">LPA</text>
+  <text class="small" x="3018" y="786">narrow p</text>
+  <line class="wire" x1="3018" y1="809" x2="3018" y2="823"/>
+  <use href="#cap-down" transform="translate(3018 823)"/>
+  <text class="label" x="3018" y="910">LPA chain C nodes</text>
+  <line class="wire" x1="3052" y1="775" x2="3075" y2="775"/>
+  <polyline class="resistor" points="3075,775 3083,763 3095,787 3107,763 3119,787 3127,775"/>
+  <line class="flow" x1="3127" y1="775" x2="3162" y2="775"/>
+  <circle class="node" cx="3210" cy="775" r="45"/>
+  <text class="node-label" x="3210" y="775">LPA</text>
+  <line class="wire" x1="3210" y1="820" x2="3210" y2="834"/>
+  <use href="#cap-down" transform="translate(3210 834)"/>
+  <text class="label" x="3210" y="920">LPA C</text>
+
+  <!-- Pulmonary beds and fenestration -->
+  <path class="wire" d="M 3210 500 L 3210 170 L 3176 170"/>
+  <polyline class="resistor" points="3176,170 3164,153 3147,187 3130,153 3113,187 3096,153 3079,187 3062,153 3050,170"/>
+  <line class="flow" x1="3050" y1="170" x2="3020" y2="170"/>
+  <circle class="node" cx="2992" cy="170" r="7"/>
+  <line class="wire" x1="2992" y1="170" x2="2992" y2="191"/>
+  <use href="#cap-down" transform="translate(2992 191)"/>
+  <line class="wire" x1="2985" y1="170" x2="2966" y2="170"/>
+  <polyline class="resistor" points="2966,170 2954,153 2937,187 2920,153 2903,187 2886,153 2869,187 2852,153 2840,170"/>
+  <path class="flow" d="M 2840 170 L 190 170 L 190 552"/>
+  <text class="label" x="3113" y="132">Right lung proximal R</text>
+  <text class="label" x="2903" y="132">Right lung distal R</text>
+  <text class="label" x="2992" y="290">Right lung C</text>
+
+  <path class="wire" d="M 3255 775 L 3280 775 L 3280 1240 L 3180 1240"/>
+  <polyline class="resistor" points="3180,1240 3168,1223 3151,1257 3134,1223 3117,1257 3100,1223 3083,1257 3066,1223 3054,1240"/>
+  <line class="flow" x1="3054" y1="1240" x2="3022" y2="1240"/>
+  <circle class="node" cx="2994" cy="1240" r="7"/>
+  <line class="wire" x1="2994" y1="1240" x2="2994" y2="1260"/>
+  <use href="#cap-down" transform="translate(2994 1260)"/>
+  <line class="wire" x1="2987" y1="1240" x2="2968" y2="1240"/>
+  <polyline class="resistor" points="2968,1240 2956,1223 2939,1257 2922,1223 2905,1257 2888,1223 2871,1257 2854,1223 2842,1240"/>
+  <path class="flow" d="M 2842 1240 L 70 1240 L 70 640 L 132 640"/>
+  <text class="label" x="3117" y="1206">Left lung proximal R</text>
+  <text class="label" x="2905" y="1206">Left lung distal R</text>
+  <text class="label" x="2994" y="1352">Left lung C</text>
+
+  <path class="wire dash" d="M 2408 924 L 2350 924 L 2350 1140 L 880 1140"/>
+  <polyline class="resistor dash" points="880,1140 868,1123 851,1157 834,1123 817,1157 800,1123 783,1157 766,1123 754,1140"/>
+  <path class="flow dash" d="M 754 1140 L 40 1140 L 40 580 L 132 580"/>
+  <text class="label" x="817" y="1107">Fenestration R</text>
+  <text class="note" x="817" y="1170">very high in baseline; lower when opened</text>
+
+  <!-- Legend band -->
+  <rect class="legend" x="70" y="1370" width="3260" height="145"/>
+  <text class="band-title" x="1700" y="1410" text-anchor="middle">Symbols</text>
+
+  <circle class="node" cx="260" cy="1450" r="24"/>
+  <text class="legend-text" x="260" y="1494" text-anchor="middle">Pressure node or chamber</text>
+
+  <line class="wire" x1="650" y1="1450" x2="685" y2="1450"/>
+  <polyline class="resistor" points="685,1450 697,1433 714,1467 731,1433 748,1467 765,1433 782,1467 799,1433 811,1450"/>
+  <line class="wire" x1="811" y1="1450" x2="830" y2="1450"/>
+  <text class="legend-text" x="740" y="1494" text-anchor="middle">Hydraulic resistance</text>
+
+  <line class="wire" x1="1140" y1="1450" x2="1170" y2="1450"/>
+  <path class="inductor" d="M 1170 1450 C 1182 1426 1206 1426 1218 1450 C 1230 1474 1254 1474 1266 1450"/>
+  <line class="wire" x1="1266" y1="1450" x2="1300" y2="1450"/>
+  <text class="legend-text" x="1220" y="1494" text-anchor="middle">Hydraulic inertance</text>
+
+  <g transform="translate(1700 1421) scale(.62)">
+    <use href="#cap-down"/>
+  </g>
+  <text class="legend-text" x="1700" y="1494" text-anchor="middle">Passive compliance</text>
+
+  <g transform="translate(2180 1421) scale(.62)">
+    <use href="#cap-down"/>
+    <line class="flow" x1="-22" y1="64" x2="22" y2="38"/>
+  </g>
+  <text class="legend-text" x="2180" y="1494" text-anchor="middle">Time-varying elastance E(t)</text>
+
+  <polygon class="valve" points="2630,1430 2630,1470 2666,1450"/>
+  <line class="valve-line" x1="2674" y1="1430" x2="2674" y2="1470"/>
+  <text class="legend-text" x="2660" y="1494" text-anchor="middle">Valve with small reverse conductance</text>
+
+  <line class="wire dash" x1="3105" y1="1450" x2="3175" y2="1450"/>
+  <text class="legend-text" x="3140" y="1494" text-anchor="middle">Fenestration shunt path</text>
+  <text class="calibration" x="1700" y="1550" text-anchor="middle">Quasi R-L-C labels denote repeated hydraulic_rl_block + c_block cells from Task 005 parameter priors; all other components mirror the full 0-D schematic.</text>
+  </g>
 </svg>

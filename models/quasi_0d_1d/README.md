@@ -48,3 +48,7 @@ The LPA narrowing is explicit in the generated priors as
 
 The JSON fragment uses `hydraulic_rl_block` and `c_block` entries only. It is a
 construction input for Task 006, not a runnable closed-loop config.
+
+The schematic in `docs/schematic.svg` intentionally follows the same circuit
+style and component set as the full 0-D schematic. The quasi-specific change is
+that the aortic and Fontan pathway labels show the derived R-L-C chain counts.
