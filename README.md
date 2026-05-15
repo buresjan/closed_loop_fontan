@@ -7,7 +7,7 @@ The repository is organized for three model families:
 | Model family | Status | Description |
 |---|---|---|
 | `models/full_0d` | active | Current full 0-D closed-loop PhysioBlocks model. |
-| `models/quasi_0d_1d` | planned | Future PhysioBlocks-only quasi 0-D/1-D model with no real 1-D solver parts. |
+| `models/quasi_0d_1d` | active | PhysioBlocks-only quasi 0-D/1-D model with R-L-C aortic and Fontan chains. |
 | `models/coupled_0d_1d` | planned | Future coupled 0-D/1-D model with the aorta and TCPC represented by 1-D models. |
 
 Each model family owns its README, schematic, configs, and model-specific notes. Model changes must keep the schematic and README synchronized.
@@ -35,6 +35,17 @@ python scripts/metrics.py runs/simulations/Smoke/*/main.csv models/full_0d/confi
 ```
 
 See `models/full_0d/README.md` for the topology, scenarios, and model caveats.
+
+## Current Quasi 0-D/1-D Model
+
+Run the smoke case:
+
+```bash
+.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_smoke.jsonc --series QuasiSmoke
+```
+
+See `models/quasi_0d_1d/README.md` for the implemented quasi-chain topology,
+config generator, scenarios, and model caveats.
 
 ## Aramburu 2024 Data
 

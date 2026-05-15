@@ -1,0 +1,1376 @@
+{
+  "type": "forward_simulation",
+  "time": {
+    "type": "time",
+    "step_size": 0.002,
+    "min_step": 0.000125,
+    "start": 0.0,
+    "duration": 20.0
+  },
+  "solver": {
+    "type": "newton_solver",
+    "tolerance": 1e-09,
+    "iteration_max": 20
+  },
+  "plots": {},
+  "net": {
+    "type": "net",
+    "flux_dof_definitions": {
+      "blood_flow": "blood_pressure"
+    },
+    "nodes": [
+      "atrial",
+      "cavity",
+      "aao",
+      "aortic_arch",
+      "bca",
+      "lcca",
+      "lsa",
+      "upper_art",
+      "upper_ven",
+      "dao",
+      "lower_art",
+      "lower_ven",
+      "svc",
+      "ivc",
+      "tcpc",
+      "rpa",
+      "lpa",
+      "quasi_aao_arch_p_01",
+      "quasi_aao_arch_p_02",
+      "quasi_aao_arch_p_03",
+      "quasi_dao_p_01",
+      "quasi_dao_p_02",
+      "quasi_dao_p_03",
+      "quasi_dao_p_04",
+      "quasi_dao_p_05",
+      "quasi_svc_p_01",
+      "quasi_svc_p_02",
+      "quasi_ivc_p_01",
+      "quasi_ivc_p_02",
+      "quasi_ivc_p_03",
+      "quasi_ivc_p_04",
+      "quasi_rpa_p_01",
+      "quasi_rpa_p_02",
+      "quasi_lpa_p_01",
+      "quasi_lpa_p_02",
+      "quasi_lpa_p_03"
+    ],
+    "blocks": {
+      "cavity": {
+        "type": "block_description",
+        "model_type": "spherical_cavity_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "disp": "cavity.dynamics.disp",
+        "radius": "heart_radius",
+        "thickness": "heart_thickness",
+        "alternative_types": {
+          "cavity.asymptotic": "spherical_cavity_block_asymptotic"
+        },
+        "submodels": {
+          "dynamics": {
+            "type": "model_description",
+            "model_type": "spherical_dynamics",
+            "time": "time",
+            "fib_deform": "cavity.rheology.fib_deform",
+            "pressure": "cavity.blood_pressure",
+            "pressure_external": "pleural.pressure",
+            "vel": "cavity.velocity_law.vel",
+            "radius": "heart_radius",
+            "thickness": "heart_thickness",
+            "series_stiffness": "cavity.rheology.series_stiffness",
+            "alternative_types": {
+              "cavity.asymptotic": "spherical_dynamics_asymptotic"
+            }
+          },
+          "velocity_law": {
+            "type": "model_description",
+            "model_type": "velocity_law_hht",
+            "time": "time",
+            "disp": "cavity.dynamics.disp"
+          },
+          "rheology": {
+            "type": "model_description",
+            "model_type": "rheology_fiber_additive",
+            "time": "time",
+            "disp": "cavity.dynamics.disp",
+            "active_tension_discr": "cavity.rheology.active_law.active_tension_discr",
+            "radius": "heart_radius",
+            "alternative_types": {
+              "cavity.asymptotic": "rheology_fiber_additive_asymptotic"
+            },
+            "submodels": {
+              "active_law": {
+                "type": "model_description",
+                "model_type": "active_law_macro_huxley_two_moments",
+                "time": "time",
+                "fib_deform": "cavity.rheology.fib_deform",
+                "contractility": "heart_contractility",
+                "alternative_types": {
+                  "cavity.asymptotic": "active_law_macro_huxley_two_moments_asymptotic"
+                }
+              }
+            }
+          }
+        },
+        "nodes": {
+          "1": "cavity"
+        }
+      },
+      "valve_atrium": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "backward_conductance": "valves.backward_conductance",
+        "nodes": {
+          "1": "atrial",
+          "2": "cavity"
+        }
+      },
+      "valve_arterial": {
+        "type": "block_description",
+        "model_type": "valve_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "backward_conductance": "valves.backward_conductance",
+        "nodes": {
+          "1": "cavity",
+          "2": "aao"
+        }
+      },
+      "capacitance_valve": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "cavity"
+        }
+      },
+      "active_atrium": {
+        "type": "block_description",
+        "model_type": "time_varying_elastance_atrium_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "pressure_external": "pleural.pressure",
+        "elastance_min": "active_atrium.elastance_min",
+        "elastance_max": "active_atrium.elastance_max",
+        "unstressed_volume": "active_atrium.unstressed_volume",
+        "activation_start": "active_atrium.activation_start",
+        "activation_peak": "active_atrium.activation_peak",
+        "activation_end": "active_atrium.activation_end",
+        "heartbeat_duration": "heartbeat_duration",
+        "nodes": {
+          "1": "atrial"
+        }
+      },
+      "aao_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "aao"
+        }
+      },
+      "aortic_arch_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "aortic_arch"
+        }
+      },
+      "bca_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "bca"
+        }
+      },
+      "lcca_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lcca"
+        }
+      },
+      "lsa_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lsa"
+        }
+      },
+      "upper_ca1": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "upper_art"
+        }
+      },
+      "upper_cv1": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "upper_ven"
+        }
+      },
+      "dao_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "dao"
+        }
+      },
+      "lower_ca2": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lower_art"
+        }
+      },
+      "lower_cv2": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lower_ven"
+        }
+      },
+      "svc_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "svc"
+        }
+      },
+      "ivc_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "ivc"
+        }
+      },
+      "tcpc_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "tcpc"
+        }
+      },
+      "rpa_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "rpa"
+        }
+      },
+      "lpa_compliance": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lpa"
+        }
+      },
+      "arch_bca": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "bca",
+          "2": "aortic_arch"
+        }
+      },
+      "upper_bca_to_ca1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_art",
+          "2": "bca"
+        }
+      },
+      "arch_lcca": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lcca",
+          "2": "aortic_arch"
+        }
+      },
+      "upper_lcca_to_ca1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_art",
+          "2": "lcca"
+        }
+      },
+      "arch_lsa": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lsa",
+          "2": "aortic_arch"
+        }
+      },
+      "upper_lsa_to_ca1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_art",
+          "2": "lsa"
+        }
+      },
+      "upper_rc1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "upper_ven",
+          "2": "upper_art"
+        }
+      },
+      "upper_rv1": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "svc",
+          "2": "upper_ven"
+        }
+      },
+      "lower_ra4": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lower_art",
+          "2": "dao"
+        }
+      },
+      "lower_rc2": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "lower_ven",
+          "2": "lower_art"
+        }
+      },
+      "lower_rv2": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "ivc",
+          "2": "lower_ven"
+        }
+      },
+      "right_lung": {
+        "type": "block_description",
+        "model_type": "rcr_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "pressure_mid": "right_lung.pressure_mid",
+        "resistance_1": "right_lung.resistance_1",
+        "resistance_2": "right_lung.resistance_2",
+        "capacitance": "right_lung.capacitance",
+        "nodes": {
+          "1": "rpa",
+          "2": "atrial"
+        }
+      },
+      "left_lung": {
+        "type": "block_description",
+        "model_type": "rcr_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "pressure_mid": "left_lung.pressure_mid",
+        "resistance_1": "left_lung.resistance_1",
+        "resistance_2": "left_lung.resistance_2",
+        "capacitance": "left_lung.capacitance",
+        "nodes": {
+          "1": "lpa",
+          "2": "atrial"
+        }
+      },
+      "fenestration": {
+        "type": "block_description",
+        "model_type": "rc_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "capacitance": "zero_capacitance",
+        "nodes": {
+          "1": "atrial",
+          "2": "ivc"
+        }
+      },
+      "quasi_aao_arch_rl_01": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_aao_arch_rl_01.resistance",
+        "inductance": "quasi_aao_arch_rl_01.inductance",
+        "nodes": {
+          "1": "aao",
+          "2": "quasi_aao_arch_p_01"
+        }
+      },
+      "quasi_aao_arch_c_01": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_aao_arch_p_01"
+        }
+      },
+      "quasi_aao_arch_rl_02": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_aao_arch_rl_02.resistance",
+        "inductance": "quasi_aao_arch_rl_02.inductance",
+        "nodes": {
+          "1": "quasi_aao_arch_p_01",
+          "2": "quasi_aao_arch_p_02"
+        }
+      },
+      "quasi_aao_arch_c_02": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_aao_arch_p_02"
+        }
+      },
+      "quasi_aao_arch_rl_03": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_aao_arch_rl_03.resistance",
+        "inductance": "quasi_aao_arch_rl_03.inductance",
+        "nodes": {
+          "1": "quasi_aao_arch_p_02",
+          "2": "quasi_aao_arch_p_03"
+        }
+      },
+      "quasi_aao_arch_c_03": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_aao_arch_p_03"
+        }
+      },
+      "quasi_aao_arch_rl_04": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_aao_arch_rl_04.resistance",
+        "inductance": "quasi_aao_arch_rl_04.inductance",
+        "nodes": {
+          "1": "quasi_aao_arch_p_03",
+          "2": "aortic_arch"
+        }
+      },
+      "quasi_aao_arch_c_04": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "aortic_arch"
+        }
+      },
+      "quasi_dao_rl_01": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_dao_rl_01.resistance",
+        "inductance": "quasi_dao_rl_01.inductance",
+        "nodes": {
+          "1": "aortic_arch",
+          "2": "quasi_dao_p_01"
+        }
+      },
+      "quasi_dao_c_01": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_dao_p_01"
+        }
+      },
+      "quasi_dao_rl_02": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_dao_rl_02.resistance",
+        "inductance": "quasi_dao_rl_02.inductance",
+        "nodes": {
+          "1": "quasi_dao_p_01",
+          "2": "quasi_dao_p_02"
+        }
+      },
+      "quasi_dao_c_02": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_dao_p_02"
+        }
+      },
+      "quasi_dao_rl_03": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_dao_rl_03.resistance",
+        "inductance": "quasi_dao_rl_03.inductance",
+        "nodes": {
+          "1": "quasi_dao_p_02",
+          "2": "quasi_dao_p_03"
+        }
+      },
+      "quasi_dao_c_03": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_dao_p_03"
+        }
+      },
+      "quasi_dao_rl_04": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_dao_rl_04.resistance",
+        "inductance": "quasi_dao_rl_04.inductance",
+        "nodes": {
+          "1": "quasi_dao_p_03",
+          "2": "quasi_dao_p_04"
+        }
+      },
+      "quasi_dao_c_04": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_dao_p_04"
+        }
+      },
+      "quasi_dao_rl_05": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_dao_rl_05.resistance",
+        "inductance": "quasi_dao_rl_05.inductance",
+        "nodes": {
+          "1": "quasi_dao_p_04",
+          "2": "quasi_dao_p_05"
+        }
+      },
+      "quasi_dao_c_05": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_dao_p_05"
+        }
+      },
+      "quasi_dao_rl_06": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_dao_rl_06.resistance",
+        "inductance": "quasi_dao_rl_06.inductance",
+        "nodes": {
+          "1": "quasi_dao_p_05",
+          "2": "dao"
+        }
+      },
+      "quasi_dao_c_06": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "dao"
+        }
+      },
+      "quasi_svc_rl_01": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_svc_rl_01.resistance",
+        "inductance": "quasi_svc_rl_01.inductance",
+        "nodes": {
+          "1": "svc",
+          "2": "quasi_svc_p_01"
+        }
+      },
+      "quasi_svc_c_01": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_svc_p_01"
+        }
+      },
+      "quasi_svc_rl_02": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_svc_rl_02.resistance",
+        "inductance": "quasi_svc_rl_02.inductance",
+        "nodes": {
+          "1": "quasi_svc_p_01",
+          "2": "quasi_svc_p_02"
+        }
+      },
+      "quasi_svc_c_02": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_svc_p_02"
+        }
+      },
+      "quasi_svc_rl_03": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_svc_rl_03.resistance",
+        "inductance": "quasi_svc_rl_03.inductance",
+        "nodes": {
+          "1": "quasi_svc_p_02",
+          "2": "tcpc"
+        }
+      },
+      "quasi_svc_c_03": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "tcpc"
+        }
+      },
+      "quasi_ivc_rl_01": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_ivc_rl_01.resistance",
+        "inductance": "quasi_ivc_rl_01.inductance",
+        "nodes": {
+          "1": "ivc",
+          "2": "quasi_ivc_p_01"
+        }
+      },
+      "quasi_ivc_c_01": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_ivc_p_01"
+        }
+      },
+      "quasi_ivc_rl_02": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_ivc_rl_02.resistance",
+        "inductance": "quasi_ivc_rl_02.inductance",
+        "nodes": {
+          "1": "quasi_ivc_p_01",
+          "2": "quasi_ivc_p_02"
+        }
+      },
+      "quasi_ivc_c_02": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_ivc_p_02"
+        }
+      },
+      "quasi_ivc_rl_03": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_ivc_rl_03.resistance",
+        "inductance": "quasi_ivc_rl_03.inductance",
+        "nodes": {
+          "1": "quasi_ivc_p_02",
+          "2": "quasi_ivc_p_03"
+        }
+      },
+      "quasi_ivc_c_03": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_ivc_p_03"
+        }
+      },
+      "quasi_ivc_rl_04": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_ivc_rl_04.resistance",
+        "inductance": "quasi_ivc_rl_04.inductance",
+        "nodes": {
+          "1": "quasi_ivc_p_03",
+          "2": "quasi_ivc_p_04"
+        }
+      },
+      "quasi_ivc_c_04": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_ivc_p_04"
+        }
+      },
+      "quasi_ivc_rl_05": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_ivc_rl_05.resistance",
+        "inductance": "quasi_ivc_rl_05.inductance",
+        "nodes": {
+          "1": "quasi_ivc_p_04",
+          "2": "tcpc"
+        }
+      },
+      "quasi_ivc_c_05": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "tcpc"
+        }
+      },
+      "quasi_rpa_rl_01": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_rpa_rl_01.resistance",
+        "inductance": "quasi_rpa_rl_01.inductance",
+        "nodes": {
+          "1": "tcpc",
+          "2": "quasi_rpa_p_01"
+        }
+      },
+      "quasi_rpa_c_01": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_rpa_p_01"
+        }
+      },
+      "quasi_rpa_rl_02": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_rpa_rl_02.resistance",
+        "inductance": "quasi_rpa_rl_02.inductance",
+        "nodes": {
+          "1": "quasi_rpa_p_01",
+          "2": "quasi_rpa_p_02"
+        }
+      },
+      "quasi_rpa_c_02": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_rpa_p_02"
+        }
+      },
+      "quasi_rpa_rl_03": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_rpa_rl_03.resistance",
+        "inductance": "quasi_rpa_rl_03.inductance",
+        "nodes": {
+          "1": "quasi_rpa_p_02",
+          "2": "rpa"
+        }
+      },
+      "quasi_rpa_c_03": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "rpa"
+        }
+      },
+      "quasi_lpa_rl_01": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_lpa_rl_01.resistance",
+        "inductance": "quasi_lpa_rl_01.inductance",
+        "nodes": {
+          "1": "tcpc",
+          "2": "quasi_lpa_p_01"
+        }
+      },
+      "quasi_lpa_c_01": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_lpa_p_01"
+        }
+      },
+      "quasi_lpa_rl_02": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_lpa_rl_02.resistance",
+        "inductance": "quasi_lpa_rl_02.inductance",
+        "nodes": {
+          "1": "quasi_lpa_p_01",
+          "2": "quasi_lpa_p_02"
+        }
+      },
+      "quasi_lpa_c_02": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_lpa_p_02"
+        }
+      },
+      "quasi_lpa_rl_03": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_lpa_rl_03.resistance",
+        "inductance": "quasi_lpa_rl_03.inductance",
+        "nodes": {
+          "1": "quasi_lpa_p_02",
+          "2": "quasi_lpa_p_03"
+        }
+      },
+      "quasi_lpa_c_03": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "quasi_lpa_p_03"
+        }
+      },
+      "quasi_lpa_rl_04": {
+        "type": "block_description",
+        "model_type": "hydraulic_rl_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "resistance": "quasi_lpa_rl_04.resistance",
+        "inductance": "quasi_lpa_rl_04.inductance",
+        "nodes": {
+          "1": "quasi_lpa_p_03",
+          "2": "lpa"
+        }
+      },
+      "quasi_lpa_c_04": {
+        "type": "block_description",
+        "model_type": "c_block",
+        "time": "time",
+        "flux_type": "blood_flow",
+        "nodes": {
+          "1": "lpa"
+        }
+      }
+    },
+    "boundaries_conditions": {}
+  },
+  "variables_initialization": {
+    "valve_atrium.flux": 0.0,
+    "valve_arterial.flux": 0.0,
+    "cavity.dynamics.disp": 0.0,
+    "cavity.velocity_law.vel": 0.0,
+    "cavity.velocity_law.accel": 0.0,
+    "cavity.rheology.fib_deform": 0.0,
+    "cavity.rheology.active_law.active_stiffness": 1.0,
+    "cavity.rheology.active_law.active_energy_sqrt": 0.0,
+    "cavity.rheology.active_law.active_tension_discr": 0.0,
+    "atrial.blood_pressure": 1.0,
+    "cavity.blood_pressure": 66.61699999999996,
+    "svc.blood_pressure": 866.549,
+    "ivc.blood_pressure": 866.549,
+    "tcpc.blood_pressure": 866.549,
+    "rpa.blood_pressure": 733.2269999999999,
+    "right_lung.pressure_mid": 413.25419999999986,
+    "lpa.blood_pressure": 733.2269999999999,
+    "left_lung.pressure_mid": 413.25419999999986,
+    "aao.blood_pressure": 9932.445,
+    "aortic_arch.blood_pressure": 9399.157,
+    "bca.blood_pressure": 8599.225,
+    "lcca.blood_pressure": 8599.225,
+    "lsa.blood_pressure": 8599.225,
+    "upper_art.blood_pressure": 8466.685,
+    "upper_ven.blood_pressure": 3146.685,
+    "dao.blood_pressure": 8599.225,
+    "lower_art.blood_pressure": 7066.6849999999995,
+    "lower_ven.blood_pressure": 2026.685,
+    "quasi_aao_arch_rl_01.flux": 0.0,
+    "quasi_aao_arch_rl_02.flux": 0.0,
+    "quasi_aao_arch_rl_03.flux": 0.0,
+    "quasi_aao_arch_rl_04.flux": 0.0,
+    "quasi_aao_arch_p_01.blood_pressure": 9799.123,
+    "quasi_aao_arch_p_02.blood_pressure": 9665.801,
+    "quasi_aao_arch_p_03.blood_pressure": 9532.479,
+    "quasi_dao_rl_01.flux": 0.0,
+    "quasi_dao_rl_02.flux": 0.0,
+    "quasi_dao_rl_03.flux": 0.0,
+    "quasi_dao_rl_04.flux": 0.0,
+    "quasi_dao_rl_05.flux": 0.0,
+    "quasi_dao_rl_06.flux": 0.0,
+    "quasi_dao_p_01.blood_pressure": 9265.835,
+    "quasi_dao_p_02.blood_pressure": 9132.512999999999,
+    "quasi_dao_p_03.blood_pressure": 8999.190999999999,
+    "quasi_dao_p_04.blood_pressure": 8865.869,
+    "quasi_dao_p_05.blood_pressure": 8732.547,
+    "quasi_svc_rl_01.flux": 0.0,
+    "quasi_svc_rl_02.flux": 0.0,
+    "quasi_svc_rl_03.flux": 0.0,
+    "quasi_svc_p_01.blood_pressure": 866.549,
+    "quasi_svc_p_02.blood_pressure": 866.549,
+    "quasi_ivc_rl_01.flux": 0.0,
+    "quasi_ivc_rl_02.flux": 0.0,
+    "quasi_ivc_rl_03.flux": 0.0,
+    "quasi_ivc_rl_04.flux": 0.0,
+    "quasi_ivc_rl_05.flux": 0.0,
+    "quasi_ivc_p_01.blood_pressure": 866.549,
+    "quasi_ivc_p_02.blood_pressure": 866.549,
+    "quasi_ivc_p_03.blood_pressure": 866.549,
+    "quasi_ivc_p_04.blood_pressure": 866.549,
+    "quasi_rpa_rl_01.flux": 0.0,
+    "quasi_rpa_rl_02.flux": 0.0,
+    "quasi_rpa_rl_03.flux": 0.0,
+    "quasi_rpa_p_01.blood_pressure": 822.1083333333332,
+    "quasi_rpa_p_02.blood_pressure": 777.6676666666666,
+    "quasi_lpa_rl_01.flux": 0.0,
+    "quasi_lpa_rl_02.flux": 0.0,
+    "quasi_lpa_rl_03.flux": 0.0,
+    "quasi_lpa_rl_04.flux": 0.0,
+    "quasi_lpa_p_01.blood_pressure": 833.2185,
+    "quasi_lpa_p_02.blood_pressure": 799.8879999999999,
+    "quasi_lpa_p_03.blood_pressure": 766.5574999999999
+  },
+  "variables_magnitudes": {
+    "valve_atrium.flux": 0.001,
+    "valve_arterial.flux": 0.001,
+    "cavity.dynamics.disp": 0.01,
+    "cavity.rheology.fib_deform": 0.1,
+    "cavity.velocity_law.vel": 0.1,
+    "cavity.velocity_law.accel": 1.0,
+    "cavity.blood_pressure": 10000.0,
+    "atrial.blood_pressure": 2000.0,
+    "svc.blood_pressure": 2000.0,
+    "ivc.blood_pressure": 2000.0,
+    "tcpc.blood_pressure": 2000.0,
+    "rpa.blood_pressure": 2000.0,
+    "right_lung.pressure_mid": 2000.0,
+    "lpa.blood_pressure": 2000.0,
+    "left_lung.pressure_mid": 2000.0,
+    "cavity.rheology.active_law.active_stiffness": 100000.0,
+    "cavity.rheology.active_law.active_energy_sqrt": 10.0,
+    "cavity.rheology.active_law.active_tension_discr": 10000.0,
+    "aao.blood_pressure": 10000.0,
+    "aortic_arch.blood_pressure": 10000.0,
+    "bca.blood_pressure": 10000.0,
+    "lcca.blood_pressure": 10000.0,
+    "lsa.blood_pressure": 10000.0,
+    "upper_art.blood_pressure": 10000.0,
+    "upper_ven.blood_pressure": 10000.0,
+    "dao.blood_pressure": 10000.0,
+    "lower_art.blood_pressure": 10000.0,
+    "lower_ven.blood_pressure": 10000.0,
+    "quasi_aao_arch_rl_01.flux": 0.001,
+    "quasi_aao_arch_rl_02.flux": 0.001,
+    "quasi_aao_arch_rl_03.flux": 0.001,
+    "quasi_aao_arch_rl_04.flux": 0.001,
+    "quasi_aao_arch_p_01.blood_pressure": 10000.0,
+    "quasi_aao_arch_p_02.blood_pressure": 10000.0,
+    "quasi_aao_arch_p_03.blood_pressure": 10000.0,
+    "quasi_dao_rl_01.flux": 0.001,
+    "quasi_dao_rl_02.flux": 0.001,
+    "quasi_dao_rl_03.flux": 0.001,
+    "quasi_dao_rl_04.flux": 0.001,
+    "quasi_dao_rl_05.flux": 0.001,
+    "quasi_dao_rl_06.flux": 0.001,
+    "quasi_dao_p_01.blood_pressure": 10000.0,
+    "quasi_dao_p_02.blood_pressure": 10000.0,
+    "quasi_dao_p_03.blood_pressure": 10000.0,
+    "quasi_dao_p_04.blood_pressure": 10000.0,
+    "quasi_dao_p_05.blood_pressure": 10000.0,
+    "quasi_svc_rl_01.flux": 0.001,
+    "quasi_svc_rl_02.flux": 0.001,
+    "quasi_svc_rl_03.flux": 0.001,
+    "quasi_svc_p_01.blood_pressure": 2000.0,
+    "quasi_svc_p_02.blood_pressure": 2000.0,
+    "quasi_ivc_rl_01.flux": 0.001,
+    "quasi_ivc_rl_02.flux": 0.001,
+    "quasi_ivc_rl_03.flux": 0.001,
+    "quasi_ivc_rl_04.flux": 0.001,
+    "quasi_ivc_rl_05.flux": 0.001,
+    "quasi_ivc_p_01.blood_pressure": 2000.0,
+    "quasi_ivc_p_02.blood_pressure": 2000.0,
+    "quasi_ivc_p_03.blood_pressure": 2000.0,
+    "quasi_ivc_p_04.blood_pressure": 2000.0,
+    "quasi_rpa_rl_01.flux": 0.001,
+    "quasi_rpa_rl_02.flux": 0.001,
+    "quasi_rpa_rl_03.flux": 0.001,
+    "quasi_rpa_p_01.blood_pressure": 2000.0,
+    "quasi_rpa_p_02.blood_pressure": 2000.0,
+    "quasi_lpa_rl_01.flux": 0.001,
+    "quasi_lpa_rl_02.flux": 0.001,
+    "quasi_lpa_rl_03.flux": 0.001,
+    "quasi_lpa_rl_04.flux": 0.001,
+    "quasi_lpa_p_01.blood_pressure": 2000.0,
+    "quasi_lpa_p_02.blood_pressure": 2000.0,
+    "quasi_lpa_p_03.blood_pressure": 2000.0
+  },
+  "parameters": {
+    "heartbeat_duration": {
+      "type": "product",
+      "factors": [
+        60.0
+      ],
+      "inverses": [
+        "heart_rate"
+      ]
+    },
+    "pleural.pressure": 0.0,
+    "diastole_scaling_factor": 0.8,
+    "cavity.dynamics.vol_mass": 1000.0,
+    "cavity.dynamics.damping_coef": 70.0,
+    "cavity.velocity_law.scheme_ts_hht": 0.4,
+    "cavity.rheology.series_stiffness": 100000000.0,
+    "cavity.rheology.damping_parallel": 70.0,
+    "cavity.rheology.active_law.starling_abscissas": [
+      -0.1668,
+      -0.0073,
+      0.0534,
+      0.0969,
+      0.1326,
+      0.2016,
+      0.4663,
+      0.9187,
+      1.1762
+    ],
+    "cavity.rheology.active_law.starling_ordinates": [
+      0.0,
+      0.5614,
+      0.7748,
+      0.8933,
+      0.9618,
+      1.0,
+      1.0,
+      0.1075,
+      0.0
+    ],
+    "cavity.rheology.active_law.destruction_rate": 12.0,
+    "cavity.rheology.active_law.crossbridge_stiffness": 273000.0,
+    "active_law.activation.min": -20.0,
+    "active_law.activation.max": 35.0,
+    "cavity.rheology.active_law.activation": {
+      "type": "rescale_two_phases_function",
+      "rescaled_period": "heartbeat_duration",
+      "alpha": "diastole_scaling_factor",
+      "reference_function": [
+        [
+          0.0,
+          "active_law.activation.min"
+        ],
+        [
+          0.027,
+          "active_law.activation.min"
+        ],
+        [
+          0.037,
+          0.0
+        ],
+        [
+          0.145,
+          "active_law.activation.max"
+        ],
+        [
+          0.309,
+          "active_law.activation.max"
+        ],
+        [
+          0.417,
+          0.0
+        ],
+        [
+          0.427,
+          "active_law.activation.min"
+        ],
+        [
+          0.9,
+          "active_law.activation.min"
+        ]
+      ],
+      "phases": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "valves.backward_conductance": 5e-12,
+    "valve_atrium.inductance": 1000.0,
+    "valve_atrium.conductance": 9e-06,
+    "valve_arterial.inductance": 30000.0,
+    "valve_arterial.conductance": 1.3e-05,
+    "valve_atrium.scheme_ts_flux": 0.25,
+    "valve_arterial.scheme_ts_flux": 0.25,
+    "conduit.scheme_ts_flux": 0.25,
+    "heart_radius": 0.024310000000000002,
+    "heart_thickness": 0.0080795,
+    "heart_contractility": 37800.0,
+    "heart_rate": 69.93006993006986,
+    "cavity.dynamics.hyperelastic_cst": [
+      444.0,
+      2.9,
+      69.0,
+      6.5
+    ],
+    "zero_capacitance": 0.0,
+    "capacitance_valve.capacitance": 5e-12,
+    "active_atrium.elastance_min": 16665250.0,
+    "active_atrium.elastance_max": 66661000.0,
+    "active_atrium.unstressed_volume": 3.9999999999999996e-05,
+    "active_atrium.activation_start": 0.78,
+    "active_atrium.activation_peak": 0.9,
+    "active_atrium.activation_end": 0.98,
+    "svc_compliance.capacitance": 1.500127510838421e-07,
+    "ivc_compliance.capacitance": 2.2501912662576316e-07,
+    "tcpc_compliance.capacitance": 1.200102008670737e-09,
+    "rpa_compliance.capacitance": 1.125095633128816e-08,
+    "lpa_compliance.capacitance": 1.125095633128816e-08,
+    "right_lung.resistance_1": 5759510.4,
+    "right_lung.resistance_2": 8639265.6,
+    "right_lung.capacitance": 3.000255021676842e-08,
+    "left_lung.resistance_1": 8319292.800000001,
+    "left_lung.resistance_2": 12478939.200000001,
+    "left_lung.capacitance": 3.000255021676842e-08,
+    "fenestration.resistance": 133322000000000.0,
+    "aao_compliance.capacitance": 4.000340028902456e-09,
+    "aortic_arch_compliance.capacitance": 5.00042503612807e-09,
+    "bca_compliance.capacitance": 3.0002550216768422e-09,
+    "lcca_compliance.capacitance": 1.5001275108384211e-09,
+    "lsa_compliance.capacitance": 1.5001275108384211e-09,
+    "dao_compliance.capacitance": 9.000765065030526e-09,
+    "upper_ca1.capacitance": 1.500127510838421e-08,
+    "upper_cv1.capacitance": 6.000510043353684e-08,
+    "lower_ca2.capacitance": 2.500212518064035e-08,
+    "lower_cv2.capacitance": 9.000765065030527e-08,
+    "arch_bca.resistance": 5332880.000000001,
+    "upper_bca_to_ca1.resistance": 49595784.0,
+    "arch_lcca.resistance": 7999320.000000001,
+    "upper_lcca_to_ca1.resistance": 99458212.0,
+    "arch_lsa.resistance": 7999320.000000001,
+    "upper_lsa_to_ca1.resistance": 99458212.0,
+    "upper_rc1.resistance": 156439020.57128835,
+    "upper_rv1.resistance": 67045294.53055215,
+    "lower_ra4.resistance": 43196328.00000001,
+    "lower_rc2.resistance": 140388066.00000003,
+    "lower_rv2.resistance": 32397246.0,
+    "quasi_aao_arch_rl_01.resistance": 3242.2777045329494,
+    "quasi_aao_arch_rl_01.inductance": 17213.346097017424,
+    "quasi_aao_arch_c_01.capacitance": 1.0668494758916303e-10,
+    "quasi_aao_arch_rl_02.resistance": 4945.583660713183,
+    "quasi_aao_arch_rl_02.inductance": 21226.341417932123,
+    "quasi_aao_arch_c_02.capacitance": 8.651537681585692e-11,
+    "quasi_aao_arch_rl_03.resistance": 7931.841910838785,
+    "quasi_aao_arch_rl_03.inductance": 26823.298467973458,
+    "quasi_aao_arch_c_03.capacitance": 6.846305380328459e-11,
+    "quasi_aao_arch_rl_04.resistance": 13559.632375018069,
+    "quasi_aao_arch_rl_04.inductance": 34960.51012882303,
+    "quasi_aao_arch_c_04.capacitance": 5.252797855144604e-11,
+    "quasi_dao_rl_01.resistance": 41431.92907269491,
+    "quasi_dao_rl_01.inductance": 88916.2832192286,
+    "quasi_dao_c_01.capacitance": 8.840842497967723e-11,
+    "quasi_dao_rl_02.resistance": 52023.32293433646,
+    "quasi_dao_rl_02.inductance": 99610.78595044176,
+    "quasi_dao_c_02.capacitance": 7.891664019566993e-11,
+    "quasi_dao_rl_03.resistance": 66227.39551960243,
+    "quasi_dao_rl_03.inductance": 112356.78954850952,
+    "quasi_dao_c_03.capacitance": 6.996416136529939e-11,
+    "quasi_dao_rl_04.resistance": 85629.73778372616,
+    "quasi_dao_rl_04.inductance": 127714.41608804118,
+    "quasi_dao_c_04.capacitance": 6.155098848856565e-11,
+    "quasi_dao_rl_05.resistance": 112691.02222804709,
+    "quasi_dao_rl_05.inductance": 146448.77231114378,
+    "quasi_dao_c_05.capacitance": 5.367712156546866e-11,
+    "quasi_dao_rl_06.resistance": 151345.48045335492,
+    "quasi_dao_rl_06.inductance": 169626.97903093378,
+    "quasi_dao_c_06.capacitance": 4.6342560596008456e-11,
+    "quasi_svc_rl_01.resistance": 1026122.6854284531,
+    "quasi_svc_rl_01.inductance": 15616.24434387356,
+    "quasi_svc_c_01.capacitance": 2.0274528968451965e-10,
+    "quasi_svc_rl_02.resistance": 1720931.8767797635,
+    "quasi_svc_rl_02.inductance": 20166.364100400035,
+    "quasi_svc_c_02.capacitance": 1.570000406379691e-10,
+    "quasi_svc_rl_03.resistance": 3119113.437791785,
+    "quasi_svc_rl_03.inductance": 27033.228190671452,
+    "quasi_svc_c_03.capacitance": 1.1711956711020705e-10,
+    "quasi_ivc_rl_01.resistance": 481040.2366321003,
+    "quasi_ivc_rl_01.inductance": 16371.466323649674,
+    "quasi_ivc_c_01.capacitance": 9.360200495268161e-10,
+    "quasi_ivc_rl_02.resistance": 615845.3398182119,
+    "quasi_ivc_rl_02.inductance": 18518.115369355113,
+    "quasi_ivc_c_02.capacitance": 8.275151338806473e-10,
+    "quasi_ivc_rl_03.resistance": 801382.3121517362,
+    "quasi_ivc_rl_03.inductance": 21116.224919085136,
+    "quasi_ivc_c_03.capacitance": 7.256988774181462e-10,
+    "quasi_ivc_rl_04.resistance": 1062399.7053650045,
+    "quasi_ivc_rl_04.inductance": 24301.805682782782,
+    "quasi_ivc_c_04.capacitance": 6.30571280139313e-10,
+    "quasi_ivc_rl_05.resistance": 1438958.4060329474,
+    "quasi_ivc_rl_05.inductance": 28266.199100590227,
+    "quasi_ivc_c_05.capacitance": 5.42132342044148e-10,
+    "quasi_rpa_rl_01.resistance": 799932.0000000001,
+    "quasi_rpa_rl_01.inductance": 31943.998045426568,
+    "quasi_rpa_c_01.capacitance": 6.343341201121679e-11,
+    "quasi_rpa_rl_02.resistance": 799932.0000000001,
+    "quasi_rpa_rl_02.inductance": 31943.998045426568,
+    "quasi_rpa_c_02.capacitance": 6.343341201121679e-11,
+    "quasi_rpa_rl_03.resistance": 799932.0000000001,
+    "quasi_rpa_rl_03.inductance": 31943.998045426568,
+    "quasi_rpa_c_03.capacitance": 6.343341201121679e-11,
+    "quasi_lpa_rl_01.resistance": 418377.8242304028,
+    "quasi_lpa_rl_01.inductance": 166516.3473296824,
+    "quasi_lpa_c_01.capacitance": 9.20271250530703e-11,
+    "quasi_lpa_rl_02.resistance": 1299644.4096042565,
+    "quasi_lpa_rl_02.inductance": 285328.01137032063,
+    "quasi_lpa_c_02.capacitance": 5.3706681813306006e-11,
+    "quasi_lpa_rl_03.resistance": 1119737.365013939,
+    "quasi_lpa_rl_03.inductance": 222292.64522199778,
+    "quasi_lpa_c_03.capacitance": 2.791633146943343e-11,
+    "quasi_lpa_rl_04.resistance": 628612.4011514025,
+    "quasi_lpa_rl_04.inductance": 167211.28180415765,
+    "quasi_lpa_c_04.capacitance": 3.711229948289385e-11,
+    "quasi_lpa.narrowing_radius_m": 0.003,
+    "quasi_lpa.narrowing_resistance_scale": 1.0
+  },
+  "output_functions": {
+    "active_law.activation": {
+      "type": "watch_quantity",
+      "quantity": "cavity.rheology.active_law.activation"
+    }
+  },
+  "pre-processes": {},
+  "post-processes": {}
+}

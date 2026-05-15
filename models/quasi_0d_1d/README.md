@@ -1,20 +1,70 @@
 # Quasi 0-D/1-D Fontan Model
 
-This model family is reserved for the future quasi 0-D/1-D Fontan closed-loop model.
-Task 005 adds the first parameter layer for that model: geometry-derived
-R-L-C chain priors and a JSON config fragment for later executable configs.
+This model family is the first executable PhysioBlocks-only quasi 0-D/1-D
+Fontan model. It keeps the calibrated full 0-D heart, active atrium, valves,
+systemic beds, pulmonary RCR beds, and fenestration, while replacing selected
+aortic and Fontan shortcuts with distributed R-L-C chains.
 
-Planned intent:
+The model still has no true 1-D solver parts. The quasi behavior comes from
+repeated local `hydraulic_rl_block` links and `c_block` compliances.
 
-- remain entirely PhysioBlocks-based;
-- represent additional quasi-1-D structure without coupling to a true 1-D solver;
-- use the standardized Aramburu 2024 data package for calibration and comparison.
+## Configs
 
-Executable configs, run commands, scenario outputs, and calibration reports are
-still pending. Every model change must update this README and the schematic in
-`docs/`.
+| Config | Purpose |
+|---|---|
+| `fontan_quasi_smoke.jsonc` | Short numerical smoke case. |
+| `fontan_quasi_baseline.jsonc` | Baseline quasi model, assembled from the calibrated full 0-D baseline. |
+| `fontan_quasi_vasodilation.jsonc` | Pulmonary vasodilation validation scenario. |
+| `fontan_quasi_fenestration.jsonc` | Low-resistance fenestration validation scenario. |
+| `fontan_quasi_lpa_obstruction.jsonc` | LPA obstruction validation scenario with 2x LPA quasi-chain resistance. |
 
-## Derived vessel priors
+Run the smoke case:
+
+```bash
+.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_smoke.jsonc --series QuasiSmoke
+```
+
+Regenerate the executable configs from the full 0-D scenarios and the tracked
+chain fragment:
+
+```bash
+.venv/bin/python scripts/modeling/build_quasi_configs.py
+```
+
+Check that the tracked configs are current:
+
+```bash
+.venv/bin/python scripts/modeling/build_quasi_configs.py --check
+```
+
+## Implemented Topology
+
+The executable quasi model keeps these full 0-D components:
+
+- active atrium and active spherical ventricle;
+- atrioventricular and aortic valve R-L blocks;
+- BCA, LCCA, and LSA resistive upper-body branches;
+- upper and lower systemic vascular beds;
+- pulmonary RCR beds;
+- fenestration shunt.
+
+The first quasi release replaces the following full 0-D shortcuts:
+
+| Chain | Nodes | Segments | Resistance policy |
+|---|---|---:|---|
+| AAo/arch x4 | `aao -> aortic_arch` | 4 | geometry Poiseuille |
+| DAo x6 | `aortic_arch -> dao` | 6 | geometry Poiseuille |
+| SVC x3 | `svc -> tcpc` | 3 | calibrated full 0-D pathway prior |
+| IVC x5 | `ivc -> tcpc` | 5 | calibrated full 0-D pathway prior |
+| RPA x3 | `tcpc -> rpa` | 3 | calibrated full 0-D pathway prior |
+| LPA x4 | `tcpc -> lpa` | 4 | calibrated full 0-D pathway prior |
+
+The old full 0-D conduit pressure nodes (`svc_conduit`, `ivc_conduit`,
+`rpa_conduit`, `lpa_conduit`) and the old `valve_rl_block` conduit workarounds
+are not present in the quasi configs. `valve_rl_block` is used only for the two
+physiologic valves.
+
+## Derived Vessel Priors
 
 `scripts/modeling/derive_quasi_vessel_parameters.py` reads the processed
 Aramburu aorta/Fontan geometry, the target policy, and the calibrated full 0-D
@@ -25,17 +75,6 @@ models/quasi_0d_1d/calibration/parameter_priors.yaml
 models/quasi_0d_1d/config_fragments/quasi_vessel_chains.json
 ```
 
-The first-pass chain counts are:
-
-| Chain | Source geometry | Segments | Resistance policy |
-|---|---|---:|---|
-| AAo/arch | Ascending aorta | 4 | geometry Poiseuille |
-| DAo | Thoracic aorta | 6 | geometry Poiseuille |
-| SVC | SVC | 3 | calibrated full 0-D pathway prior |
-| IVC | IVC | 5 | calibrated full 0-D pathway prior |
-| RPA | RPA | 3 | calibrated full 0-D pathway prior |
-| LPA | LPA I + LPA II | 4 | calibrated full 0-D pathway prior |
-
 The aortic resistance policy intentionally does not preserve the excessive
 full 0-D AAo-to-DAo pressure drop. Aortic R/L/C priors are derived from geometry
 and the 5.35 m/s wave-speed prior; most systemic pressure loss should stay in
@@ -44,14 +83,18 @@ pathway values because the current Fontan pressures and pulmonary flow split are
 accepted baseline physiology.
 
 The LPA narrowing is explicit in the generated priors as
-`quasi_lpa.narrowing_radius_m = 0.003`.
+`quasi_lpa.narrowing_radius_m = 0.003`. In the LPA obstruction scenario,
+`quasi_lpa.narrowing_resistance_scale = 2.0` and the LPA chain resistance is
+doubled.
 
-The JSON fragment uses `hydraulic_rl_block` and `c_block` entries only. It is a
-construction input for Task 006, not a runnable closed-loop config.
+## Documentation Assets
 
-The schematic in `docs/schematic.svg` intentionally follows the same circuit
-style and component set as the full 0-D schematic. The quasi-specific change is
-that the aortic and Fontan pathway labels show the derived R-L-C chain counts.
+The schematic in `docs/schematic.svg` follows the same circuit style and
+component set as the full 0-D schematic. The quasi-specific change is that the
+aortic and Fontan pathway labels show the implemented R-L-C chain counts.
 `docs/schematic.png` is the exported browser-friendly copy, and
-`docs/implementation_notes.md` records the current topology and parameter
-conventions.
+`docs/implementation_notes.md` records the topology, assembly convention, and
+parameter policy.
+
+Every model change must update this README, `docs/schematic.svg`,
+`docs/schematic.png`, and `docs/implementation_notes.md` in the same change.
