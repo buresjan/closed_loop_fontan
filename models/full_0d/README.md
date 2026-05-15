@@ -59,6 +59,22 @@ atrium block stores blood with a time-varying elastance, using the old passive
 atrial compliance as the minimum elastance state and a late-diastolic activation
 pulse to generate atrial kick before ventricular activation.
 
+## Reference policy
+
+This model family is the repository's current full 0-D reference variant. Keep
+its accepted topology, scenario set, schematic, and reference metrics stable
+while quasi 0-D/1-D and coupled 0-D/1-D variants are developed separately.
+
+Changes that alter full 0-D topology, parameterization, block conventions,
+scenario behavior, or accepted metrics must update this README, the schematic,
+and the relevant reference outputs in the same change. Cleanup of the current
+`rc_block` pure-resistor workaround or `valve_rl_block` bidirectional-conduit
+workaround is allowed only if it preserves the accepted reference behavior or
+creates a deliberately named new reference output set.
+
+Until the calibration tasks are completed, the included parameters remain
+plausible development values rather than patient-calibrated values.
+
 ## Files
 
 ```text

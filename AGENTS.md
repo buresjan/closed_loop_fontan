@@ -20,6 +20,14 @@ Every change that modifies a model topology, parameterization, interface, or beh
 
 Schematics must follow the visual style of the current full 0-D schematic: clear labels, visible topology, consistent block/edge styling, and no overlapping text or components. Prefer editing the SVG source first, then exporting a PNG when a PNG is present for that model.
 
+## Roadmap and Task Tracking
+
+- Keep `ROADMAP.md` and the matching `tasks/*.md` file updated whenever roadmap-scoped work starts, changes scope, or completes.
+- When starting a task, set its task file status to `in_progress` and update the roadmap task table status.
+- When completing a task, set its task file status to `completed`, add a short completion note with the validation commands/results, and update the roadmap task table status.
+- If implementation reveals that a task should be split, reordered, or blocked, record that in both the task file and `ROADMAP.md` before continuing.
+- Do not let roadmap/task status drift from the actual repository state.
+
 ## Data Policy
 
 - Raw Aramburu archives and extracted raw binaries live under `data/raw/` and are ignored by Git.

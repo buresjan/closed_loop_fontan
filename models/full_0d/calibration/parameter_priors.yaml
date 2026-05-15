@@ -1,0 +1,21 @@
+# Placeholder priors for Task 004 full 0-D baseline calibration.
+#
+# Values here intentionally do not retune the model yet. They define the groups
+# that future calibration code should populate from the current baseline config
+# and Aramburu-derived targets.
+model_family: full_0d
+status: placeholder
+source_config: models/full_0d/configs/fontan_0d_baseline.jsonc
+groups:
+  heart_and_valves:
+    description: Single-ventricle geometry, contractility, passive stiffness, and AV/aortic valve scales.
+    parameters: []
+  active_atrium:
+    description: Atrial elastance, unstressed volume, and activation timing scales.
+    parameters: []
+  aortic_systemic:
+    description: Aortic compliance and upper/lower systemic bed resistance/compliance scales.
+    parameters: []
+  fontan_pulmonary:
+    description: Caval/TCPC pathway, pulmonary RCR, fenestration, and LPA narrowing scales.
+    parameters: []

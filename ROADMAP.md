@@ -28,21 +28,21 @@ The roadmap therefore defers any PhysioBlocks fork/upstream work until Task 009 
 
 ## Ordered Tasks
 
-| Order | Task | Purpose | PhysioBlocks internals |
-|---:|---|---|---|
-| 001 | [Freeze full 0-D reference](tasks/001-freeze-full-0d-reference.md) | Establish the current full 0-D model as the baseline reference. | No |
-| 002 | [Add hydraulic lumped blocks](tasks/002-add-hydraulic-lumped-blocks.md) | Add clean local resistor/RL blocks and tests. | No |
-| 003 | [Build calibration targets](tasks/003-build-calibration-targets.md) | Extract shared summary and waveform targets from processed Aramburu data. | No |
-| 004 | [Calibrate full 0-D baseline](tasks/004-calibrate-full-0d.md) | Tune the current model to patient-level means and volumes. | No |
-| 005 | [Derive quasi vessel parameters](tasks/005-derive-quasi-vessel-parameters.md) | Convert geometry and priors into R-L-C chain parameters. | No |
-| 006 | [Implement quasi model](tasks/006-implement-quasi-model.md) | Build PhysioBlocks-only quasi 0-D/1-D configs and docs. | No |
-| 007 | [Add quasi metrics and scenarios](tasks/007-quasi-metrics-and-scenarios.md) | Make metrics/scenario comparison model-family aware. | No |
-| 008 | [Calibrate quasi model](tasks/008-calibrate-quasi-model.md) | Tune quasi model from full 0-D baseline while preserving physiology. | No |
-| 009 | [Run PhysioBlocks 1-D feasibility spike](tasks/009-physioblocks-1d-feasibility-spike.md) | Decide whether local blocks/generated configs are enough for true 1-D. | Maybe |
-| 010 | [Prototype local 1-D numerics](tasks/010-prototype-local-1d-numerics.md) | Implement and validate wall-law/vessel residual prototypes. | Maybe |
-| 011 | [Build 1-D open-loop submodels](tasks/011-build-1d-openloop-submodels.md) | Validate aorta, TCPC, and combined 1-D submodels before closed loop. | Maybe |
-| 012 | [Build coupled closed-loop model](tasks/012-build-coupled-closed-loop-model.md) | Couple validated 1-D subdomains to the 0-D heart and beds. | Maybe |
-| 013 | [Calibrate and validate coupled model](tasks/013-calibrate-and-validate-coupled-model.md) | Tune small global scales and compare against measurements/paper behavior. | Maybe |
+| Order | Status | Task | Purpose | PhysioBlocks internals |
+|---:|---|---|---|---|
+| 001 | completed | [Freeze full 0-D reference](tasks/001-freeze-full-0d-reference.md) | Establish the current full 0-D model as the baseline reference. | No |
+| 002 | planned | [Add hydraulic lumped blocks](tasks/002-add-hydraulic-lumped-blocks.md) | Add clean local resistor/RL blocks and tests. | No |
+| 003 | planned | [Build calibration targets](tasks/003-build-calibration-targets.md) | Extract shared summary and waveform targets from processed Aramburu data. | No |
+| 004 | planned | [Calibrate full 0-D baseline](tasks/004-calibrate-full-0d.md) | Tune the current model to patient-level means and volumes. | No |
+| 005 | planned | [Derive quasi vessel parameters](tasks/005-derive-quasi-vessel-parameters.md) | Convert geometry and priors into R-L-C chain parameters. | No |
+| 006 | planned | [Implement quasi model](tasks/006-implement-quasi-model.md) | Build PhysioBlocks-only quasi 0-D/1-D configs and docs. | No |
+| 007 | planned | [Add quasi metrics and scenarios](tasks/007-quasi-metrics-and-scenarios.md) | Make metrics/scenario comparison model-family aware. | No |
+| 008 | planned | [Calibrate quasi model](tasks/008-calibrate-quasi-model.md) | Tune quasi model from full 0-D baseline while preserving physiology. | No |
+| 009 | planned | [Run PhysioBlocks 1-D feasibility spike](tasks/009-physioblocks-1d-feasibility-spike.md) | Decide whether local blocks/generated configs are enough for true 1-D. | Maybe |
+| 010 | planned | [Prototype local 1-D numerics](tasks/010-prototype-local-1d-numerics.md) | Implement and validate wall-law/vessel residual prototypes. | Maybe |
+| 011 | planned | [Build 1-D open-loop submodels](tasks/011-build-1d-openloop-submodels.md) | Validate aorta, TCPC, and combined 1-D submodels before closed loop. | Maybe |
+| 012 | planned | [Build coupled closed-loop model](tasks/012-build-coupled-closed-loop-model.md) | Couple validated 1-D subdomains to the 0-D heart and beds. | Maybe |
+| 013 | planned | [Calibrate and validate coupled model](tasks/013-calibrate-and-validate-coupled-model.md) | Tune small global scales and compare against measurements/paper behavior. | Maybe |
 
 ## Execution Rules
 

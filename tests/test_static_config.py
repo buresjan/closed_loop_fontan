@@ -8,6 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 FULL_0D = ROOT / 'models' / 'full_0d'
 FULL_0D_CONFIGS = FULL_0D / 'configs'
 OLD_ATRIAL_COMPLIANCE = 6.000510043353685e-08
+FULL_0D_CONFIG_NAMES = {
+    'fontan_0d_smoke.jsonc',
+    'fontan_0d_baseline.jsonc',
+    'fontan_0d_vasodilation.jsonc',
+    'fontan_0d_fenestration.jsonc',
+    'fontan_0d_lpa_obstruction.jsonc',
+}
 
 def load(name):
     return json.loads((FULL_0D_CONFIGS / name).read_text())
@@ -17,6 +24,24 @@ def test_configs_are_strict_json_and_forward_simulations():
         cfg = json.loads(path.read_text())
         assert cfg['type'] == 'forward_simulation'
         assert cfg['net']['type'] == 'net'
+
+def test_full_0d_reference_files_are_present_and_documented():
+    assert {path.name for path in FULL_0D_CONFIGS.glob('fontan_0d_*.jsonc')} == FULL_0D_CONFIG_NAMES
+    assert (FULL_0D / 'docs' / 'fontan_closed_loop_schematic.svg').exists()
+    assert (FULL_0D / 'docs' / 'fontan_closed_loop_schematic.png').exists()
+    assert (FULL_0D / 'docs' / 'implementation_notes.md').exists()
+    for name in [
+        'parameter_priors.yaml',
+        'parameter_bounds.yaml',
+        'target_weights.yaml',
+    ]:
+        assert (FULL_0D / 'calibration' / name).exists()
+
+    readme = (FULL_0D / 'README.md').read_text()
+    assert '## Reference policy' in readme
+    assert 'models/full_0d/docs/fontan_closed_loop_schematic.svg' in readme
+    assert 'models/full_0d/docs/fontan_closed_loop_schematic.png' in readme
+    assert 'models/full_0d/docs/implementation_notes.md' in readme
 
 def test_each_model_family_has_readme_and_schematic():
     for model_dir in (ROOT / 'models').iterdir():

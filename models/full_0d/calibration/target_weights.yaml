@@ -1,0 +1,19 @@
+# Placeholder target weights for Task 004 full 0-D baseline calibration.
+#
+# Future calibration should derive concrete targets from
+# data/processed/aramburu_2024/targets once Task 003 exists.
+model_family: full_0d
+status: placeholder
+targets:
+  summary:
+    description: EDV, ESV, SV, CO, mean pressures, beat-integrated flows, and RPA/LPA split.
+    weight: null
+  waveform:
+    description: Last-cycle waveform shape targets used only where meaningful for full 0-D.
+    weight: null
+  priors:
+    description: Penalty for moving too far from documented priors.
+    weight: null
+  penalties:
+    description: Failed runs, NaN/Inf, non-periodicity, and mass-balance failures.
+    weight: null

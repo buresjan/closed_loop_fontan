@@ -1,0 +1,15 @@
+# Placeholder bounds for Task 004 full 0-D baseline calibration.
+#
+# Future calibration should fill these with explicit scale-factor bounds and
+# avoid optimizing hundreds of raw parameters directly.
+model_family: full_0d
+status: placeholder
+policy:
+  tune_baseline_only: true
+  validate_interventions_without_retuning: true
+  prefer_scale_factors: true
+groups:
+  heart_and_valves: []
+  active_atrium: []
+  aortic_systemic: []
+  fontan_pulmonary: []
