@@ -1,6 +1,6 @@
 # 003 - Build Calibration Targets
 
-Status: planned
+Status: completed
 
 Depends on: Task 001
 
@@ -30,3 +30,25 @@ Create shared calibration target extraction so all model families use the same A
 ## PhysioBlocks Impact
 
 No PhysioBlocks internal changes.
+
+## Completion Note
+
+Completed on 2026-05-15.
+
+- Added `scripts/calibration/extract_targets.py` to build a reproducible target
+  package from the processed Aramburu data.
+- Added tracked target outputs under `data/processed/aramburu_2024/targets/`:
+  `summary_targets.csv`, `waveform_targets.csv`, `waveform_metadata.csv`,
+  `metadata.yaml`, and `README.md`.
+- Included summary targets for cycle length, heart rate, EDV, ESV, stroke
+  volume, cardiac output, mean pressures, beat-integrated flows, and RPA/LPA
+  flow split.
+- Included waveform targets with canonical names, source types, units,
+  phase-alignment assumptions, and normalization scales.
+- Added tests for unit conversions, cycle length, periodic beat integrals,
+  expected target schemas, and reproducibility from processed data.
+
+Validation:
+
+- `.venv/bin/python scripts/calibration/extract_targets.py` -> completed
+- `.venv/bin/pytest -q` -> `29 passed`

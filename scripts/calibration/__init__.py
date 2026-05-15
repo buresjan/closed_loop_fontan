@@ -1,0 +1,1 @@
+"""Calibration target extraction utilities."""

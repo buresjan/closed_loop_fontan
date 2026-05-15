@@ -1,0 +1,146 @@
+generated_by: scripts/calibration/extract_targets.py
+processed_root: data/processed/aramburu_2024
+phase_alignment:
+  assumption: Each source table is one processed comparison cycle starting at phase
+    0.
+  cycle_length: sample_count * median_dt; endpoint at phase 1 is not duplicated.
+  beat_integrals: periodic trapezoid integration with final-to-first wraparound.
+source_files:
+- source_id: direct_measurement
+  source_type: direct_measurement
+  path: comparison/measurements_last_cycle_clinical.csv
+  time_column: time_s
+  description: Clinical measurement waveforms from Aramburu et al. measurements.mat,
+    already sliced to the comparison cycle.
+- source_id: paper_model
+  source_type: paper_output
+  path: paper_results/model.csv
+  time_column: t_s
+  description: Closed-loop model output exported from the paper results workbook.
+- source_id: nektar_closed_loop_1d
+  source_type: nektar_comparison_output
+  path: comparison/04_aorta_tcpc_closedloop_1d_last_cycle_clinical.csv
+  time_column: time_s
+  description: Closed-loop aorta/TCPC 1-D comparison output converted from Nektar
+    data.
+- source_id: direct_measurement_si_validation
+  source_type: direct_measurement
+  path: measurements.csv
+  description: SI-unit measurement table used to validate clinical-unit conversions.
+- source_id: direct_measurement_clinical_validation
+  source_type: direct_measurement
+  path: measurements_clinical.csv
+  description: Clinical-unit measurement table checked against the comparison-cycle
+    copy.
+schemas:
+  summary_targets:
+  - target_id
+  - source_id
+  - source_type
+  - canonical_name
+  - quantity
+  - statistic
+  - value
+  - unit
+  - source_file
+  - source_columns
+  - cycle_length_s
+  - notes
+  waveform_targets:
+  - source_id
+  - source_type
+  - signal_id
+  - canonical_name
+  - quantity
+  - unit
+  - phase
+  - time_s
+  - value
+  waveform_metadata:
+  - signal_id
+  - source_id
+  - source_type
+  - canonical_name
+  - quantity
+  - unit
+  - source_file
+  - source_column
+  - sample_count
+  - cycle_length_s
+  - normalization_scale
+  - normalization_unit
+  - phase_alignment
+  - notes
+unit_validation:
+- clinical_column: time_s
+  si_column: time_s
+  conversion: identity
+  max_abs_error: 0.0
+- clinical_column: ivc_pressure_mmHg
+  si_column: ivc_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 2.2737367544323206e-13
+- clinical_column: lpa_pressure_mmHg
+  si_column: lpa_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 2.2737367544323206e-13
+- clinical_column: rpa_pressure_mmHg
+  si_column: rpa_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 4.547473508864641e-13
+- clinical_column: svc_pressure_mmHg
+  si_column: svc_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 4.547473508864641e-13
+- clinical_column: aortic_arch_pressure_mmHg
+  si_column: aortic_arch_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 1.8189894035458565e-12
+- clinical_column: ascending_aorta_pressure_mmHg
+  si_column: ascending_aorta_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 1.8189894035458565e-12
+- clinical_column: descending_aorta_pressure_mmHg
+  si_column: descending_aorta_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 1.8189894035458565e-12
+- clinical_column: femoral_artery_pressure_mmHg
+  si_column: femoral_artery_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 1.8189894035458565e-12
+- clinical_column: ventricle_pressure_mmHg
+  si_column: ventricle_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 1.8189894035458565e-12
+- clinical_column: wedge_pressure_mmHg
+  si_column: wedge_pressure_pa
+  conversion: Pa = mmHg * 133.33
+  max_abs_error: 2.2737367544323206e-13
+- clinical_column: ivc_flow_ml_s
+  si_column: ivc_flow_m3_s
+  conversion: m3/s = ml/s * 1e-6
+  max_abs_error: 6.776263578034403e-21
+- clinical_column: lpa_flow_ml_s
+  si_column: lpa_flow_m3_s
+  conversion: m3/s = ml/s * 1e-6
+  max_abs_error: 6.776263578034403e-21
+- clinical_column: rpa_flow_ml_s
+  si_column: rpa_flow_m3_s
+  conversion: m3/s = ml/s * 1e-6
+  max_abs_error: 6.776263578034403e-21
+- clinical_column: svc_flow_ml_s
+  si_column: svc_flow_m3_s
+  conversion: m3/s = ml/s * 1e-6
+  max_abs_error: 6.776263578034403e-21
+- clinical_column: ascending_aorta_flow_ml_s
+  si_column: ascending_aorta_flow_m3_s
+  conversion: m3/s = ml/s * 1e-6
+  max_abs_error: 9.990923019453923e-17
+- clinical_column: descending_aorta_flow_ml_s
+  si_column: descending_aorta_flow_m3_s
+  conversion: m3/s = ml/s * 1e-6
+  max_abs_error: 1.3552527156068805e-20
+- clinical_column: ventricle_volume_ml
+  si_column: ventricle_volume_m3
+  conversion: m3 = ml * 1e-6
+  max_abs_error: 1.3552527156068805e-20

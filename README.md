@@ -44,9 +44,10 @@ Regenerate the processed data:
 
 ```bash
 python scripts/data/prepare_aramburu_2024.py
+python scripts/calibration/extract_targets.py
 ```
 
-The processed package includes canonical measurement tables, paper-result tables, model-input tables, converted Nektar 1-D `.mat` outputs, `.fo` outputs, metadata, and source checksums.
+The processed package includes canonical measurement tables, paper-result tables, model-input tables, converted Nektar 1-D `.mat` outputs, `.fo` outputs, shared calibration targets, metadata, and source checksums.
 
 ## Tests
 
