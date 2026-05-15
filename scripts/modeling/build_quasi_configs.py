@@ -4,10 +4,16 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.calibration.quasi import apply_quasi_calibration_factors
+
 FULL_CONFIG_DIR = ROOT / "models/full_0d/configs"
 QUASI_CONFIG_DIR = ROOT / "models/quasi_0d_1d/configs"
 QUASI_FRAGMENT = (
@@ -206,6 +212,8 @@ def build_quasi_config(
     source_config: dict[str, Any],
     fragment: dict[str, Any],
     baseline_lpa_pathway_resistance: float,
+    *,
+    apply_task008_calibration: bool = True,
 ) -> dict[str, Any]:
     config = copy.deepcopy(source_config)
     source_parameters = copy.deepcopy(source_config["parameters"])
@@ -216,11 +224,13 @@ def build_quasi_config(
         source_parameters,
         baseline_lpa_pathway_resistance,
     )
+    if apply_task008_calibration:
+        config = apply_quasi_calibration_factors(config)
     validate_quasi_config(config, fragment)
     return config
 
 
-def build_all_configs() -> dict[str, dict[str, Any]]:
+def build_all_configs(*, apply_task008_calibration: bool = True) -> dict[str, dict[str, Any]]:
     fragment = load_json(QUASI_FRAGMENT)
     baseline = load_json(FULL_CONFIG_DIR / "fontan_0d_baseline.jsonc")
     baseline_lpa_pathway_resistance = fontan_pathway_resistance(
@@ -235,6 +245,7 @@ def build_all_configs() -> dict[str, dict[str, Any]]:
             source,
             fragment,
             baseline_lpa_pathway_resistance,
+            apply_task008_calibration=apply_task008_calibration,
         )
     return generated
 
@@ -248,9 +259,14 @@ def main() -> None:
         action="store_true",
         help="Validate generated configs against the tracked files without writing.",
     )
+    parser.add_argument(
+        "--uncalibrated",
+        action="store_true",
+        help="Build the raw Task 006 configs without Task 008 calibration factors.",
+    )
     args = parser.parse_args()
 
-    generated = build_all_configs()
+    generated = build_all_configs(apply_task008_calibration=not args.uncalibrated)
     if args.check:
         for name, config in generated.items():
             tracked_path = QUASI_CONFIG_DIR / name

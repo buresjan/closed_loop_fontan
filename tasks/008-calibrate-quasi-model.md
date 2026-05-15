@@ -1,6 +1,6 @@
 # 008 - Calibrate Quasi 0-D/1-D Model
 
-Status: planned
+Status: completed
 
 Depends on: Tasks 004, 006, and 007
 
@@ -32,3 +32,50 @@ Tune the quasi model from the calibrated full 0-D physiology while improving imp
 ## PhysioBlocks Impact
 
 No PhysioBlocks internal changes.
+
+## Completion Notes
+
+Completed on 2026-05-15.
+
+- Added Task 008 quasi calibration helpers:
+  - `scripts/calibration/quasi.py`
+  - `scripts/calibration/run_quasi_calibration.py`
+  - `scripts/calibration/compare_waveforms.py`
+- Updated `scripts/modeling/build_quasi_configs.py` so the default tracked
+  configs include Task 008 calibration factors; `--uncalibrated` remains
+  available for raw Task 006 assembly checks.
+- Selected small global physiology scales:
+  - heart contractility: `0.96`
+  - upper systemic resistance: `1.04`
+  - lower systemic resistance: `1.12`
+  - pulmonary bed resistance: `1.10`
+- Preserved all quasi chain segment counts and total chain resistance,
+  inertance, and compliance from the Task 005 fragment.
+- Regenerated calibrated quasi configs, baseline/intervention reference
+  outputs, baseline objective reports, waveform comparison, and scenario
+  comparison.
+- Added `models/quasi_0d_1d/calibration/calibration_report.md`,
+  `calibration_factors.json`, `baseline_objective.json`,
+  `baseline_vs_paper.json`, and `baseline_waveforms_direct.json`.
+- Updated the quasi README, implementation notes, SVG schematic, and PNG
+  schematic export.
+- Added `tests/test_quasi_calibration.py`.
+
+Baseline direct-measurement weighted RMS relative error:
+
+- before Task 008: `0.0817`
+- after Task 008: `0.0610`
+- full 0-D reference: `0.0614`
+
+Validation:
+
+- `.venv/bin/python scripts/modeling/build_quasi_configs.py --check`
+- `.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_smoke.jsonc --series QuasiSmokeTask008`
+- `.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_baseline.jsonc --series QuasiBaseline`
+- `.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_vasodilation.jsonc --series QuasiVasodilation`
+- `.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_fenestration.jsonc --series QuasiFenestration`
+- `.venv/bin/python scripts/run_one.py models/quasi_0d_1d/configs/fontan_quasi_lpa_obstruction.jsonc --series QuasiLPAObstruction`
+- `.venv/bin/python scripts/calibration/objective.py models/quasi_0d_1d/reference_outputs/baseline_metrics.json --out models/quasi_0d_1d/calibration/baseline_objective.json`
+- `.venv/bin/python scripts/calibration/compare_to_paper.py models/quasi_0d_1d/reference_outputs/baseline_metrics.json --source-id paper_model --out models/quasi_0d_1d/calibration/baseline_vs_paper.json`
+- `.venv/bin/python scripts/calibration/compare_waveforms.py ... --out models/quasi_0d_1d/calibration/baseline_waveforms_direct.json`
+- `.venv/bin/pytest -q`

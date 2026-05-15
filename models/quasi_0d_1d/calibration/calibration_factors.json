@@ -1,0 +1,24 @@
+{
+  "model_family": "quasi_0d_1d",
+  "task": "008",
+  "status": "selected_baseline_calibration",
+  "generated_by": "scripts/calibration/quasi.py",
+  "factors": {
+    "heart_contractility_scale": 0.96,
+    "upper_systemic_resistance_scale": 1.04,
+    "lower_systemic_resistance_scale": 1.12,
+    "pulmonary_bed_resistance_scale": 1.10
+  },
+  "preserved_quantities": [
+    "quasi chain segment counts",
+    "quasi chain total resistance",
+    "quasi chain total inertance",
+    "quasi chain total compliance",
+    "LPA obstruction narrowing resistance multiplier"
+  ],
+  "notes": [
+    "Selected from a small controlled calibration screen against direct-measurement summary targets.",
+    "The calibration intentionally leaves quasi R/L/C chain totals unchanged and retunes only small global physiology scales.",
+    "Intervention scenarios inherit the same baseline calibration and are not retuned."
+  ]
+}

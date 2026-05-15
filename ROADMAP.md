@@ -38,7 +38,7 @@ The roadmap therefore defers any PhysioBlocks fork/upstream work until Task 009 
 | 005 | completed | [Derive quasi vessel parameters](tasks/005-derive-quasi-vessel-parameters.md) | Convert geometry and priors into R-L-C chain parameters. | No |
 | 006 | completed | [Implement quasi model](tasks/006-implement-quasi-model.md) | Build PhysioBlocks-only quasi 0-D/1-D configs and docs. | No |
 | 007 | completed | [Add quasi metrics and scenarios](tasks/007-quasi-metrics-and-scenarios.md) | Make metrics/scenario comparison model-family aware. | No |
-| 008 | planned | [Calibrate quasi model](tasks/008-calibrate-quasi-model.md) | Tune quasi model from full 0-D baseline while preserving physiology. | No |
+| 008 | completed | [Calibrate quasi model](tasks/008-calibrate-quasi-model.md) | Tune quasi model from full 0-D baseline while preserving physiology. | No |
 | 009 | planned | [Run PhysioBlocks 1-D feasibility spike](tasks/009-physioblocks-1d-feasibility-spike.md) | Decide whether local blocks/generated configs are enough for true 1-D. | Maybe |
 | 010 | planned | [Prototype local 1-D numerics](tasks/010-prototype-local-1d-numerics.md) | Implement and validate wall-law/vessel residual prototypes. | Maybe |
 | 011 | planned | [Build 1-D open-loop submodels](tasks/011-build-1d-openloop-submodels.md) | Validate aorta, TCPC, and combined 1-D submodels before closed loop. | Maybe |

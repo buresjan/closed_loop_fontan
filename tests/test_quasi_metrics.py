@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from scripts.metrics import compute
+from scripts.calibration.objective import comparison_rows
 
 ROOT = Path(__file__).resolve().parents[1]
 QUASI_BASELINE = ROOT / "models/quasi_0d_1d/configs/fontan_quasi_baseline.jsonc"
@@ -95,3 +96,24 @@ def test_full_0d_metrics_keep_legacy_conduit_flow_keys(tmp_path):
     assert metrics["mean_svc_outlet_flow_ml_s"] == pytest.approx(
         metrics["mean_svc_conduit_junction.flow_ml_s"]
     )
+
+
+def test_calibration_objective_accepts_quasi_standard_flow_keys():
+    metrics = {
+        "mean_svc_outlet_flow_ml_s": 1.0,
+        "mean_ivc_outlet_flow_ml_s": 1.0,
+        "mean_rpa_outlet_flow_ml_s": 1.0,
+        "mean_lpa_outlet_flow_ml_s": 1.0,
+        "rpa_flow_fraction": 0.5,
+    }
+
+    rows = comparison_rows(metrics)
+    metric_names = {row["metric"] for row in rows}
+
+    assert {
+        "mean_svc_outlet_flow_ml_s",
+        "mean_ivc_outlet_flow_ml_s",
+        "mean_rpa_outlet_flow_ml_s",
+        "mean_lpa_outlet_flow_ml_s",
+        "rpa_flow_fraction",
+    } <= metric_names

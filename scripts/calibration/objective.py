@@ -75,7 +75,10 @@ TCPC_ENTRY_CONDUCTANCES = [
     "ivc_conduit_rl.backward_conductance",
 ]
 
-TARGET_MAP = [
+MetricNames = str | tuple[str, ...]
+
+
+TARGET_MAP: list[tuple[MetricNames, str, str, str, float]] = [
     ("EDV_ml", "edv", "max", "ml", 3.0),
     ("ESV_ml", "esv", "min", "ml", 3.0),
     ("SV_from_volume_ml", "stroke_volume", "edv_minus_esv", "ml", 4.0),
@@ -100,10 +103,34 @@ TARGET_MAP = [
         "mmHg",
         1.0,
     ),
-    ("mean_svc_conduit_rl.flux_ml_s", "svc_flow", "beat_integral", "ml/s", 2.0),
-    ("mean_ivc_conduit_rl.flux_ml_s", "ivc_flow", "beat_integral", "ml/s", 1.5),
-    ("mean_rpa_conduit_out.flow_ml_s", "rpa_flow", "beat_integral", "ml/s", 2.0),
-    ("mean_lpa_conduit_out.flow_ml_s", "lpa_flow", "beat_integral", "ml/s", 2.0),
+    (
+        ("mean_svc_conduit_rl.flux_ml_s", "mean_svc_outlet_flow_ml_s"),
+        "svc_flow",
+        "beat_integral",
+        "ml/s",
+        2.0,
+    ),
+    (
+        ("mean_ivc_conduit_rl.flux_ml_s", "mean_ivc_outlet_flow_ml_s"),
+        "ivc_flow",
+        "beat_integral",
+        "ml/s",
+        1.5,
+    ),
+    (
+        ("mean_rpa_conduit_out.flow_ml_s", "mean_rpa_outlet_flow_ml_s"),
+        "rpa_flow",
+        "beat_integral",
+        "ml/s",
+        2.0,
+    ),
+    (
+        ("mean_lpa_conduit_out.flow_ml_s", "mean_lpa_outlet_flow_ml_s"),
+        "lpa_flow",
+        "beat_integral",
+        "ml/s",
+        2.0,
+    ),
     ("rpa_flow_fraction", "rpa_flow_fraction", "rpa_over_rpa_plus_lpa", "1", 3.0),
 ]
 
@@ -252,19 +279,29 @@ def target_value(
     raise ValueError(f"Unsupported target unit conversion {unit} -> {expected_unit}")
 
 
+def metric_value(metrics: dict[str, Any], names: MetricNames) -> tuple[str, float] | None:
+    if isinstance(names, str):
+        names = (names,)
+    for name in names:
+        if name in metrics:
+            return name, float(metrics[name])
+    return None
+
+
 def comparison_rows(
     metrics: dict[str, Any],
     source_id: str = "direct_measurement",
 ) -> list[dict[str, Any]]:
     targets = load_summary_targets(source_id)
     rows: list[dict[str, Any]] = []
-    for metric, canonical, statistic, unit, weight in TARGET_MAP:
-        if metric not in metrics:
+    for metric_names, canonical, statistic, unit, weight in TARGET_MAP:
+        resolved = metric_value(metrics, metric_names)
+        if resolved is None:
             continue
+        metric, model = resolved
         if (canonical, statistic) not in targets:
             continue
         target = target_value(targets, canonical, statistic, unit)
-        model = float(metrics[metric])
         error = model - target
         rel_error = error / target if abs(target) > 1e-12 else math.nan
         rows.append(

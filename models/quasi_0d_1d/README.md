@@ -37,6 +37,11 @@ Check that the tracked configs are current:
 .venv/bin/python scripts/modeling/build_quasi_configs.py --check
 ```
 
+The tracked configs include the Task 008 calibration factors from
+`models/quasi_0d_1d/calibration/calibration_factors.json`. Use
+`--uncalibrated` only when inspecting the raw Task 006 assembly before
+calibration.
+
 ## Metrics and Scenario Outputs
 
 Task 007 adds model-family-aware metrics for the quasi chains. The standard
@@ -58,6 +63,7 @@ The metrics also retain segment-level flow outputs such as
 The current comparison-ready outputs are tracked in:
 
 ```text
+models/quasi_0d_1d/calibration/calibration_report.md
 models/quasi_0d_1d/reference_outputs/baseline_metrics.json
 models/quasi_0d_1d/reference_outputs/vasodilation_metrics.json
 models/quasi_0d_1d/reference_outputs/fenestration_metrics.json
@@ -86,10 +92,11 @@ Compare the tracked quasi scenarios:
 
 Current baseline highlights:
 
-- CO from aortic-valve flow: 2.63 L/min.
+- CO from aortic-valve flow: 2.46 L/min.
 - Mean TCPC pressure: 8.06 mmHg.
 - RPA flow fraction: 0.591.
-- TCPC cycle balance: `1.91e-5`.
+- TCPC cycle balance: `2.36e-5`.
+- Direct-measurement weighted RMS target error: `0.0610`.
 
 ## Implemented Topology
 
