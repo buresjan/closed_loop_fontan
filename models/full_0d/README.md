@@ -72,8 +72,10 @@ and the relevant reference outputs in the same change. Cleanup of the current
 workaround is allowed only if it preserves the accepted reference behavior or
 creates a deliberately named new reference output set.
 
-Until the calibration tasks are completed, the included parameters remain
-plausible development values rather than patient-calibrated values.
+Task 004 calibrated the baseline to the Aramburu 2024 direct-measurement
+targets with scale factors recorded in `calibration/parameter_priors.yaml`.
+Intervention scenarios inherit the calibrated baseline and are validation cases,
+not separately retuned cases.
 
 ## Files
 
@@ -86,6 +88,7 @@ models/full_0d/configs/fontan_0d_lpa_obstruction.jsonc
 models/full_0d/docs/fontan_closed_loop_schematic.svg
 models/full_0d/docs/fontan_closed_loop_schematic.png
 models/full_0d/docs/implementation_notes.md
+models/full_0d/calibration/calibration_report.md
 models/full_0d/reference_outputs/*.json
 ```
 
@@ -103,7 +106,7 @@ python scripts/metrics.py runs/simulations/Smoke/*/main.csv models/full_0d/confi
 
 ## Run final scenarios
 
-The final scenario configs run for 8 seconds so the additional systemic and
+The final scenario configs run for 20 seconds so the calibrated systemic and
 pulmonary compliances settle before the last-cycle metrics are computed.
 
 ```bash
@@ -135,9 +138,28 @@ Use `scripts/metrics.py` to inspect:
 - Directional intervention responses for pulmonary vasodilation, fenestration,
   and LPA obstruction.
 
+## Calibration status
+
+The calibrated baseline uses the measured cycle length from
+`data/processed/aramburu_2024/targets`, reduced ventricular geometry and
+contractility, separated upper/lower systemic resistance scales, an RPA-favoring
+pulmonary resistance split, lower TCPC entry resistance, and a lower initialized
+pressure pedestal.
+
+Current baseline highlights from `reference_outputs/baseline_metrics.json`:
+
+- SV 35.87 ml versus 36.80 ml target.
+- CO 2.51 L/min versus 2.57 L/min target.
+- Mean AAo pressure 47.79 mmHg versus 50.40 mmHg target.
+- Mean SVC/IVC pressures 9.11/8.93 mmHg versus 8.87/8.54 mmHg targets.
+- RPA flow fraction 0.591 versus 0.591 target.
+
+The main residual gap is low descending-aorta pressure relative to the direct
+measurement table. See `calibration/calibration_report.md` for the full target
+comparison and validation scenario summary.
+
 ## Caveat
 
-The included parameters are plausible starting values, not patient-calibrated
-values. The scaffold is intended to run, expose the right topology, and support
-calibration/testing. Do not interpret the included numerical outputs clinically
-without calibration and validation.
+The included parameters are calibrated for computational development against the
+processed Aramburu 2024 targets, but they are not clinically validated. Do not
+interpret the numerical outputs clinically without separate validation.

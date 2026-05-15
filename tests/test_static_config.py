@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import fontan_blocks
 from physioblocks.registers.type_register import is_registered
+from scripts.calibration.objective import apply_calibration_factors
 
 ROOT = Path(__file__).resolve().parents[1]
 FULL_0D = ROOT / 'models' / 'full_0d'
@@ -164,8 +165,8 @@ def test_aortic_tree_parameterization_preserves_upper_body_split():
     lower_bed = p['lower_ra4.resistance'] + p['lower_rc2.resistance'] + p['lower_rv2.resistance']
     equivalent_upper = p['aao_arch.resistance'] + parallel_upper + upper_bed
     equivalent_lower = p['aao_arch.resistance'] + p['arch_dao.resistance'] + lower_bed
-    assert abs(equivalent_upper - 506623600.0) < 1e-6
-    assert abs(equivalent_lower - 266644000.0) < 1e-6
+    assert abs(equivalent_upper - 252778512.0) < 1e-6
+    assert abs(equivalent_lower - 237313160.00000003) < 1e-6
 
 def test_intervention_configs_change_expected_parameters():
     base = load('fontan_0d_baseline.jsonc')['parameters']
@@ -181,28 +182,29 @@ def test_intervention_configs_change_expected_parameters():
     assert lpa['lpa_conduit_rl.conductance'] < base['lpa_conduit_rl.conductance']
     assert lpa['lpa_conduit_out.resistance'] > base['lpa_conduit_out.resistance']
 
-def test_tcpc_conduit_parameterization_preserves_previous_pathway_resistances():
+def test_tcpc_conduit_parameterization_uses_calibrated_pathway_resistances():
     cfg = load('fontan_0d_baseline.jsonc')
     p = cfg['parameters']
-    old_pathway_resistances = {
-        'svc': 10665760.000000002,
-        'ivc': 7999320.0,
-        'rpa': 5332880.000000001,
-        'lpa': 5332880.000000001,
+    calibrated_pathway_resistances = {
+        'svc': 5866168.000000002,
+        'ivc': 4399626.0,
+        'rpa': 2399796.0000000005,
+        'lpa': 3466372.000000001,
     }
-    for path, old_r in old_pathway_resistances.items():
+    for path, calibrated_r in calibrated_pathway_resistances.items():
         rl_r = 1.0 / p[f'{path}_conduit_rl.conductance']
         connector_r = p[f'{path}_conduit_junction.resistance'] if path in {'svc', 'ivc'} else p[f'{path}_conduit_out.resistance']
-        assert abs((rl_r + connector_r) - old_r) < 1e-6
+        assert abs((rl_r + connector_r) - calibrated_r) < 1e-6
         assert p[f'{path}_conduit_rl.conductance'] == p[f'{path}_conduit_rl.backward_conductance']
         assert p[f'{path}_conduit_rl.inductance'] > 0.0
 
-def test_pulmonary_windkessel_parameterization_preserves_lung_resistances():
+def test_pulmonary_windkessel_parameterization_uses_calibrated_split():
     cfg = load('fontan_0d_baseline.jsonc')
     p = cfg['parameters']
-    assert abs(p['right_lung.resistance_1'] + p['right_lung.resistance_2'] - 31997280.0) < 1e-6
-    assert abs(p['left_lung.resistance_1'] + p['left_lung.resistance_2'] - 31997280.0) < 1e-6
+    assert abs(p['right_lung.resistance_1'] + p['right_lung.resistance_2'] - 14398776.0) < 1e-6
+    assert abs(p['left_lung.resistance_1'] + p['left_lung.resistance_2'] - 20798232.0) < 1e-6
     assert abs(p['right_lung.resistance_1'] / (p['right_lung.resistance_1'] + p['right_lung.resistance_2']) - 0.4) < 1e-12
+    assert abs(p['left_lung.resistance_1'] / (p['left_lung.resistance_1'] + p['left_lung.resistance_2']) - 0.4) < 1e-12
     assert p['right_lung.capacitance'] == p['left_lung.capacitance']
     assert 'right_lung.pressure_mid' in cfg['variables_initialization']
     assert 'left_lung.pressure_mid' in cfg['variables_magnitudes']
@@ -217,3 +219,20 @@ def test_final_scenarios_run_long_enough_for_vascular_bed_settling():
     for name in final_configs:
         assert load(name)['time']['duration'] >= 8.0
     assert load('fontan_0d_smoke.jsonc')['time']['duration'] < 1.0
+
+def test_calibration_write_helper_is_idempotent_for_calibrated_configs():
+    cfg = load('fontan_0d_baseline.jsonc')
+    recalibrated = apply_calibration_factors(cfg)
+    for name in [
+        'heart_rate',
+        'heart_radius',
+        'heart_thickness',
+        'heart_contractility',
+        'active_atrium.unstressed_volume',
+        'aao_arch.resistance',
+        'right_lung.resistance_1',
+        'left_lung.resistance_1',
+        'svc_conduit_rl.conductance',
+    ]:
+        assert recalibrated['parameters'][name] == cfg['parameters'][name]
+    assert recalibrated['time']['duration'] == cfg['time']['duration']

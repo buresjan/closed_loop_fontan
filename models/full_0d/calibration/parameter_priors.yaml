@@ -1,21 +1,65 @@
-# Placeholder priors for Task 004 full 0-D baseline calibration.
-#
-# Values here intentionally do not retune the model yet. They define the groups
-# that future calibration code should populate from the current baseline config
-# and Aramburu-derived targets.
 model_family: full_0d
-status: placeholder
+status: calibrated_baseline
 source_config: models/full_0d/configs/fontan_0d_baseline.jsonc
+target_package: data/processed/aramburu_2024/targets
+calibration_script: scripts/calibration/run_calibration.py
+policy:
+  tune_baseline_only: true
+  validate_interventions_without_retuning: true
+  use_scale_factors: true
+selected_scale_factors:
+  heart_rate_bpm: 69.93006993006986
+  heart_geometry_scale: 0.715
+  heart_contractility_scale: 0.42
+  aortic_trunk_resistance_scale: 0.40
+  upper_systemic_resistance_scale: 0.50
+  lower_systemic_resistance_scale: 0.90
+  right_pulmonary_resistance_scale: 0.45
+  left_pulmonary_resistance_scale: 0.65
+  tcpc_entry_resistance_scale: 0.55
+  pressure_initialization_shift_mmHg: 5.5
+  active_atrium_unstressed_volume_ml: 40.0
+  settling_duration_s: 20.0
 groups:
   heart_and_valves:
     description: Single-ventricle geometry, contractility, passive stiffness, and AV/aortic valve scales.
-    parameters: []
+    parameters:
+      - heart_rate
+      - heart_radius
+      - heart_thickness
+      - heart_contractility
   active_atrium:
     description: Atrial elastance, unstressed volume, and activation timing scales.
-    parameters: []
+    parameters:
+      - active_atrium.unstressed_volume
   aortic_systemic:
-    description: Aortic compliance and upper/lower systemic bed resistance/compliance scales.
-    parameters: []
+    description: Aortic and upper/lower systemic resistance scale factors.
+    parameters:
+      - aao_arch.resistance
+      - arch_bca.resistance
+      - upper_bca_to_ca1.resistance
+      - arch_lcca.resistance
+      - upper_lcca_to_ca1.resistance
+      - arch_lsa.resistance
+      - upper_lsa_to_ca1.resistance
+      - upper_rc1.resistance
+      - upper_rv1.resistance
+      - arch_dao.resistance
+      - lower_ra4.resistance
+      - lower_rc2.resistance
+      - lower_rv2.resistance
   fontan_pulmonary:
-    description: Caval/TCPC pathway, pulmonary RCR, fenestration, and LPA narrowing scales.
-    parameters: []
+    description: Caval/TCPC pathway, pulmonary RCR, and RPA/LPA split scales.
+    parameters:
+      - svc_conduit_junction.resistance
+      - ivc_conduit_junction.resistance
+      - svc_conduit_rl.conductance
+      - ivc_conduit_rl.conductance
+      - right_lung.resistance_1
+      - right_lung.resistance_2
+      - left_lung.resistance_1
+      - left_lung.resistance_2
+      - rpa_conduit_out.resistance
+      - lpa_conduit_out.resistance
+      - rpa_conduit_rl.conductance
+      - lpa_conduit_rl.conductance

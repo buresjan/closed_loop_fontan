@@ -1,15 +1,22 @@
-# Placeholder bounds for Task 004 full 0-D baseline calibration.
-#
-# Future calibration should fill these with explicit scale-factor bounds and
-# avoid optimizing hundreds of raw parameters directly.
 model_family: full_0d
-status: placeholder
+status: calibrated_baseline
 policy:
   tune_baseline_only: true
   validate_interventions_without_retuning: true
   prefer_scale_factors: true
 groups:
-  heart_and_valves: []
-  active_atrium: []
-  aortic_systemic: []
-  fontan_pulmonary: []
+  heart_and_valves:
+    heart_rate_bpm: [60.0, 75.0]
+    heart_geometry_scale: [0.65, 0.90]
+    heart_contractility_scale: [0.35, 0.80]
+  active_atrium:
+    active_atrium_unstressed_volume_ml: [10.0, 60.0]
+  aortic_systemic:
+    aortic_trunk_resistance_scale: [0.30, 0.80]
+    upper_systemic_resistance_scale: [0.35, 0.90]
+    lower_systemic_resistance_scale: [0.60, 1.40]
+    pressure_initialization_shift_mmHg: [0.0, 7.0]
+  fontan_pulmonary:
+    right_pulmonary_resistance_scale: [0.30, 0.90]
+    left_pulmonary_resistance_scale: [0.40, 1.20]
+    tcpc_entry_resistance_scale: [0.30, 0.90]

@@ -1,19 +1,30 @@
-# Placeholder target weights for Task 004 full 0-D baseline calibration.
-#
-# Future calibration should derive concrete targets from
-# data/processed/aramburu_2024/targets once Task 003 exists.
 model_family: full_0d
-status: placeholder
+status: calibrated_baseline
+target_package: data/processed/aramburu_2024/targets
+primary_source_id: direct_measurement
 targets:
   summary:
     description: EDV, ESV, SV, CO, mean pressures, beat-integrated flows, and RPA/LPA split.
-    weight: null
+    weight_policy: See scripts/calibration/objective.py TARGET_MAP.
+    high_weight_targets:
+      - stroke_volume
+      - cardiac_output
+      - edv
+      - esv
+      - rpa_flow_fraction
   waveform:
     description: Last-cycle waveform shape targets used only where meaningful for full 0-D.
-    weight: null
+    weight: 0.0
+    note: Waveform-shape fitting is deferred until model-family-aware metrics exist.
   priors:
     description: Penalty for moving too far from documented priors.
-    weight: null
+    weight: qualitative
   penalties:
     description: Failed runs, NaN/Inf, non-periodicity, and mass-balance failures.
-    weight: null
+    thresholds:
+      periodicity_cavity_volume: 0.02
+      periodicity_valve_arterial_flux: 0.02
+      periodicity_valve_atrium_flux: 0.02
+      tcpc_cycle_balance_rel: 0.01
+      atrium_cycle_balance_rel: 0.01
+      ventricle_cycle_balance_rel: 0.01

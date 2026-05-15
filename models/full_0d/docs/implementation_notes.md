@@ -180,10 +180,10 @@ BCA/LCCA/LSA -> upper_art / Ca1 -> upper_rc1 / Rc1 -> upper_ven / Cv1 -> upper_r
 DAo -> lower_ra4 / Ra4 -> lower_art / Ca2 -> lower_rc2 / Rc2 -> lower_ven / Cv2 -> lower_rv2 / Rv2 -> IVC
 ```
 
-Because these added states introduce slower storage dynamics, the final
-scenario configurations run for 8 seconds before metrics are derived from the
-last cycle. The smoke case remains intentionally short and only checks that the
-network executes without numerical failure.
+Because these added states introduce slower storage dynamics, the calibrated
+final scenario configurations run for 20 seconds before metrics are derived
+from the last cycle. The smoke case remains intentionally short and only checks
+that the network executes without numerical failure.
 
 ## TCPC-conduit convention
 
@@ -290,3 +290,16 @@ All final scenario files keep the same topology and change only parameters:
   resistance and increases the LPA conduit pathway load.
 - `fontan_0d_smoke.jsonc`: same topology as baseline, with a shorter run used
   only as a numerical smoke check.
+
+## Task 004 calibration state
+
+The accepted Task 004 baseline is a scale-factor calibration against
+`data/processed/aramburu_2024/targets`. It changes heart rate, ventricular
+geometry and contractility, active-atrium unstressed volume, systemic
+resistance groups, pulmonary resistance groups, TCPC entry resistances, and
+initial pressure states. It does not change the topology described above.
+
+The calibration scripts are under `scripts/calibration/`. The selected factors,
+baseline target comparison, numerical periodicity checks, and validation
+scenario responses are documented in
+`models/full_0d/calibration/calibration_report.md`.

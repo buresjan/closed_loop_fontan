@@ -29,6 +29,7 @@
       .legend { fill: #f8fafc; stroke: #d0d5dd; stroke-width: 2; rx: 10; }
       .legend-text { font: 16px Arial, Helvetica, sans-serif; fill: #344054; dominant-baseline: middle; }
       .section-line { stroke: #eaecf0; stroke-width: 2; }
+      .calibration { font: 16px Arial, Helvetica, sans-serif; fill: #344054; }
     ]]></style>
 
     <g id="cap-down">
@@ -45,6 +46,7 @@
   <rect class="page" x="0" y="0" width="3400" height="1650"/>
   <text class="title" x="70" y="72">Closed-loop zero-dimensional Fontan schematic</text>
   <text class="subtitle" x="70" y="107">Active atrium, expanded aortic tree, systemic vascular beds, TCPC conduits, and pulmonary Windkessel beds. Nominal flow follows the arrows.</text>
+  <text class="calibration" x="70" y="129">Task 004 calibrated baseline: HR 69.93 bpm, 20 s settling, scaled heart/systemic/pulmonary/TCPC parameters; topology unchanged.</text>
   <line class="section-line" x1="70" y1="138" x2="3330" y2="138"/>
 
   <text class="band-title" x="360" y="185">Pump</text>
