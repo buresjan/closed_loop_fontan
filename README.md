@@ -45,7 +45,7 @@ Run the smoke case:
 ```
 
 See `models/quasi_0d_1d/README.md` for the implemented quasi-chain topology,
-config generator, scenarios, and model caveats.
+config generator, metrics workflow, scenarios, and model caveats.
 
 ## Aramburu 2024 Data
 

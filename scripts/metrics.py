@@ -17,6 +17,30 @@ CONDUIT_FLUXES = [
     'lpa_conduit_rl.flux',
 ]
 
+LEGACY_PRESSURE_NODES = [
+    'atrial',
+    'cavity',
+    'aao',
+    'aortic_arch',
+    'bca',
+    'lcca',
+    'lsa',
+    'upper_art',
+    'upper_ven',
+    'dao',
+    'lower_art',
+    'lower_ven',
+    'svc',
+    'svc_conduit',
+    'ivc',
+    'ivc_conduit',
+    'tcpc',
+    'rpa_conduit',
+    'lpa_conduit',
+    'rpa',
+    'lpa',
+]
+
 EDGES = {
     'aao_arch': ('aao', 'aortic_arch'),
     'arch_bca': ('aortic_arch', 'bca'),
@@ -42,6 +66,17 @@ RCR_BEDS = {
     'right_lung': ('rpa', 'atrial'),
     'left_lung': ('lpa', 'atrial'),
 }
+
+FULL_0D_VESSEL_FLOWS = {
+    'aao_arch': ('aao_arch.flow', 'aao_arch.flow'),
+    'dao': ('arch_dao.flow', 'arch_dao.flow'),
+    'svc': ('svc_conduit_rl.flux', 'svc_conduit_junction.flow'),
+    'ivc': ('ivc_conduit_rl.flux', 'ivc_conduit_junction.flow'),
+    'rpa': ('rpa_conduit_rl.flux', 'rpa_conduit_out.flow'),
+    'lpa': ('lpa_conduit_rl.flux', 'lpa_conduit_out.flow'),
+}
+
+QUASI_CHAINS = ['aao_arch', 'dao', 'svc', 'ivc', 'rpa', 'lpa']
 
 def load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
@@ -76,6 +111,51 @@ def with_resistor_flows(df: pd.DataFrame, cfg: dict[str, Any]) -> pd.DataFrame:
             df[f'{name}.flow'] = df[f'{name}_dist.flow']
     return df
 
+def pressure_nodes(cfg: dict[str, Any]) -> list[str]:
+    nodes = list(cfg['net'].get('nodes', []))
+    for node in LEGACY_PRESSURE_NODES:
+        if node not in nodes:
+            nodes.append(node)
+    return nodes
+
+def quasi_chain_flux_columns(df: pd.DataFrame, cfg: dict[str, Any], chain: str) -> list[str]:
+    blocks = cfg['net']['blocks']
+    prefix = f'quasi_{chain}_rl_'
+    cols = [
+        f'{name}.flux'
+        for name, block in sorted(blocks.items())
+        if name.startswith(prefix)
+        and block.get('model_type') == 'hydraulic_rl_block'
+        and f'{name}.flux' in df
+    ]
+    return cols
+
+def vessel_flow_columns(
+    df: pd.DataFrame,
+    cfg: dict[str, Any],
+) -> dict[str, dict[str, str | list[str]]]:
+    vessels: dict[str, dict[str, str | list[str]]] = {}
+
+    for vessel, (inlet, outlet) in FULL_0D_VESSEL_FLOWS.items():
+        if inlet in df and outlet in df:
+            internal = [] if inlet == outlet else [inlet, outlet]
+            vessels[vessel] = {
+                'inlet': inlet,
+                'outlet': outlet,
+                'internal': internal,
+            }
+
+    for vessel in QUASI_CHAINS:
+        cols = quasi_chain_flux_columns(df, cfg, vessel)
+        if cols:
+            vessels[vessel] = {
+                'inlet': cols[0],
+                'outlet': cols[-1],
+                'internal': cols,
+            }
+
+    return vessels
+
 def last_cycle(df: pd.DataFrame, period: float) -> pd.DataFrame:
     return df[df['time'] >= df['time'].max() - period].copy()
 
@@ -100,13 +180,45 @@ def periodicity(df: pd.DataFrame, col: str, period: float) -> float:
     denom = max(float(a[col].max() - a[col].min()), 1e-12)
     return float(np.max(np.abs(a[col].to_numpy() - interp)) / denom)
 
+def add_flow_summary(out: dict[str, Any], sub: pd.DataFrame, col: str) -> None:
+    out[f'mean_{col}_ml_s'] = float(sub[col].mean() * ML_PER_M3)
+    out[f'integral_{col}_ml'] = float(integ(sub, col) * ML_PER_M3)
+
+def add_vessel_storage_metrics(
+    out: dict[str, Any],
+    sub: pd.DataFrame,
+    vessels: dict[str, dict[str, str | list[str]]],
+) -> None:
+    for vessel, cols in vessels.items():
+        inlet = str(cols['inlet'])
+        outlet = str(cols['outlet'])
+        if inlet not in sub or outlet not in sub:
+            continue
+        q_in = integ(sub, inlet)
+        q_out = integ(sub, outlet)
+        storage = q_in - q_out
+        out[f'mean_{vessel}_inlet_flow_ml_s'] = float(sub[inlet].mean() * ML_PER_M3)
+        out[f'mean_{vessel}_outlet_flow_ml_s'] = float(sub[outlet].mean() * ML_PER_M3)
+        out[f'integral_{vessel}_inlet_flow_ml'] = float(q_in * ML_PER_M3)
+        out[f'integral_{vessel}_outlet_flow_ml'] = float(q_out * ML_PER_M3)
+        out[f'{vessel}_cycle_storage_ml'] = float(storage * ML_PER_M3)
+        out[f'{vessel}_mass_balance_rel'] = float(
+            abs(storage) / (abs(q_in) + abs(q_out) + 1e-15)
+        )
+
+def balance_rel(integrals_in: list[float], integrals_out: list[float]) -> float:
+    numerator = abs(sum(integrals_in) - sum(integrals_out))
+    denominator = sum(abs(v) for v in [*integrals_in, *integrals_out]) + 1e-15
+    return float(numerator / denominator)
+
 def compute(csv: Path, config: Path) -> dict[str, Any]:
     cfg = load(config)
     df = with_resistor_flows(pd.read_csv(csv), cfg)
     period = 60.0 / float(cfg['parameters']['heart_rate'])
     sub = last_cycle(df, period)
+    vessels = vessel_flow_columns(sub, cfg)
     out: dict[str, Any] = {}
-    for node in ['atrial','cavity','aao','aortic_arch','bca','lcca','lsa','upper_art','upper_ven','dao','lower_art','lower_ven','svc','svc_conduit','ivc','ivc_conduit','tcpc','rpa_conduit','lpa_conduit','rpa','lpa']:
+    for node in pressure_nodes(cfg):
         col = f'{node}.blood_pressure'
         if col in sub:
             out[f'mean_{node}_pressure_mmHg'] = float(sub[col].mean() * MMHG_PER_PA)
@@ -138,26 +250,44 @@ def compute(csv: Path, config: Path) -> dict[str, Any]:
             out[f'CO_from_{col}_L_min'] = float(sub[col].mean() * L_MIN_PER_M3_S)
             out[f'periodicity_{col}'] = periodicity(df, col, period)
     for col in [c for c in sub.columns if c.endswith('.flow')]:
-        out[f'mean_{col}_ml_s'] = float(sub[col].mean() * ML_PER_M3)
-        out[f'integral_{col}_ml'] = float(integ(sub, col) * ML_PER_M3)
+        add_flow_summary(out, sub, col)
     for col in CONDUIT_FLUXES:
         if col in sub:
-            out[f'mean_{col}_ml_s'] = float(sub[col].mean() * ML_PER_M3)
-            out[f'integral_{col}_ml'] = float(integ(sub, col) * ML_PER_M3)
-    q_svc = integ(sub, 'svc_conduit_rl.flux'); q_ivc = integ(sub, 'ivc_conduit_rl.flux')
-    q_rpa = integ(sub, 'rpa_conduit_out.flow'); q_lpa = integ(sub, 'lpa_conduit_out.flow')
-    out['tcpc_cycle_balance_rel'] = abs((q_svc + q_ivc) - (q_rpa + q_lpa)) / (abs(q_svc)+abs(q_ivc)+abs(q_rpa)+abs(q_lpa)+1e-15)
-    q_svc_j = integ(sub, 'svc_conduit_junction.flow'); q_ivc_j = integ(sub, 'ivc_conduit_junction.flow')
-    q_rpa_j = integ(sub, 'rpa_conduit_rl.flux'); q_lpa_j = integ(sub, 'lpa_conduit_rl.flux')
-    out['tcpc_junction_cycle_balance_rel'] = abs((q_svc_j + q_ivc_j) - (q_rpa_j + q_lpa_j)) / (abs(q_svc_j)+abs(q_ivc_j)+abs(q_rpa_j)+abs(q_lpa_j)+1e-15)
+            add_flow_summary(out, sub, col)
+    for vessel_cols in vessels.values():
+        for col in vessel_cols.get('internal', []):
+            if col in sub and f'mean_{col}_ml_s' not in out:
+                add_flow_summary(out, sub, col)
+    add_vessel_storage_metrics(out, sub, vessels)
+    if {'svc', 'ivc', 'rpa', 'lpa'} <= set(vessels):
+        q_svc = integ(sub, str(vessels['svc']['inlet']))
+        q_ivc = integ(sub, str(vessels['ivc']['inlet']))
+        q_rpa = integ(sub, str(vessels['rpa']['outlet']))
+        q_lpa = integ(sub, str(vessels['lpa']['outlet']))
+        out['tcpc_cycle_balance_rel'] = balance_rel([q_svc, q_ivc], [q_rpa, q_lpa])
+        q_svc_j = integ(sub, str(vessels['svc']['outlet']))
+        q_ivc_j = integ(sub, str(vessels['ivc']['outlet']))
+        q_rpa_j = integ(sub, str(vessels['rpa']['inlet']))
+        q_lpa_j = integ(sub, str(vessels['lpa']['inlet']))
+        out['tcpc_junction_cycle_balance_rel'] = balance_rel(
+            [q_svc_j, q_ivc_j],
+            [q_rpa_j, q_lpa_j],
+        )
+    else:
+        out['tcpc_cycle_balance_rel'] = math.nan
+        out['tcpc_junction_cycle_balance_rel'] = math.nan
     q_pulm = integ(sub, 'right_lung.flow') + integ(sub, 'left_lung.flow')
     q_fen = integ(sub, 'fenestration.flow')
     q_av = integ(sub, 'valve_atrium.flux')
     out['atrium_cycle_balance_rel'] = abs(q_pulm + q_fen - q_av) / (abs(q_pulm)+abs(q_fen)+abs(q_av)+1e-15)
     q_ao = integ(sub, 'valve_arterial.flux')
     out['ventricle_cycle_balance_rel'] = abs(q_av - q_ao) / (abs(q_av)+abs(q_ao)+1e-15)
-    mr = sub['rpa_conduit_out.flow'].mean() if 'rpa_conduit_out.flow' in sub else math.nan
-    ml = sub['lpa_conduit_out.flow'].mean() if 'lpa_conduit_out.flow' in sub else math.nan
+    if {'rpa', 'lpa'} <= set(vessels):
+        mr = sub[str(vessels['rpa']['outlet'])].mean()
+        ml = sub[str(vessels['lpa']['outlet'])].mean()
+    else:
+        mr = sub['rpa_conduit_out.flow'].mean() if 'rpa_conduit_out.flow' in sub else math.nan
+        ml = sub['lpa_conduit_out.flow'].mean() if 'lpa_conduit_out.flow' in sub else math.nan
     out['rpa_flow_fraction'] = float(mr / (mr + ml + 1e-15))
     out['pass_no_nan'] = bool(not df.isna().any().any())
     out['pass_tcpc_balance'] = bool(out['tcpc_cycle_balance_rel'] < 1e-2 and out['tcpc_junction_cycle_balance_rel'] < 1e-2)
@@ -175,6 +305,7 @@ def main():
     text = json.dumps(data, indent=2, sort_keys=True)
     print(text)
     if args.out:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(text + '\n')
 if __name__ == '__main__':
     main()

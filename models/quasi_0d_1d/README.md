@@ -37,6 +37,60 @@ Check that the tracked configs are current:
 .venv/bin/python scripts/modeling/build_quasi_configs.py --check
 ```
 
+## Metrics and Scenario Outputs
+
+Task 007 adds model-family-aware metrics for the quasi chains. The standard
+per-chain outputs are:
+
+```text
+mean_<vessel>_inlet_flow_ml_s
+mean_<vessel>_outlet_flow_ml_s
+integral_<vessel>_inlet_flow_ml
+integral_<vessel>_outlet_flow_ml
+<vessel>_cycle_storage_ml
+<vessel>_mass_balance_rel
+```
+
+where `<vessel>` is one of `aao_arch`, `dao`, `svc`, `ivc`, `rpa`, or `lpa`.
+The metrics also retain segment-level flow outputs such as
+`mean_quasi_svc_rl_02.flux_ml_s`.
+
+The current comparison-ready outputs are tracked in:
+
+```text
+models/quasi_0d_1d/reference_outputs/baseline_metrics.json
+models/quasi_0d_1d/reference_outputs/vasodilation_metrics.json
+models/quasi_0d_1d/reference_outputs/fenestration_metrics.json
+models/quasi_0d_1d/reference_outputs/lpa_obstruction_metrics.json
+models/quasi_0d_1d/reference_outputs/scenario_comparison.txt
+```
+
+Regenerate one metrics file from a completed run:
+
+```bash
+.venv/bin/python scripts/metrics.py \
+  runs/simulations/QuasiBaselineTask007/eden_QuasiBaselineTask007_1/main.csv \
+  models/quasi_0d_1d/configs/fontan_quasi_baseline.jsonc \
+  --out models/quasi_0d_1d/reference_outputs/baseline_metrics.json
+```
+
+Compare the tracked quasi scenarios:
+
+```bash
+.venv/bin/python scripts/compare_scenarios.py \
+  models/quasi_0d_1d/reference_outputs/baseline_metrics.json \
+  models/quasi_0d_1d/reference_outputs/vasodilation_metrics.json \
+  models/quasi_0d_1d/reference_outputs/fenestration_metrics.json \
+  models/quasi_0d_1d/reference_outputs/lpa_obstruction_metrics.json
+```
+
+Current baseline highlights:
+
+- CO from aortic-valve flow: 2.63 L/min.
+- Mean TCPC pressure: 8.06 mmHg.
+- RPA flow fraction: 0.591.
+- TCPC cycle balance: `1.91e-5`.
+
 ## Implemented Topology
 
 The executable quasi model keeps these full 0-D components:
