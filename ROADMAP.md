@@ -31,7 +31,7 @@ The roadmap therefore defers any PhysioBlocks fork/upstream work until Task 009 
 | Order | Status | Task | Purpose | PhysioBlocks internals |
 |---:|---|---|---|---|
 | 001 | completed | [Freeze full 0-D reference](tasks/001-freeze-full-0d-reference.md) | Establish the current full 0-D model as the baseline reference. | No |
-| 002 | planned | [Add hydraulic lumped blocks](tasks/002-add-hydraulic-lumped-blocks.md) | Add clean local resistor/RL blocks and tests. | No |
+| 002 | completed | [Add hydraulic lumped blocks](tasks/002-add-hydraulic-lumped-blocks.md) | Add clean local resistor/RL blocks and tests. | No |
 | 003 | planned | [Build calibration targets](tasks/003-build-calibration-targets.md) | Extract shared summary and waveform targets from processed Aramburu data. | No |
 | 004 | planned | [Calibrate full 0-D baseline](tasks/004-calibrate-full-0d.md) | Tune the current model to patient-level means and volumes. | No |
 | 005 | planned | [Derive quasi vessel parameters](tasks/005-derive-quasi-vessel-parameters.md) | Convert geometry and priors into R-L-C chain parameters. | No |
