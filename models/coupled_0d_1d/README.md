@@ -9,4 +9,15 @@ Planned intent:
 - model the TCPC pathway with true 1-D components;
 - use the standardized Aramburu 2024 data package for calibration and comparison.
 
-Before implementation, define the coupling interfaces, 1-D solver assumptions, boundary variables, parameter set, run commands, calibration targets, and expected outputs here. Every model change must update this README and the schematic in `docs/`.
+Before implementation, define the coupling interfaces, 1-D solver assumptions,
+boundary variables, parameter set, run commands, calibration targets, and
+expected outputs here. Every model change must update this README, the SVG
+schematic, the PNG schematic export, and the implementation notes in `docs/`.
+
+Current documentation files:
+
+```text
+models/coupled_0d_1d/docs/schematic.svg
+models/coupled_0d_1d/docs/schematic.png
+models/coupled_0d_1d/docs/implementation_notes.md
+```

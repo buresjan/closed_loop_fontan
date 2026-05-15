@@ -49,8 +49,18 @@ def test_each_model_family_has_readme_and_schematic():
         if not model_dir.is_dir():
             continue
         assert (model_dir / 'README.md').exists()
-        schematics = list((model_dir / 'docs').glob('*.svg'))
-        assert schematics, f'{model_dir.name} is missing an SVG schematic'
+        docs = model_dir / 'docs'
+        has_svg = (
+            (docs / 'schematic.svg').exists()
+            or (docs / 'fontan_closed_loop_schematic.svg').exists()
+        )
+        has_png = (
+            (docs / 'schematic.png').exists()
+            or (docs / 'fontan_closed_loop_schematic.png').exists()
+        )
+        assert has_svg, f'{model_dir.name} is missing an SVG schematic'
+        assert has_png, f'{model_dir.name} is missing a PNG schematic export'
+        assert (docs / 'implementation_notes.md').exists(), f'{model_dir.name} is missing implementation notes'
 
 def test_uses_real_physioblocks_full_schema():
     cfg = load('fontan_0d_baseline.jsonc')

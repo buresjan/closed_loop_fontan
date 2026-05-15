@@ -13,12 +13,13 @@ This repository develops closed-loop Fontan circulation models and calibration/r
 Every model family must have:
 
 - a model-local `README.md` describing model scope, topology, parameters, run commands, and current limitations;
-- a model-local schematic under `docs/`;
-- enough notes to explain parameter naming, units, block conventions, and calibration targets.
+- a model-local SVG schematic under `docs/`;
+- a PNG export of that schematic under `docs/`;
+- a model-local `docs/implementation_notes.md` explaining parameter naming, units, block conventions, topology assumptions, calibration targets, and current limitations.
 
-Every change that modifies a model topology, parameterization, interface, or behavior must update that model's README and schematic in the same change. Do not leave diagrams or prose stale.
+Every change that modifies a model topology, parameterization, interface, or behavior must update that model's README, SVG schematic, PNG schematic export, and implementation notes in the same change. Do not leave diagrams or prose stale.
 
-Schematics must follow the visual style of the current full 0-D schematic: clear labels, visible topology, consistent block/edge styling, and no overlapping text or components. Prefer editing the SVG source first, then exporting a PNG when a PNG is present for that model.
+Schematics must follow the visual style of the current full 0-D schematic: clear labels, visible topology, consistent block/edge styling, and no overlapping text or components. Edit the SVG source first, then regenerate the PNG export from that SVG.
 
 ## Roadmap and Task Tracking
 
