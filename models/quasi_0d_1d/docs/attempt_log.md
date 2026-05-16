@@ -56,6 +56,42 @@ Key comparison scores:
 | Task 008.9 | Resolved aortic signal policy for AAo and DAo pressure/flow comparisons. | Completed. Clinical DAo flow maps to `lower_ra4.flow`; DAo chain health remains `quasi_dao_rl_06.flux`. |
 | Task 008.10 | Tested corrected aortic-chain candidates around trunk R/L/C, endpoint compliance redistribution, terminal arterial compliance, and lower-body proximal load placement. | Blocked, not promoted. Best candidate fixed several aortic-chain checks but still failed strict clinical DAo no-regression. |
 
+## Attempted And Failed Or Blocked
+
+This table is the quick failure ledger. "Failed" means the attempt did not
+clear the acceptance or promotion gate, even if it produced useful diagnostic
+information.
+
+| Area | Attempted | What failed or blocked promotion | What was retained |
+|---|---|---|---|
+| First aggregate calibration | Task 008 small global heart, systemic, and pulmonary resistance scales while preserving chain totals. | Aggregate direct error improved, but the acceptance logic was too weak: hard pump targets and AAo/DAo waveform regressions were still present. | The executable quasi configs remained useful, but Task 008 was superseded by Task 008.5 gates. |
+| Heart-frozen corrective candidates | Task 008.5 screened variants without changing the previous heart scale. | None recovered EDV, ESV, SV, and CO hard gates. | The previous `heart_contractility_scale = 0.96` was retained as a documented residual limitation, not as proof of quasi superiority. |
+| Corrective Task 008.5 calibration | Pulmonary total resistance, pulmonary proximal split, systemic resistance, and exposed chain R/L/C scales. | Stability passed and RPA/LPA/SVC gates improved, but EDV, ESV, SV, CO, paper score, and aortic waveform gates still failed. | Corrective factors became the canonical non-superior quasi baseline. |
+| DAo/AAo signal substitution hypothesis | Audited candidate AAo/DAo flow columns, sign flips, anatomical locations, and phase-shift sensitivity. | The failure was not explained by sign convention or a harmless column mismatch. `lower_ra4.flow` was closer clinically, but using it alone would hide bad DAo trunk-chain behavior. | A separate aortic signal policy now reports clinical DAo flow and DAo chain-health flow independently. |
+| Aortic R/L/C ablations | Tested aortic resistance, inertance, and compliance perturbations in the 23-candidate Task 008.6 matrix. | `aortic_L0_5` had the best waveform regression RMS but still failed hard gates and aortic waveform gates. | Aortic L scaling was useful diagnostic evidence, not a promotable topology. |
+| Caval and pulmonary R/L/C ablations | Tested caval and pulmonary limb R/L/C perturbations. | No candidate cleared hard, paper, waveform, stability, and mass-balance gates together. Some pulmonary/caval changes worsened pressure or waveform gates. | The failures pointed to a broader impedance/preload problem rather than a single limb scale. |
+| Pulmonary split and total resistance ablations | Tested proximal/distal pulmonary split changes and pulmonary total resistance changes. | Proximal split changes helped pressure placement in some cases but did not recover the full hard/paper/waveform gate set. | Explicit right/left pulmonary split knobs remain in calibration helpers. |
+| Distributed aortic branch topology | Tested distributed arch branch takeoffs and patient-geometry branch placement. | The loop collapsed badly: CO was near `1.72 L/min` and SVC flow near `2 ml/s`. | The topology was not promoted; later aortic-chain work avoided it unless debugged separately. |
+| Four-port TCPC topology | Tested four-port TCPC separation and a combined distributed-aorta/four-port topology. | It did not materially improve closure gates, and the combined topology inherited the distributed-aorta collapse. | No TCPC topology change was promoted. |
+| Current aortic open-loop chain | Prescribed AAo inflow and evaluated the existing quasi aortic chain outside the closed loop. | The chain reproduced inflow but failed AAo/arch/DAo pressure profile and pulse-pressure checks; pressure response was too damped. | The open-loop harness and report are retained as diagnostics. |
+| Frozen superiority gate | Compared current quasi to full 0-D with fixed hard, paper, waveform, pump, Fontan/pulmonary, and vascular-improvement groups. | Current quasi failed score, pump, Fontan/pulmonary, and aortic waveform groups. | The gate is the required promotion standard for future candidates. |
+| Corrected aortic-chain candidates | Task 008.10 tested trunk R/L/C, endpoint compliance redistribution, terminal arterial compliance, and lower-body proximal load placement. | Best candidate fixed passive AAo-to-DAo drop and DAo chain-health no-regression, but still failed clinical DAo nRMSE versus full 0-D. | `quasi_vessel_chains_corrected.json` is kept as design evidence only. |
+| Promotion attempt | Considered whether any Task 008.5-008.10 candidate could replace the default quasi configs. | No candidate passed all hard, paper, waveform, stability, and mass-balance gates. | Full 0-D remains the accepted calibrated reference. |
+
+## Candidate Failure Snapshot
+
+| Candidate or family | Why it was considered | Failure mode |
+|---|---|---|
+| `task0085_reference` | Canonical corrective quasi baseline. | Failed EDV, ESV, SV, CO, paper-model score, and DAo chain-health waveform no-regression. |
+| `current_heart_099` | Best Task 008.6 hard/direct candidate. | Still failed EDV, ESV, RPA pressure, LPA pressure, and AAo/DAo flow waveform gates. |
+| `aortic_L0_5` | Best Task 008.6 waveform-regression candidate. | Reduced waveform regression RMS but still failed hard gates and waveform gates. |
+| `aorta_distributed_branches` and `aorta_patient_geometry_branches` | Tried more anatomically distributed branch takeoffs. | Produced severe closed-loop degradation, including CO near `1.72 L/min` and SVC flow near `2 ml/s`. |
+| `four_port_tcpc` | Tried explicit TCPC port separation. | Did not materially improve failed closure gates. |
+| `combined_distributed_four_port` | Combined distributed aortic branches with four-port TCPC. | Inherited the distributed-aorta loop collapse and failed closure gates. |
+| current open-loop aortic chain | Tested whether closed-loop coupling was the source of aortic failures. | Failed aortic pressure profile and pulse-pressure diagnostics despite acceptable prescribed inflow reproduction. |
+| `ep0.02_art0.5` | Best open-loop corrected-chain setting. | Passed open-loop mass/drop/flow diagnostics, but was not itself a closed-loop promotion candidate. |
+| `ep02_r7_art05_frac95` | Best defensible closed-loop corrected-chain candidate. | Passed Q_AAo and DAo chain-health checks but failed clinical DAo no-regression: `0.352` candidate nRMSE versus `0.331` full 0-D. |
+
 ## Details By Attempt
 
 ### Task 005 - Parameter Derivation
