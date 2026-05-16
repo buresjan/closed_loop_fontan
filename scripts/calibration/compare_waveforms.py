@@ -16,27 +16,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.metrics import MMHG_PER_PA, ML_PER_M3, with_resistor_flows
+from scripts.calibration.map_aortic_signals import load_policy, waveform_signal_specs
 
 WAVEFORMS = ROOT / "data/processed/aramburu_2024/targets/waveform_targets.csv"
 
-MODEL_SIGNAL_MAP: dict[str, tuple[tuple[str, ...], float]] = {
-    "ascending_aorta_pressure": (("aao.blood_pressure",), MMHG_PER_PA),
-    "aortic_arch_pressure": (("aortic_arch.blood_pressure",), MMHG_PER_PA),
-    "descending_aorta_pressure": (("dao.blood_pressure",), MMHG_PER_PA),
+NON_AORTIC_MODEL_SIGNAL_MAP: dict[str, tuple[tuple[str, ...], float]] = {
     "svc_pressure": (("svc.blood_pressure",), MMHG_PER_PA),
     "ivc_pressure": (("ivc.blood_pressure",), MMHG_PER_PA),
     "rpa_pressure": (("rpa.blood_pressure",), MMHG_PER_PA),
     "lpa_pressure": (("lpa.blood_pressure",), MMHG_PER_PA),
     "wedge_pressure": (("right_lung.pressure_mid",), MMHG_PER_PA),
     "ventricle_volume": (("cavity.volume",), ML_PER_M3),
-    "ascending_aorta_flow": (
-        ("quasi_aao_arch_rl_01.flux", "aao_arch.flow", "valve_arterial.flux"),
-        ML_PER_M3,
-    ),
-    "descending_aorta_flow": (
-        ("quasi_dao_rl_06.flux", "arch_dao.flow"),
-        ML_PER_M3,
-    ),
     "svc_flow": (
         ("quasi_svc_rl_03.flux", "svc_conduit_rl.flux"),
         ML_PER_M3,
@@ -56,8 +46,32 @@ MODEL_SIGNAL_MAP: dict[str, tuple[tuple[str, ...], float]] = {
 }
 
 
+def base_signal_specs() -> dict[str, dict[str, Any]]:
+    return {
+        name: {
+            "columns": columns,
+            "scale": scale,
+            "target_canonical_name": name,
+            "signal_policy_id": None,
+            "comparison_role": "standard_waveform",
+            "include_in_no_strong_regression": True,
+            "include_in_superiority_gate": False,
+        }
+        for name, (columns, scale) in NON_AORTIC_MODEL_SIGNAL_MAP.items()
+    }
+
+
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
+
+
+def display_path(path: Path | None) -> str | None:
+    if path is None:
+        return None
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
 
 
 def last_cycle(df: pd.DataFrame, period: float) -> pd.DataFrame:
@@ -71,18 +85,23 @@ def model_waveform(
     csv_path: Path,
     config_path: Path,
     canonical_name: str,
-) -> tuple[np.ndarray, np.ndarray] | None:
+    specs: dict[str, dict[str, Any]] | None = None,
+) -> tuple[np.ndarray, np.ndarray, str] | None:
     cfg = load_json(config_path)
     df = with_resistor_flows(pd.read_csv(csv_path), cfg)
     sub = last_cycle(df, 60.0 / float(cfg["parameters"]["heart_rate"]))
-    if canonical_name not in MODEL_SIGNAL_MAP:
+    if specs is None:
+        specs = {**base_signal_specs(), **waveform_signal_specs(cfg, config_path=config_path)}
+    if canonical_name not in specs:
         return None
 
-    columns, scale = MODEL_SIGNAL_MAP[canonical_name]
+    spec = specs[canonical_name]
+    columns = spec["columns"]
+    scale = spec["scale"]
     selected = next((col for col in columns if col in sub), None)
     if selected is None:
         return None
-    return sub["phase"].to_numpy(), sub[selected].to_numpy() * scale
+    return sub["phase"].to_numpy(), sub[selected].to_numpy() * scale, selected
 
 
 def waveform_row(
@@ -127,23 +146,50 @@ def compare(
     source_id: str,
     reference_csv: Path | None = None,
     reference_config: Path | None = None,
+    policy_path: Path | None = None,
 ) -> dict[str, Any]:
+    policy = load_policy(policy_path) if policy_path is not None else load_policy()
     targets = pd.read_csv(WAVEFORMS)
     targets = targets[targets["source_id"] == source_id]
+    model_config = load_json(config_path)
+    model_specs = {**base_signal_specs(), **waveform_signal_specs(model_config, config_path=config_path, policy=policy)}
+    reference_specs = None
+    if reference_config is not None:
+        ref_config = load_json(reference_config)
+        reference_specs = {
+            **base_signal_specs(),
+            **waveform_signal_specs(ref_config, config_path=reference_config, policy=policy),
+        }
     rows = []
-    for canonical_name in sorted(targets["canonical_name"].unique()):
-        signal = model_waveform(csv_path, config_path, canonical_name)
+    for canonical_name in sorted(model_specs):
+        spec = model_specs[canonical_name]
+        target_canonical_name = spec["target_canonical_name"]
+        target_rows = targets[targets["canonical_name"] == target_canonical_name]
+        if target_rows.empty:
+            continue
+        signal = model_waveform(csv_path, config_path, canonical_name, model_specs)
         if signal is None:
             continue
-        target_rows = targets[targets["canonical_name"] == canonical_name]
         row: dict[str, Any] = {
             "canonical_name": canonical_name,
+            "target_canonical_name": target_canonical_name,
+            "model_signal": signal[2],
+            "signal_policy_id": spec["signal_policy_id"],
+            "comparison_role": spec["comparison_role"],
+            "include_in_no_strong_regression": spec["include_in_no_strong_regression"],
+            "include_in_superiority_gate": spec["include_in_superiority_gate"],
             **waveform_row(target_rows, signal[0], signal[1]),
         }
-        if reference_csv is not None and reference_config is not None:
-            ref_signal = model_waveform(reference_csv, reference_config, canonical_name)
+        if reference_csv is not None and reference_config is not None and reference_specs is not None:
+            ref_signal = model_waveform(
+                reference_csv,
+                reference_config,
+                canonical_name,
+                reference_specs,
+            )
             if ref_signal is not None:
                 reference = waveform_row(target_rows, ref_signal[0], ref_signal[1])
+                row["reference_signal"] = ref_signal[2]
                 row["reference_normalized_rmse"] = reference["normalized_rmse"]
                 row["reference_amplitude_relative_error"] = reference[
                     "amplitude_relative_error"
@@ -156,10 +202,13 @@ def compare(
 
     return {
         "source_id": source_id,
-        "model_csv": str(csv_path),
-        "model_config": str(config_path),
-        "reference_csv": str(reference_csv) if reference_csv else None,
-        "reference_config": str(reference_config) if reference_config else None,
+        "model_csv": display_path(csv_path),
+        "model_config": display_path(config_path),
+        "reference_csv": display_path(reference_csv),
+        "reference_config": display_path(reference_config),
+        "aortic_signal_policy": display_path(
+            policy_path or ROOT / "models/quasi_0d_1d/calibration/aortic_signal_policy.json"
+        ),
         "waveforms": rows,
     }
 
@@ -173,6 +222,7 @@ def main() -> None:
     parser.add_argument("--source-id", default="direct_measurement")
     parser.add_argument("--reference-csv", type=Path)
     parser.add_argument("--reference-config", type=Path)
+    parser.add_argument("--policy", type=Path)
     parser.add_argument("--out", type=Path)
     args = parser.parse_args()
 
@@ -182,6 +232,7 @@ def main() -> None:
         args.source_id,
         args.reference_csv,
         args.reference_config,
+        args.policy,
     )
     text = json.dumps(payload, indent=2, sort_keys=True)
     print(text)

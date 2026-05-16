@@ -1,0 +1,280 @@
+{
+  "created": "2026-05-15",
+  "decision_points": {
+    "dao_chain_health": {
+      "decision": "Keep DAo chain outlet flow as a separate no-strong-regression diagnostic.",
+      "reason": "Switching only to lower_ra4.flow would hide waveform behavior inside the quasi DAo trunk.",
+      "selected_signal_id": "Q_DAo_chain_health"
+    },
+    "phase_convention_consistency": {
+      "decision": "Treat AAo and DAo target waveforms and model last-cycle outputs as using the same cardiac-cycle phase convention.",
+      "reason": "The target metadata records processed comparison-cycle phase for all waveform targets, and no later script applies a phase shift for acceptance."
+    },
+    "phase_shifted_nrmse": {
+      "decision": "Use phase-shifted nRMSE only diagnostically.",
+      "reason": "The accepted waveform metric remains unshifted nRMSE under the shared target phase convention."
+    },
+    "q_dao_target_location": {
+      "decision": "Use lower-body DAo outflow as the clinical waveform match in the current lumped/quasi models.",
+      "reason": "The tracked descending-aorta flow target is a lower-body aortic measurement after arch branches. In the quasi topology, lower_ra4.flow is the flow from the DAo pressure node into the lower systemic artery and is the best anatomical clinical match. The DAo chain outlet remains a separate trunk-chain health signal.",
+      "selected_signal_id": "Q_DAo"
+    }
+  },
+  "phase_policy": {
+    "acceptance_metric": "unshifted_normalized_rmse",
+    "phase_convention": "All waveform targets use the processed Aramburu comparison-cycle phase from phase 0 to 1. No valve-event alignment or cross-correlation phase shift is applied before acceptance scoring.",
+    "phase_shifted_nrmse_use": "diagnostic_only",
+    "reason": "The signal audit shows phase-shifted scores can improve substantially, but accepting a shifted score would hide timing errors."
+  },
+  "policy_version": 1,
+  "signals": [
+    {
+      "anatomical_interpretation": "ascending aorta/root pressure node",
+      "canonical_name": "ascending_aorta_pressure",
+      "comparison_role": "soft_target",
+      "include_in_no_strong_regression": false,
+      "include_in_superiority_gate": false,
+      "include_in_waveform_compare": true,
+      "model_columns": {
+        "full_0d": [
+          "aao.blood_pressure"
+        ],
+        "quasi_0d_1d": [
+          "aao.blood_pressure"
+        ]
+      },
+      "model_unit": "Pa",
+      "preferred_target_sources": [
+        "paper_model",
+        "nektar_closed_loop_1d"
+      ],
+      "quantity": "pressure",
+      "reason": "Paper/Nektar aortic pressure profile is preferred for passive aortic-profile checks; direct pressure remains useful context.",
+      "scale_key": "MMHG_PER_PA",
+      "signal_id": "P_AAo",
+      "target_canonical_name": "ascending_aorta_pressure",
+      "target_column": "ascending_aorta_pressure_mmHg",
+      "unit": "mmHg"
+    },
+    {
+      "anatomical_interpretation": "aortic arch pressure node",
+      "canonical_name": "aortic_arch_pressure",
+      "comparison_role": "soft_target",
+      "include_in_no_strong_regression": false,
+      "include_in_superiority_gate": false,
+      "include_in_waveform_compare": true,
+      "model_columns": {
+        "full_0d": [
+          "aortic_arch.blood_pressure"
+        ],
+        "quasi_0d_1d": [
+          "aortic_arch.blood_pressure"
+        ]
+      },
+      "model_unit": "Pa",
+      "preferred_target_sources": [
+        "paper_model",
+        "nektar_closed_loop_1d"
+      ],
+      "quantity": "pressure",
+      "reason": "Used for passive aortic pressure-profile consistency.",
+      "scale_key": "MMHG_PER_PA",
+      "signal_id": "P_arch",
+      "target_canonical_name": "aortic_arch_pressure",
+      "target_column": "aortic_arch_pressure_mmHg",
+      "unit": "mmHg"
+    },
+    {
+      "anatomical_interpretation": "descending aorta pressure node",
+      "canonical_name": "descending_aorta_pressure",
+      "comparison_role": "diagnostic",
+      "include_in_no_strong_regression": false,
+      "include_in_superiority_gate": false,
+      "include_in_waveform_compare": true,
+      "model_columns": {
+        "full_0d": [
+          "dao.blood_pressure"
+        ],
+        "quasi_0d_1d": [
+          "dao.blood_pressure"
+        ]
+      },
+      "model_unit": "Pa",
+      "preferred_target_sources": [
+        "paper_model",
+        "nektar_closed_loop_1d"
+      ],
+      "quantity": "pressure",
+      "reason": "Direct DAo pressure violates passive pressure ordering in the current target set, so it remains diagnostic/soft.",
+      "scale_key": "MMHG_PER_PA",
+      "signal_id": "P_DAo",
+      "target_canonical_name": "descending_aorta_pressure",
+      "target_column": "descending_aorta_pressure_mmHg",
+      "unit": "mmHg"
+    },
+    {
+      "anatomical_interpretation": "aortic-valve outlet/root inflow",
+      "canonical_name": "ascending_aorta_flow",
+      "comparison_role": "hard_gate",
+      "evidence": {
+        "full_0d": {
+          "anatomical_location": "aortic-valve outlet/root inflow",
+          "audit_canonical_name": "ascending_aorta_flow",
+          "audit_model": "full_0d",
+          "audit_signal": "valve_arterial.flux",
+          "best_phase_shift_fraction": 0.33663366336633666,
+          "best_phase_shift_normalized_rmse": 0.14403556433107303,
+          "normalized_rmse": 0.5717890388728804,
+          "sign_flipped_normalized_rmse": 0.5748364136373373
+        },
+        "quasi": {
+          "anatomical_location": "aortic-valve outlet/root inflow",
+          "audit_canonical_name": "ascending_aorta_flow",
+          "audit_model": "quasi",
+          "audit_signal": "valve_arterial.flux",
+          "best_phase_shift_fraction": 0.31683168316831684,
+          "best_phase_shift_normalized_rmse": 0.11487879299985027,
+          "normalized_rmse": 0.560170267939655,
+          "sign_flipped_normalized_rmse": 0.5617955801550998
+        }
+      },
+      "include_in_no_strong_regression": true,
+      "include_in_superiority_gate": true,
+      "include_in_waveform_compare": true,
+      "model_columns": {
+        "full_0d": [
+          "valve_arterial.flux"
+        ],
+        "quasi_0d_1d": [
+          "valve_arterial.flux"
+        ]
+      },
+      "model_unit": "m3/s",
+      "preferred_target_sources": [
+        "direct_measurement",
+        "paper_model"
+      ],
+      "quantity": "flow",
+      "reason": "Q_ascAo is a root/ascending-aorta flow target. The aortic-valve outlet is the shared full 0-D/quasi signal closest to that root inflow location.",
+      "scale_key": "ML_PER_M3",
+      "signal_id": "Q_AAo",
+      "target_canonical_name": "ascending_aorta_flow",
+      "target_column": "ascending_aorta_flow_ml_s",
+      "unit": "ml/s"
+    },
+    {
+      "anatomical_interpretation": "flow from the DAo pressure node into the lower systemic artery",
+      "canonical_name": "descending_aorta_flow",
+      "comparison_role": "soft_target",
+      "evidence": {
+        "full_0d": {
+          "anatomical_location": "full 0-D flow from DAo into lower systemic artery",
+          "audit_canonical_name": "descending_aorta_flow",
+          "audit_model": "full_0d",
+          "audit_signal": "lower_ra4.flow",
+          "best_phase_shift_fraction": 0.16831683168316833,
+          "best_phase_shift_normalized_rmse": 0.30959844286666255,
+          "normalized_rmse": 0.3311407122964161,
+          "sign_flipped_normalized_rmse": 0.5850382377679664
+        },
+        "openloop": {
+          "normalized_rmse": 0.332245978543323
+        },
+        "quasi": {
+          "anatomical_location": "flow from DAo pressure node into lower systemic artery",
+          "audit_canonical_name": "descending_aorta_flow",
+          "audit_model": "quasi",
+          "audit_signal": "lower_ra4.flow",
+          "best_phase_shift_fraction": 0.18811881188118812,
+          "best_phase_shift_normalized_rmse": 0.2405275534810965,
+          "normalized_rmse": 0.38068608962029776,
+          "sign_flipped_normalized_rmse": 0.5715801215794818
+        }
+      },
+      "include_in_no_strong_regression": false,
+      "include_in_superiority_gate": false,
+      "include_in_waveform_compare": true,
+      "model_columns": {
+        "full_0d": [
+          "lower_ra4.flow"
+        ],
+        "quasi_0d_1d": [
+          "lower_ra4.flow"
+        ]
+      },
+      "model_unit": "m3/s",
+      "preferred_target_sources": [
+        "direct_measurement",
+        "paper_model"
+      ],
+      "quantity": "flow",
+      "reason": "This is the best clinical DAo waveform match in the current lumped/quasi topology, but the measurement-location ambiguity keeps it soft until later validation.",
+      "scale_key": "ML_PER_M3",
+      "signal_id": "Q_DAo",
+      "target_canonical_name": "descending_aorta_flow",
+      "target_column": "descending_aorta_flow_ml_s",
+      "unit": "ml/s"
+    },
+    {
+      "anatomical_interpretation": "flow through the final DAo trunk/chain element before the DAo pressure node",
+      "canonical_name": "descending_aorta_chain_health_flow",
+      "comparison_role": "diagnostic",
+      "evidence": {
+        "full_0d": {
+          "anatomical_location": "full 0-D arch-to-DAo resistor flow",
+          "audit_canonical_name": "descending_aorta_flow",
+          "audit_model": "full_0d",
+          "audit_signal": "arch_dao.flow",
+          "best_phase_shift_fraction": 0.32673267326732675,
+          "best_phase_shift_normalized_rmse": 0.19268196323343006,
+          "normalized_rmse": 0.433747643475799,
+          "sign_flipped_normalized_rmse": 0.5580304847959989
+        },
+        "openloop": {
+          "normalized_rmse": 0.4242748677343666
+        },
+        "quasi": {
+          "anatomical_location": "DAo chain outlet at DAo pressure node",
+          "audit_canonical_name": "descending_aorta_flow",
+          "audit_model": "quasi",
+          "audit_signal": "quasi_dao_rl_06.flux",
+          "best_phase_shift_fraction": 0.3069306930693069,
+          "best_phase_shift_normalized_rmse": 0.49985941265513656,
+          "normalized_rmse": 0.9520066206784051,
+          "sign_flipped_normalized_rmse": 0.7189080107885072
+        }
+      },
+      "include_in_no_strong_regression": true,
+      "include_in_superiority_gate": true,
+      "include_in_waveform_compare": true,
+      "model_columns": {
+        "full_0d": [
+          "arch_dao.flow"
+        ],
+        "quasi_0d_1d": [
+          "quasi_dao_rl_06.flux"
+        ]
+      },
+      "model_unit": "m3/s",
+      "preferred_target_sources": [
+        "direct_measurement",
+        "paper_model"
+      ],
+      "quantity": "flow",
+      "reason": "This is not the clinical DAo target, but it remains the health check for the quasi aortic trunk. It prevents lower_ra4.flow from hiding a broken DAo chain.",
+      "scale_key": "ML_PER_M3",
+      "signal_id": "Q_DAo_chain_health",
+      "target_canonical_name": "descending_aorta_flow",
+      "target_column": "descending_aorta_flow_ml_s",
+      "unit": "ml/s"
+    }
+  ],
+  "source_documents": [
+    "models/quasi_0d_1d/calibration/dao_aao_flow_signal_audit.csv",
+    "models/quasi_0d_1d/calibration/design_audit_report.md",
+    "models/quasi_0d_1d/calibration/aorta_quasi_openloop_report.md",
+    "data/processed/aramburu_2024/targets/waveform_metadata.csv"
+  ],
+  "status": "active",
+  "task": "008.9"
+}

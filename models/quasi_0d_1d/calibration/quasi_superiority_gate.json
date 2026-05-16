@@ -1,0 +1,61 @@
+{
+  "aortic_flow_waveform_targets": [
+    "ascending_aorta_flow",
+    "descending_aorta_chain_health_flow"
+  ],
+  "aortic_signal_policy": "/home/jan/Documents/closed_loop_fontan/models/quasi_0d_1d/calibration/aortic_signal_policy.json",
+  "candidate_model_family": "quasi_0d_1d",
+  "criteria": [
+    "stability_and_balance_gates_pass",
+    "hard_clinical_summary_score_not_worse_than_full_0d",
+    "aggregate_direct_score_not_worse_than_full_0d",
+    "paper_model_score_not_worse_than_full_0d",
+    "pump_target_non_regression",
+    "fontan_pulmonary_target_non_regression",
+    "aortic_flow_waveform_no_regression",
+    "at_least_one_quasi_specific_vascular_improvement"
+  ],
+  "fontan_pulmonary_non_regression_targets": [
+    "rpa_pressure",
+    "lpa_pressure",
+    "svc_flow",
+    "rpa_flow",
+    "lpa_flow",
+    "rpa_flow_fraction"
+  ],
+  "hard_score_targets": [
+    "edv",
+    "esv",
+    "stroke_volume",
+    "cardiac_output",
+    "rpa_pressure",
+    "lpa_pressure",
+    "svc_flow",
+    "rpa_flow_fraction"
+  ],
+  "notes": [
+    "Direct DAo pressure and raw direct IVC flow cannot compensate for failed hard, paper, stability, or aortic-flow gates.",
+    "A lower aggregate direct score is insufficient for superiority.",
+    "The gate is intentionally stricter than the Task 008.5 corrective non-regression gate.",
+    "Task 008.9 maps clinical DAo flow separately from DAo chain-health flow; the chain-health flow remains in the aortic waveform gate."
+  ],
+  "pump_non_regression_targets": [
+    "edv",
+    "esv",
+    "stroke_volume",
+    "cardiac_output"
+  ],
+  "reference_model": "full_0d",
+  "soft_problematic_targets": [
+    "descending_aorta_pressure",
+    "ivc_flow"
+  ],
+  "status": "frozen",
+  "task": "008.7",
+  "tolerances": {
+    "cycle_balance": 0.01,
+    "periodicity": 0.02,
+    "rpa_flow_fraction_absolute_non_regression": 0.005,
+    "target_relative_error_non_regression": 0.005
+  }
+}

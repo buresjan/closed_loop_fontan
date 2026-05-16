@@ -4,6 +4,8 @@ Status: completed
 
 Depends on: Tasks 004, 006, and 007
 
+Superseded by: Task 008.5 corrective quasi calibration and non-regression gate
+
 ## Goal
 
 Tune the quasi model from the calibrated full 0-D physiology while improving impedance, inertance, distributed compliance, and waveform timing.
@@ -36,6 +38,10 @@ No PhysioBlocks internal changes.
 ## Completion Notes
 
 Completed on 2026-05-15.
+
+Task 008 was later reviewed as stable but scientifically provisional. Task
+008.5 keeps the executable quasi model but replaces the acceptance logic with a
+hard-target non-regression gate and a corrective calibration report.
 
 - Added Task 008 quasi calibration helpers:
   - `scripts/calibration/quasi.py`

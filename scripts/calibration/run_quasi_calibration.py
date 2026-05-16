@@ -94,6 +94,31 @@ def write_objective_reports() -> None:
             str(CALIBRATION_DIR / "baseline_vs_paper.json"),
         ]
     )
+    run([sys.executable, "scripts/calibration/map_aortic_signals.py"])
+    run(
+        [
+            sys.executable,
+            "scripts/calibration/compare_waveforms.py",
+            str(latest_main_csv("QuasiBaseline")),
+            str(CONFIG_DIR / "fontan_quasi_baseline.jsonc"),
+            "--source-id",
+            "direct_measurement",
+            "--reference-csv",
+            str(latest_main_csv("Baseline")),
+            "--reference-config",
+            str(ROOT / "models/full_0d/configs/fontan_0d_baseline.jsonc"),
+            "--out",
+            str(CALIBRATION_DIR / "baseline_waveforms_direct.json"),
+        ]
+    )
+    run(
+        [
+            sys.executable,
+            "scripts/calibration/quasi_non_regression.py",
+            "--out",
+            str(CALIBRATION_DIR / "non_regression_gate.json"),
+        ]
+    )
 
 
 def main() -> None:

@@ -1,0 +1,305 @@
+{
+  "accepted_as_superior": false,
+  "gates": {
+    "hard_target_non_regression": [
+      {
+        "full_0d_error": 0.03701430841999644,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.01164300700536202,
+        "pass": false,
+        "quasi_0d_1d_error": 0.058657315425358465,
+        "target_name": "edv",
+        "threshold": 0.047014308419996445
+      },
+      {
+        "full_0d_error": 0.04856156456095697,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.01581598135150336,
+        "pass": false,
+        "quasi_0d_1d_error": 0.07437754591246033,
+        "target_name": "esv",
+        "threshold": 0.05856156456095697
+      },
+      {
+        "full_0d_error": 0.025215996124184174,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.007379305400653943,
+        "pass": false,
+        "quasi_0d_1d_error": 0.04259530152483812,
+        "target_name": "stroke_volume",
+        "threshold": 0.035215996124184176
+      },
+      {
+        "full_0d_error": 0.022744140582717398,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.006627398011443457,
+        "pass": false,
+        "quasi_0d_1d_error": 0.03937153859416086,
+        "target_name": "cardiac_output",
+        "threshold": 0.0327441405827174
+      },
+      {
+        "full_0d_error": 0.08308958306515703,
+        "gate_type": "relative_error_non_regression",
+        "margin": 0.0034518013403948417,
+        "pass": true,
+        "quasi_0d_1d_error": 0.08963778172476218,
+        "target_name": "rpa_pressure",
+        "threshold": 0.09308958306515702
+      },
+      {
+        "full_0d_error": 0.08014587075772904,
+        "gate_type": "relative_error_non_regression",
+        "margin": 0.00340845977781766,
+        "pass": true,
+        "quasi_0d_1d_error": 0.08673741097991138,
+        "target_name": "lpa_pressure",
+        "threshold": 0.09014587075772904
+      },
+      {
+        "full_0d_error": 0.017385816070324696,
+        "gate_type": "relative_error_non_regression",
+        "margin": 0.00742230029653276,
+        "pass": true,
+        "quasi_0d_1d_error": 0.019963515773791938,
+        "target_name": "svc_flow",
+        "threshold": 0.027385816070324698
+      },
+      {
+        "full_0d_error": 0.0005222586899034098,
+        "gate_type": "absolute_flow_fraction_non_regression",
+        "margin": 0.0050275977268322515,
+        "pass": true,
+        "quasi_0d_1d_error": 0.0004946609630711585,
+        "target_name": "rpa_flow_fraction",
+        "threshold": 0.00552225868990341
+      }
+    ],
+    "stability": [
+      {
+        "metric": "periodicity_cavity_volume",
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.0069720247768852075
+      },
+      {
+        "metric": "periodicity_valve_arterial.flux",
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.007138592313476972
+      },
+      {
+        "metric": "periodicity_valve_atrium.flux",
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.0010812985137732371
+      },
+      {
+        "metric": "tcpc_cycle_balance_rel",
+        "pass": true,
+        "threshold": 0.01,
+        "value": 2.2768539977419396e-05
+      },
+      {
+        "metric": "atrium_cycle_balance_rel",
+        "pass": true,
+        "threshold": 0.01,
+        "value": 0.00014772507901833173
+      },
+      {
+        "metric": "ventricle_cycle_balance_rel",
+        "pass": true,
+        "threshold": 0.01,
+        "value": 9.581884348009215e-05
+      },
+      {
+        "metric": "pass_no_nan",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "pass_tcpc_balance",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "pass_atrium_balance",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "pass_ventricle_balance",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      }
+    ]
+  },
+  "model_family": "quasi_0d_1d",
+  "notes": [
+    "Direct DAo pressure and raw direct IVC flow are scored as soft/problematic diagnostics.",
+    "The selected corrective factors pass stability and improve the aggregate direct objective.",
+    "A stable quasi prototype is not marked superior unless all hard, paper, and waveform gates pass."
+  ],
+  "scores": {
+    "aggregate_direct_score": {
+      "full_0d": 0.061385711944231244,
+      "quasi_0d_1d": 0.059156490366446456
+    },
+    "hard_clinical_summary_score": {
+      "full_0d": 0.04326800942219066,
+      "quasi_0d_1d": 0.05606355646481625,
+      "targets": [
+        "edv",
+        "esv",
+        "stroke_volume",
+        "cardiac_output",
+        "rpa_pressure",
+        "lpa_pressure",
+        "svc_flow",
+        "rpa_flow_fraction"
+      ]
+    },
+    "paper_model_comparison_score": {
+      "full_0d": 0.07926178853036234,
+      "margin": -0.001237223844635052,
+      "pass": false,
+      "quasi_0d_1d": 0.08049901237499739,
+      "source_id": "paper_model"
+    },
+    "soft_problematic_target_score": {
+      "full_0d": 0.15630550113281524,
+      "quasi_0d_1d": 0.1120198690779198,
+      "targets": [
+        "descending_aorta_pressure",
+        "ivc_flow"
+      ]
+    },
+    "waveform_no_strong_regression_score": {
+      "pass": false,
+      "regression_rms": 0.15011960068087246,
+      "source_id": "direct_measurement",
+      "strong_regression_tolerance": 0.05,
+      "waveforms": [
+        {
+          "canonical_name": "ascending_aorta_flow",
+          "comparison_role": "hard_gate",
+          "delta": -0.011618770933225386,
+          "normalized_rmse": 0.560170267939655,
+          "pass": true,
+          "reference_normalized_rmse": 0.5717890388728804,
+          "signal_policy_id": "Q_AAo"
+        },
+        {
+          "canonical_name": "descending_aorta_chain_health_flow",
+          "comparison_role": "diagnostic",
+          "delta": 0.518258977202606,
+          "normalized_rmse": 0.9520066206784051,
+          "pass": false,
+          "reference_normalized_rmse": 0.433747643475799,
+          "signal_policy_id": "Q_DAo_chain_health"
+        },
+        {
+          "canonical_name": "ivc_flow",
+          "comparison_role": "standard_waveform",
+          "delta": -0.017501840357355358,
+          "normalized_rmse": 0.24779185998145797,
+          "pass": true,
+          "reference_normalized_rmse": 0.26529370033881333,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "ivc_pressure",
+          "comparison_role": "standard_waveform",
+          "delta": -0.05988777063218914,
+          "normalized_rmse": 0.37742686659374797,
+          "pass": true,
+          "reference_normalized_rmse": 0.4373146372259371,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "lpa_flow",
+          "comparison_role": "standard_waveform",
+          "delta": 0.03321488056340813,
+          "normalized_rmse": 0.24053072750912102,
+          "pass": true,
+          "reference_normalized_rmse": 0.2073158469457129,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "lpa_pressure",
+          "comparison_role": "standard_waveform",
+          "delta": 0.00983733755730426,
+          "normalized_rmse": 0.36345033790289655,
+          "pass": true,
+          "reference_normalized_rmse": 0.3536130003455923,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "rpa_flow",
+          "comparison_role": "standard_waveform",
+          "delta": 0.010823053382946368,
+          "normalized_rmse": 0.24467763063445067,
+          "pass": true,
+          "reference_normalized_rmse": 0.2338545772515043,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "rpa_pressure",
+          "comparison_role": "standard_waveform",
+          "delta": 0.022830389097341253,
+          "normalized_rmse": 0.5289822322936287,
+          "pass": true,
+          "reference_normalized_rmse": 0.5061518431962875,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "svc_flow",
+          "comparison_role": "standard_waveform",
+          "delta": -0.00401195621976097,
+          "normalized_rmse": 0.28537273229063853,
+          "pass": true,
+          "reference_normalized_rmse": 0.2893846885103995,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "svc_pressure",
+          "comparison_role": "standard_waveform",
+          "delta": -0.05747519248635957,
+          "normalized_rmse": 0.2788509405238267,
+          "pass": true,
+          "reference_normalized_rmse": 0.33632613301018627,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "ventricle_volume",
+          "comparison_role": "standard_waveform",
+          "delta": -0.010024689981334767,
+          "normalized_rmse": 0.5744664946285795,
+          "pass": true,
+          "reference_normalized_rmse": 0.5844911846099142,
+          "signal_policy_id": null
+        },
+        {
+          "canonical_name": "wedge_pressure",
+          "comparison_role": "standard_waveform",
+          "delta": -0.05139682515079069,
+          "normalized_rmse": 0.24288002755481736,
+          "pass": true,
+          "reference_normalized_rmse": 0.29427685270560805,
+          "signal_policy_id": null
+        }
+      ]
+    }
+  },
+  "status": "stable_corrective_prototype_not_superior",
+  "task": "008.5",
+  "tolerances": {
+    "relative_error_non_regression": 0.01,
+    "rpa_flow_fraction_absolute": 0.005,
+    "waveform_strong_regression": 0.05
+  }
+}

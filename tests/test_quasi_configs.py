@@ -164,4 +164,4 @@ def test_quasi_docs_name_executable_configs_and_chain_counts():
         assert text in readme
         assert text in notes
         assert text in schematic
-    assert "Task 008 calibrated configs" in schematic
+    assert "Task 008.5 corrective configs" in schematic

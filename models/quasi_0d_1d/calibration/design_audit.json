@@ -1,0 +1,301 @@
+{
+  "characteristic_impedance": [
+    {
+      "Zc_mmHg_s_ml": 0.13297594352258363,
+      "comment": "parallel upper branches plus DAo/lower arterial entry",
+      "downstream_resistance_mmHg_s_ml": 0.1309652468466458,
+      "ratio": 1.0153529025779813,
+      "vessel": "aao_arch"
+    },
+    {
+      "Zc_mmHg_s_ml": 0.3211217814118564,
+      "comment": "lower systemic bed",
+      "downstream_resistance_mmHg_s_ml": 1.8143957536508166,
+      "ratio": 0.17698552301266948,
+      "vessel": "dao"
+    },
+    {
+      "Zc_mmHg_s_ml": 0.08500825145109328,
+      "comment": "parallel TCPC-to-pulmonary proximal paths",
+      "downstream_resistance_mmHg_s_ml": 0.04733170740832418,
+      "ratio": 1.7960106682342707,
+      "vessel": "svc"
+    },
+    {
+      "Zc_mmHg_s_ml": 0.04046011171425212,
+      "comment": "parallel TCPC-to-pulmonary proximal paths",
+      "downstream_resistance_mmHg_s_ml": 0.04733170740832418,
+      "ratio": 0.854820456088944,
+      "vessel": "ivc"
+    },
+    {
+      "Zc_mmHg_s_ml": 0.16831885291018994,
+      "comment": "right pulmonary RCR bed",
+      "downstream_resistance_mmHg_s_ml": 0.124199709327288,
+      "ratio": 1.3552274302562195,
+      "vessel": "rpa"
+    },
+    {
+      "Zc_mmHg_s_ml": 0.5250873665021559,
+      "comment": "left pulmonary RCR bed",
+      "downstream_resistance_mmHg_s_ml": 0.17939958013941598,
+      "ratio": 2.926915247483284,
+      "vessel": "lpa"
+    }
+  ],
+  "compliance_budget_summary": [
+    {
+      "category": "active_atrium",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 40.894451271341836,
+      "mean_pressure_mmHg": null,
+      "model": "full_0d",
+      "node": "",
+      "total_C_m3_per_Pa": 6.000510043353685e-08,
+      "total_C_ml_per_mmHg": 8.000018722923818
+    },
+    {
+      "category": "other",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 42.57211841229159,
+      "mean_pressure_mmHg": null,
+      "model": "full_0d",
+      "node": "",
+      "total_C_m3_per_Pa": 1.0805918078036632e-08,
+      "total_C_ml_per_mmHg": 1.4406699816863981
+    },
+    {
+      "category": "retained_aortic_endpoint",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 109.70786345667649,
+      "mean_pressure_mmHg": null,
+      "model": "full_0d",
+      "node": "",
+      "total_C_m3_per_Pa": 1.8001530130061052e-08,
+      "total_C_ml_per_mmHg": 2.400005616877145
+    },
+    {
+      "category": "retained_fontan_endpoint",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 474.92313044693793,
+      "mean_pressure_mmHg": null,
+      "model": "full_0d",
+      "node": "",
+      "total_C_m3_per_Pa": 3.9873389238085233e-07,
+      "total_C_ml_per_mmHg": 53.16012441382876
+    },
+    {
+      "category": "systemic_bed",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 534.1245631727829,
+      "mean_pressure_mmHg": null,
+      "model": "full_0d",
+      "node": "",
+      "total_C_m3_per_Pa": 1.9001615137286667e-07,
+      "total_C_ml_per_mmHg": 25.333392622592083
+    },
+    {
+      "category": "active_atrium",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 37.688522622806225,
+      "mean_pressure_mmHg": null,
+      "model": "quasi_0d_1d",
+      "node": "",
+      "total_C_m3_per_Pa": 6.000510043353685e-08,
+      "total_C_ml_per_mmHg": 8.000018722923818
+    },
+    {
+      "category": "other",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 37.29501763175095,
+      "mean_pressure_mmHg": null,
+      "model": "quasi_0d_1d",
+      "node": "",
+      "total_C_m3_per_Pa": 6.005510043353684e-09,
+      "total_C_ml_per_mmHg": 0.8006684838524927
+    },
+    {
+      "category": "quasi_chain",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 9.60708698874036,
+      "mean_pressure_mmHg": null,
+      "model": "quasi_0d_1d",
+      "node": "",
+      "total_C_m3_per_Pa": 5.25291650824456e-09,
+      "total_C_ml_per_mmHg": 0.7003309737387788
+    },
+    {
+      "category": "retained_aortic_endpoint",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 112.58579930441965,
+      "mean_pressure_mmHg": null,
+      "model": "quasi_0d_1d",
+      "node": "",
+      "total_C_m3_per_Pa": 1.8001530130061052e-08,
+      "total_C_ml_per_mmHg": 2.400005616877145
+    },
+    {
+      "category": "retained_fontan_endpoint",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 470.8307931175038,
+      "mean_pressure_mmHg": null,
+      "model": "quasi_0d_1d",
+      "node": "",
+      "total_C_m3_per_Pa": 3.9873389238085233e-07,
+      "total_C_ml_per_mmHg": 53.16012441382876
+    },
+    {
+      "category": "systemic_bed",
+      "component": "__category_total__",
+      "estimated_stored_volume_ml": 544.885909850193,
+      "mean_pressure_mmHg": null,
+      "model": "quasi_0d_1d",
+      "node": "",
+      "total_C_m3_per_Pa": 1.9001615137286667e-07,
+      "total_C_ml_per_mmHg": 25.333392622592083
+    }
+  ],
+  "flow_signal_audit": [
+    {
+      "amplitude_ml_s": 241.53359858425625,
+      "anatomical_location": "aortic-valve outlet/root inflow",
+      "best_phase_shift_fraction": 0.31683168316831684,
+      "best_phase_shift_normalized_rmse": 0.11487879299985027,
+      "candidate_signal": "valve_arterial.flux",
+      "canonical_name": "ascending_aorta_flow",
+      "mean_flow_ml_s": 41.20171821741022,
+      "model": "quasi",
+      "normalized_rmse": 0.560170267939655,
+      "phase_dominated": true,
+      "sign_checked": true,
+      "sign_flipped_normalized_rmse": 0.5617955801550998
+    },
+    {
+      "amplitude_ml_s": 273.166682791509,
+      "anatomical_location": "AAo/arch chain inlet",
+      "best_phase_shift_fraction": 0.297029702970297,
+      "best_phase_shift_normalized_rmse": 0.1519110868482163,
+      "candidate_signal": "quasi_aao_arch_rl_01.flux",
+      "canonical_name": "ascending_aorta_flow",
+      "mean_flow_ml_s": 41.28367942898472,
+      "model": "quasi",
+      "normalized_rmse": 0.5784540104552748,
+      "phase_dominated": true,
+      "sign_checked": false,
+      "sign_flipped_normalized_rmse": 0.5536771993536601
+    },
+    {
+      "amplitude_ml_s": 273.10247458044006,
+      "anatomical_location": "AAo/arch chain outlet before arch branches",
+      "best_phase_shift_fraction": 0.297029702970297,
+      "best_phase_shift_normalized_rmse": 0.15469332498969343,
+      "candidate_signal": "quasi_aao_arch_rl_04.flux",
+      "canonical_name": "ascending_aorta_flow",
+      "mean_flow_ml_s": 41.28706600862384,
+      "model": "quasi",
+      "normalized_rmse": 0.5798395404163456,
+      "phase_dominated": true,
+      "sign_checked": false,
+      "sign_flipped_normalized_rmse": 0.5535711762839569
+    },
+    {
+      "amplitude_ml_s": 290.7568380484228,
+      "anatomical_location": "aortic-valve outlet/root inflow",
+      "best_phase_shift_fraction": 0.33663366336633666,
+      "best_phase_shift_normalized_rmse": 0.14403556433107303,
+      "candidate_signal": "valve_arterial.flux",
+      "canonical_name": "ascending_aorta_flow",
+      "mean_flow_ml_s": 41.91487361003064,
+      "model": "full_0d",
+      "normalized_rmse": 0.5717890388728804,
+      "phase_dominated": true,
+      "sign_checked": true,
+      "sign_flipped_normalized_rmse": 0.5748364136373373
+    },
+    {
+      "amplitude_ml_s": 182.89913467577952,
+      "anatomical_location": "full 0-D AAo-to-arch resistor flow",
+      "best_phase_shift_fraction": 0.31683168316831684,
+      "best_phase_shift_normalized_rmse": 0.10299536946707764,
+      "candidate_signal": "aao_arch.flow",
+      "canonical_name": "ascending_aorta_flow",
+      "mean_flow_ml_s": 41.91638733144587,
+      "model": "full_0d",
+      "normalized_rmse": 0.4994873664240247,
+      "phase_dominated": true,
+      "sign_checked": true,
+      "sign_flipped_normalized_rmse": 0.551122218029225
+    },
+    {
+      "amplitude_ml_s": 221.44768729522372,
+      "anatomical_location": "DAo chain inlet after arch branches",
+      "best_phase_shift_fraction": 0.3069306930693069,
+      "best_phase_shift_normalized_rmse": 0.5017326373325852,
+      "candidate_signal": "quasi_dao_rl_01.flux",
+      "canonical_name": "descending_aorta_flow",
+      "mean_flow_ml_s": 21.19283240827088,
+      "model": "quasi",
+      "normalized_rmse": 0.956793232675751,
+      "phase_dominated": true,
+      "sign_checked": false,
+      "sign_flipped_normalized_rmse": 0.7200946547294167
+    },
+    {
+      "amplitude_ml_s": 219.77609536819267,
+      "anatomical_location": "DAo chain outlet at DAo pressure node",
+      "best_phase_shift_fraction": 0.3069306930693069,
+      "best_phase_shift_normalized_rmse": 0.49985941265513656,
+      "candidate_signal": "quasi_dao_rl_06.flux",
+      "canonical_name": "descending_aorta_flow",
+      "mean_flow_ml_s": 21.19045794018541,
+      "model": "quasi",
+      "normalized_rmse": 0.9520066206784051,
+      "phase_dominated": true,
+      "sign_checked": false,
+      "sign_flipped_normalized_rmse": 0.7189080107885072
+    },
+    {
+      "amplitude_ml_s": 36.85060340658269,
+      "anatomical_location": "flow from DAo pressure node into lower systemic artery",
+      "best_phase_shift_fraction": 0.18811881188118812,
+      "best_phase_shift_normalized_rmse": 0.2405275534810965,
+      "candidate_signal": "lower_ra4.flow",
+      "canonical_name": "descending_aorta_flow",
+      "mean_flow_ml_s": 20.936642495184103,
+      "model": "quasi",
+      "normalized_rmse": 0.38068608962029776,
+      "phase_dominated": true,
+      "sign_checked": true,
+      "sign_flipped_normalized_rmse": 0.5715801215794818
+    },
+    {
+      "amplitude_ml_s": 40.91204945787846,
+      "anatomical_location": "full 0-D arch-to-DAo resistor flow",
+      "best_phase_shift_fraction": 0.32673267326732675,
+      "best_phase_shift_normalized_rmse": 0.19268196323343006,
+      "candidate_signal": "arch_dao.flow",
+      "canonical_name": "descending_aorta_flow",
+      "mean_flow_ml_s": 21.66318428568799,
+      "model": "full_0d",
+      "normalized_rmse": 0.433747643475799,
+      "phase_dominated": true,
+      "sign_checked": true,
+      "sign_flipped_normalized_rmse": 0.5580304847959989
+    },
+    {
+      "amplitude_ml_s": 12.564482161237182,
+      "anatomical_location": "full 0-D flow from DAo into lower systemic artery",
+      "best_phase_shift_fraction": 0.16831683168316833,
+      "best_phase_shift_normalized_rmse": 0.30959844286666255,
+      "candidate_signal": "lower_ra4.flow",
+      "canonical_name": "descending_aorta_flow",
+      "mean_flow_ml_s": 21.621496558271154,
+      "model": "full_0d",
+      "normalized_rmse": 0.3311407122964161,
+      "phase_dominated": false,
+      "sign_checked": true,
+      "sign_flipped_normalized_rmse": 0.5850382377679664
+    }
+  ],
+  "task": "008.6"
+}

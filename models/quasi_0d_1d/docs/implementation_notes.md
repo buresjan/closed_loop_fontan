@@ -150,24 +150,139 @@ the four baseline/intervention metrics JSON files.
 
 ## Calibration convention
 
-Task 008 applies small global physiology scales from
+Task 008.5 applies corrective calibration factors from
 `models/quasi_0d_1d/calibration/calibration_factors.json`:
 
 ```text
 heart_contractility_scale = 0.96
-upper_systemic_resistance_scale = 1.04
+upper_systemic_resistance_scale = 1.00
 lower_systemic_resistance_scale = 1.12
-pulmonary_bed_resistance_scale = 1.10
+right_pulmonary_total_resistance_scale = 1.15
+left_pulmonary_total_resistance_scale = 1.15
+right_pulmonary_proximal_fraction = 0.50
+left_pulmonary_proximal_fraction = 0.50
+all quasi chain R/L/C scales = 1.00
 ```
 
-The calibration intentionally preserves every quasi chain's total resistance,
+The corrective screen tested heart-frozen candidates first. None recovered the
+hard pump gates, so the Task 008 heart scale remains and is documented as a
+residual limitation. Pulmonary proximal/distal resistance split is now explicit
+because it can raise RPA/LPA pressures without using direct DAo pressure or raw
+direct IVC flow as hard targets.
+
+The selected Task 008.5 factors preserve every quasi chain's total resistance,
 inertance, and compliance from `config_fragments/quasi_vessel_chains.json`.
-Only heart contractility and retained 0-D systemic/pulmonary bed resistances are
-retuned. The LPA obstruction narrowing multiplier remains a scenario validation
-setting, not a baseline calibration knob.
+Chain-specific R/L/C scale factors are exposed for later calibration but remain
+`1.00` in the tracked corrective baseline. The LPA obstruction narrowing
+multiplier remains a scenario validation setting, not a baseline calibration
+knob.
 
 The calibrated baseline summary fit is documented in
-`calibration/calibration_report.md`.
+`calibration/calibration_report.md`. The acceptance status is documented in
+`calibration/non_regression_gate.json`; the current model is stable but not yet
+superior to the full 0-D reference because pump and aortic-flow waveform gates
+still fail.
+
+Task 008.6 adds a design audit and closure pass without promoting a new tracked
+topology. It records:
+
+```text
+calibration/design_audit_report.md
+calibration/dao_aao_flow_signal_audit.csv
+calibration/compliance_budget.csv
+calibration/characteristic_impedance_report.csv
+calibration/quasi_ablation_summary.csv
+calibration/quasi_final_decision.md
+```
+
+The audit found that the AAo/DAo flow regressions are not resolved by simply
+selecting a different stored signal. The lower systemic bed entry
+`lower_ra4.flow` is a closer DAo diagnostic, but it is downstream of the DAo
+pressure node. The closure gate therefore keeps the DAo-chain outlet as the
+chain-behavior signal instead of hiding trunk-chain waveform behavior behind a
+bed-entry flow. Phase-shifted scores show timing contributes but does not make
+the comparison acceptable.
+
+The ablation grid tested R/L/C scales, pulmonary proximal/distal split changes,
+distributed aortic branch takeoffs, a four-port TCPC surrogate, and a combined
+candidate. No candidate passed all closure gates. The best hard/direct
+candidate was `current_heart_099`, but it still failed EDV, ESV, RPA pressure,
+LPA pressure, and AAo/DAo flow waveform gates. The best waveform candidate was
+`aortic_L0_5`, but it still failed hard and waveform gates. The tracked Task
+008.5 configs therefore remain canonical.
+
+No schematic update is associated with Task 008.6 because no candidate topology
+or parameterization was promoted into the executable model family.
+
+Task 008.7 freezes the quasi superiority gate for all later design and
+calibration work. The gate lives in:
+
+```text
+calibration/quasi_superiority_gate.json
+calibration/full0d_reference_scores.json
+calibration/current_quasi_gate_status.json
+calibration/current_quasi_gate_status.md
+```
+
+Use the same comparator for later candidates:
+
+```bash
+.venv/bin/python scripts/calibration/compare_quasi_to_full0d.py
+```
+
+The current quasi model is `not_superior_to_full_0d`. It passes stability and
+has quasi-specific vascular improvements, but it fails the stricter frozen
+score, pump, Fontan/pulmonary, and AAo/DAo flow waveform groups.
+
+The full attempt history is consolidated in `docs/attempt_log.md`. Use that log
+with the machine-readable gate artifacts before promoting any future quasi
+candidate.
+
+Task 008.8 adds an open-loop diagnostic harness for the aortic quasi chain:
+
+```text
+configs/submodel_aorta_quasi_openloop.jsonc
+calibration/aorta_quasi_openloop_report.md
+calibration/aorta_quasi_openloop_metrics.json
+calibration/aorta_quasi_openloop_waveforms.csv
+```
+
+The submodel prescribes paper/Nektar AAo inflow, retains the quasi AAo/arch/DAo
+chain and systemic branch/load blocks, and terminates SVC/IVC with pressure
+boundaries. The report keeps `quasi_dao_rl_06.flux` and `lower_ra4.flow`
+separate so the DAo chain outlet is not silently replaced by lower-body bed
+entry flow.
+
+The current open-loop status is `fail_open_loop_aortic_diagnostic`. AAo inflow,
+DAo chain flow, lower-body flow, and chain mass balance are acceptable under
+the diagnostic thresholds, but AAo/arch/DAo mean and pulse-pressure checks fail.
+The likely problem is aortic-chain or terminal-load impedance and pressure-loss
+placement, not just a closed-loop calibration issue.
+
+Task 008.9 centralizes aortic signal definitions in:
+
+```text
+calibration/aortic_signal_policy.json
+calibration/aortic_signal_policy.md
+scripts/calibration/map_aortic_signals.py
+```
+
+The policy defines pressure signals `P_AAo`, `P_arch`, and `P_DAo`, root flow
+`Q_AAo`, clinical descending-aorta flow `Q_DAo`, and a separate
+`Q_DAo_chain_health` diagnostic. `scripts/calibration/compare_waveforms.py` and
+`scripts/calibration/compare_quasi_to_full0d.py` now read this policy instead
+of hard-coding aortic flow columns.
+
+The practical mapping is:
+
+```text
+Q_AAo -> valve_arterial.flux
+Q_DAo clinical -> lower_ra4.flow
+Q_DAo chain health -> quasi_dao_rl_06.flux
+```
+
+Phase-shifted nRMSE remains diagnostic only. The accepted waveform metric is
+unshifted nRMSE under the processed comparison-cycle phase convention.
 
 ## Config fragment convention
 

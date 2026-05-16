@@ -17,6 +17,7 @@ repeated local `hydraulic_rl_block` links and `c_block` compliances.
 | `fontan_quasi_vasodilation.jsonc` | Pulmonary vasodilation validation scenario. |
 | `fontan_quasi_fenestration.jsonc` | Low-resistance fenestration validation scenario. |
 | `fontan_quasi_lpa_obstruction.jsonc` | LPA obstruction validation scenario with 2x LPA quasi-chain resistance. |
+| `submodel_aorta_quasi_openloop.jsonc` | Task 008.8 diagnostic submodel with prescribed AAo inflow and terminal pressure boundaries. |
 
 Run the smoke case:
 
@@ -37,10 +38,17 @@ Check that the tracked configs are current:
 .venv/bin/python scripts/modeling/build_quasi_configs.py --check
 ```
 
-The tracked configs include the Task 008 calibration factors from
+The tracked configs include the Task 008.5 corrective calibration factors from
 `models/quasi_0d_1d/calibration/calibration_factors.json`. Use
 `--uncalibrated` only when inspecting the raw Task 006 assembly before
 calibration.
+
+Run and evaluate the aortic open-loop diagnostic:
+
+```bash
+.venv/bin/python scripts/quasi/run_aorta_quasi_openloop.py
+.venv/bin/python scripts/quasi/evaluate_aorta_quasi_openloop.py
+```
 
 ## Metrics and Scenario Outputs
 
@@ -64,6 +72,18 @@ The current comparison-ready outputs are tracked in:
 
 ```text
 models/quasi_0d_1d/calibration/calibration_report.md
+models/quasi_0d_1d/calibration/non_regression_gate.json
+models/quasi_0d_1d/calibration/design_audit_report.md
+models/quasi_0d_1d/calibration/quasi_ablation_summary.csv
+models/quasi_0d_1d/calibration/quasi_final_decision.md
+models/quasi_0d_1d/calibration/quasi_superiority_gate.json
+models/quasi_0d_1d/calibration/current_quasi_gate_status.md
+models/quasi_0d_1d/calibration/aortic_signal_policy.md
+models/quasi_0d_1d/calibration/aortic_signal_policy.json
+models/quasi_0d_1d/calibration/aorta_quasi_openloop_report.md
+models/quasi_0d_1d/calibration/aorta_quasi_openloop_metrics.json
+models/quasi_0d_1d/calibration/aorta_quasi_openloop_waveforms.csv
+models/quasi_0d_1d/docs/attempt_log.md
 models/quasi_0d_1d/reference_outputs/baseline_metrics.json
 models/quasi_0d_1d/reference_outputs/vasodilation_metrics.json
 models/quasi_0d_1d/reference_outputs/fenestration_metrics.json
@@ -75,7 +95,7 @@ Regenerate one metrics file from a completed run:
 
 ```bash
 .venv/bin/python scripts/metrics.py \
-  runs/simulations/QuasiBaselineTask007/eden_QuasiBaselineTask007_1/main.csv \
+  runs/simulations/QuasiBaseline/.../main.csv \
   models/quasi_0d_1d/configs/fontan_quasi_baseline.jsonc \
   --out models/quasi_0d_1d/reference_outputs/baseline_metrics.json
 ```
@@ -92,11 +112,44 @@ Compare the tracked quasi scenarios:
 
 Current baseline highlights:
 
-- CO from aortic-valve flow: 2.46 L/min.
-- Mean TCPC pressure: 8.06 mmHg.
+- CO from aortic-valve flow: 2.47 L/min.
+- Mean TCPC pressure: 8.16 mmHg.
 - RPA flow fraction: 0.591.
-- TCPC cycle balance: `2.36e-5`.
-- Direct-measurement weighted RMS target error: `0.0610`.
+- TCPC cycle balance: `2.28e-5`.
+- Direct-measurement weighted RMS target error: `0.0592`.
+- Task 008.6 closure status:
+  `stable_quasi_development_scaffold_not_scientifically_superior`.
+
+Task 008.5 improves the aggregate direct score and fixes the RPA/LPA pressure
+and SVC-flow non-regression gates. EDV, ESV, SV, CO, paper-model score, and the
+AAo/DAo flow waveform gates still fail, so this model should not be presented
+as a final calibrated quasi model.
+
+Task 008.6 audits the AAo/DAo flow signal extraction, compliance/storage
+budget, characteristic impedance, and 23 quasi ablation/design candidates. No
+candidate passes all hard, paper, waveform, stability, and mass-balance gates,
+so the Task 008.5 configs remain canonical and Task 009 proceeds with full 0-D
+as the calibrated reference.
+
+Task 008.7 freezes the promotion criteria in
+`calibration/quasi_superiority_gate.json`. The current quasi model is recorded
+as `not_superior_to_full_0d` in `calibration/current_quasi_gate_status.md`.
+Later quasi candidates must pass that same script and gate before any promotion
+claim.
+
+Task 008.8 isolates the quasi aortic chain in
+`submodel_aorta_quasi_openloop.jsonc`. The current diagnostic status is
+`fail_open_loop_aortic_diagnostic`: the prescribed AAo inflow is reproduced and
+the DAo chain outlet plus `lower_ra4.flow` are both reported, but the pressure
+profile and pulse pressure are too damped. This is a diagnostic submodel only;
+it does not promote a new closed-loop quasi topology.
+
+Task 008.9 freezes aortic signal mapping in
+`calibration/aortic_signal_policy.json`. Clinical DAo flow now maps to
+`lower_ra4.flow`, while DAo chain-health flow remains
+`quasi_dao_rl_06.flux` and stays in the aortic waveform no-regression gate. The
+current quasi model still fails that gate because DAo chain-health nRMSE is
+`0.952` versus full 0-D reference `0.434`.
 
 ## Implemented Topology
 
@@ -155,7 +208,15 @@ component set as the full 0-D schematic. The quasi-specific change is that the
 aortic and Fontan pathway labels show the implemented R-L-C chain counts.
 `docs/schematic.png` is the exported browser-friendly copy, and
 `docs/implementation_notes.md` records the topology, assembly convention, and
-parameter policy.
+parameter policy. `docs/attempt_log.md` consolidates every quasi modeling,
+calibration, diagnostic, and blocked-promotion attempt tried so far.
 
 Every model change must update this README, `docs/schematic.svg`,
 `docs/schematic.png`, and `docs/implementation_notes.md` in the same change.
+Task 008.6 did not promote a topology or parameterization change into the
+tracked quasi configs, so the schematic remains the Task 008.5 executable
+topology.
+
+Task 008.8 adds an open-loop diagnostic config for the existing aortic chain
+without changing the promoted closed-loop topology, so the schematic remains
+unchanged.

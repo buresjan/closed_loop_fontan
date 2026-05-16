@@ -1,0 +1,303 @@
+{
+  "accepted_as_superior": false,
+  "failed_groups": [
+    "score_non_regression",
+    "pump_non_regression",
+    "fontan_pulmonary_non_regression",
+    "aortic_waveform_no_regression"
+  ],
+  "gate_definition_file": "/home/jan/Documents/closed_loop_fontan/models/quasi_0d_1d/calibration/quasi_superiority_gate.json",
+  "gates": {
+    "aortic_waveform_no_regression": [
+      {
+        "canonical_name": "ascending_aorta_flow",
+        "comparison_role": "hard_gate",
+        "full_0d_nrmse": 0.5717890388728804,
+        "gate_type": "aortic_flow_no_regression",
+        "margin": 0.011618770933225386,
+        "pass": true,
+        "quasi_0d_1d_nrmse": 0.560170267939655,
+        "signal_policy_id": "Q_AAo"
+      },
+      {
+        "canonical_name": "descending_aorta_chain_health_flow",
+        "comparison_role": "diagnostic",
+        "full_0d_nrmse": 0.433747643475799,
+        "gate_type": "aortic_flow_no_regression",
+        "margin": -0.518258977202606,
+        "pass": false,
+        "quasi_0d_1d_nrmse": 0.9520066206784051,
+        "signal_policy_id": "Q_DAo_chain_health"
+      }
+    ],
+    "fontan_pulmonary_non_regression": [
+      {
+        "full_0d_error": 0.08308958306515703,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.001548198659605149,
+        "pass": false,
+        "quasi_0d_1d_error": 0.08963778172476218,
+        "target_name": "rpa_pressure",
+        "threshold": 0.08808958306515703,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.08014587075772904,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.0015915402221823305,
+        "pass": false,
+        "quasi_0d_1d_error": 0.08673741097991138,
+        "target_name": "lpa_pressure",
+        "threshold": 0.08514587075772904,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.017385816070324696,
+        "gate_type": "relative_error_non_regression",
+        "margin": 0.002422300296532759,
+        "pass": true,
+        "quasi_0d_1d_error": 0.019963515773791938,
+        "target_name": "svc_flow",
+        "threshold": 0.022385816070324697,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.011109029851111644,
+        "gate_type": "relative_error_non_regression",
+        "margin": 0.009091890879804523,
+        "pass": true,
+        "quasi_0d_1d_error": 0.00701713897130712,
+        "target_name": "rpa_flow",
+        "threshold": 0.016109029851111643,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.013296260401027844,
+        "gate_type": "relative_error_non_regression",
+        "margin": 0.013313538572136515,
+        "pass": true,
+        "quasi_0d_1d_error": 0.0049827218288913296,
+        "target_name": "lpa_flow",
+        "threshold": 0.018296260401027845,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.0005222586899034098,
+        "gate_type": "absolute_fraction_non_regression",
+        "margin": 0.0050275977268322515,
+        "pass": true,
+        "quasi_0d_1d_error": 0.0004946609630711585,
+        "target_name": "rpa_flow_fraction",
+        "threshold": 0.00552225868990341,
+        "tolerance": 0.005
+      }
+    ],
+    "pump_non_regression": [
+      {
+        "full_0d_error": 0.03701430841999644,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.016643007005362025,
+        "pass": false,
+        "quasi_0d_1d_error": 0.058657315425358465,
+        "target_name": "edv",
+        "threshold": 0.04201430841999644,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.04856156456095697,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.020815981351503365,
+        "pass": false,
+        "quasi_0d_1d_error": 0.07437754591246033,
+        "target_name": "esv",
+        "threshold": 0.05356156456095697,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.025215996124184174,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.012379305400653944,
+        "pass": false,
+        "quasi_0d_1d_error": 0.04259530152483812,
+        "target_name": "stroke_volume",
+        "threshold": 0.030215996124184175,
+        "tolerance": 0.005
+      },
+      {
+        "full_0d_error": 0.022744140582717398,
+        "gate_type": "relative_error_non_regression",
+        "margin": -0.011627398011443458,
+        "pass": false,
+        "quasi_0d_1d_error": 0.03937153859416086,
+        "target_name": "cardiac_output",
+        "threshold": 0.0277441405827174,
+        "tolerance": 0.005
+      }
+    ],
+    "quasi_specific_vascular_improvement": {
+      "accepted_examples": [
+        "dao_pressure_waveform",
+        "fontan_waveform_mean_nrmse",
+        "aortic_open_loop_profile"
+      ],
+      "candidates": [
+        {
+          "available": true,
+          "full_0d_nrmse": 0.46634638712956344,
+          "margin": 0.03446753985300943,
+          "name": "dao_pressure_waveform",
+          "pass": true,
+          "quasi_0d_1d_nrmse": 0.431878847276554
+        },
+        {
+          "available": true,
+          "canonical_names": [
+            "svc_pressure",
+            "ivc_pressure",
+            "rpa_pressure",
+            "lpa_pressure",
+            "svc_flow",
+            "ivc_flow",
+            "rpa_flow",
+            "lpa_flow"
+          ],
+          "full_0d_nrmse": 0.3286568033530542,
+          "margin": 0.0077713873868331396,
+          "name": "fontan_waveform_mean_nrmse",
+          "pass": true,
+          "quasi_0d_1d_nrmse": 0.32088541596622105
+        },
+        {
+          "available": false,
+          "name": "aortic_open_loop_profile",
+          "note": "No open-loop aortic profile artifact is available for Task 008.7.",
+          "pass": false
+        }
+      ],
+      "name": "quasi_specific_vascular_improvement",
+      "pass": true
+    },
+    "score_non_regression": [
+      {
+        "margin": -0.012795547042625588,
+        "name": "hard_clinical_summary_score",
+        "pass": false,
+        "threshold": 0.04326800942219066,
+        "value": 0.05606355646481625
+      },
+      {
+        "margin": 0.0022292215777847887,
+        "name": "aggregate_direct_score",
+        "pass": true,
+        "threshold": 0.061385711944231244,
+        "value": 0.059156490366446456
+      },
+      {
+        "margin": -0.001237223844635052,
+        "name": "paper_model_score",
+        "pass": false,
+        "threshold": 0.07926178853036234,
+        "value": 0.08049901237499739
+      }
+    ],
+    "stability": [
+      {
+        "metric": "no_nan_or_inf_in_loaded_artifacts",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "periodicity_cavity_volume",
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.0069720247768852075
+      },
+      {
+        "metric": "periodicity_valve_arterial.flux",
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.007138592313476972
+      },
+      {
+        "metric": "periodicity_valve_atrium.flux",
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.0010812985137732371
+      },
+      {
+        "metric": "tcpc_cycle_balance_rel",
+        "pass": true,
+        "threshold": 0.01,
+        "value": 2.2768539977419396e-05
+      },
+      {
+        "metric": "atrium_cycle_balance_rel",
+        "pass": true,
+        "threshold": 0.01,
+        "value": 0.00014772507901833173
+      },
+      {
+        "metric": "ventricle_cycle_balance_rel",
+        "pass": true,
+        "threshold": 0.01,
+        "value": 9.581884348009215e-05
+      },
+      {
+        "metric": "pass_no_nan",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "pass_tcpc_balance",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "pass_atrium_balance",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      },
+      {
+        "metric": "pass_ventricle_balance",
+        "pass": true,
+        "threshold": true,
+        "value": true
+      }
+    ]
+  },
+  "group_pass": {
+    "aortic_waveform_no_regression": false,
+    "fontan_pulmonary_non_regression": false,
+    "pump_non_regression": false,
+    "quasi_specific_vascular_improvement": true,
+    "score_non_regression": false,
+    "stability": true
+  },
+  "model_family": "quasi_0d_1d",
+  "scores": {
+    "full_0d": {
+      "aortic_flow_waveform_nrmse": {
+        "ascending_aorta_flow": 0.5717890388728804,
+        "descending_aorta_chain_health_flow": 0.433747643475799
+      },
+      "direct_score": 0.061385711944231244,
+      "hard_clinical_summary_score": 0.04326800942219066,
+      "paper_model_score": 0.07926178853036234
+    },
+    "quasi_0d_1d": {
+      "aortic_flow_waveform_nrmse": {
+        "ascending_aorta_flow": 0.560170267939655,
+        "descending_aorta_chain_health_flow": 0.9520066206784051
+      },
+      "direct_score": 0.059156490366446456,
+      "hard_clinical_summary_score": 0.05606355646481625,
+      "paper_model_score": 0.08049901237499739
+    }
+  },
+  "status": "not_superior_to_full_0d",
+  "task": "008.7"
+}

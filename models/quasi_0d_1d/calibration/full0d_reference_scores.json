@@ -1,0 +1,26 @@
+{
+  "model_family": "full_0d",
+  "reference_role": "frozen_superiority_baseline",
+  "rpa_flow_fraction_absolute_error": 0.0005222586899034098,
+  "scores": {
+    "aortic_flow_waveform_nrmse": {
+      "ascending_aorta_flow": 0.5717890388728804,
+      "descending_aorta_chain_health_flow": 0.433747643475799
+    },
+    "direct_score": 0.061385711944231244,
+    "hard_clinical_summary_score": 0.04326800942219066,
+    "paper_model_score": 0.07926178853036234
+  },
+  "target_errors": {
+    "cardiac_output": 0.022744140582717398,
+    "edv": 0.03701430841999644,
+    "esv": 0.04856156456095697,
+    "lpa_flow": 0.013296260401027844,
+    "lpa_pressure": 0.08014587075772904,
+    "rpa_flow": 0.011109029851111644,
+    "rpa_pressure": 0.08308958306515703,
+    "stroke_volume": 0.025215996124184174,
+    "svc_flow": 0.017385816070324696
+  },
+  "task": "008.7"
+}

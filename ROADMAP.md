@@ -39,6 +39,16 @@ The roadmap therefore defers any PhysioBlocks fork/upstream work until Task 009 
 | 006 | completed | [Implement quasi model](tasks/006-implement-quasi-model.md) | Build PhysioBlocks-only quasi 0-D/1-D configs and docs. | No |
 | 007 | completed | [Add quasi metrics and scenarios](tasks/007-quasi-metrics-and-scenarios.md) | Make metrics/scenario comparison model-family aware. | No |
 | 008 | completed | [Calibrate quasi model](tasks/008-calibrate-quasi-model.md) | Tune quasi model from full 0-D baseline while preserving physiology. | No |
+| 008.5 | completed | [Corrective quasi calibration and non-regression gate](tasks/008-5-corrective-quasi-calibration.md) | Add hard-target gates and document that the quasi model is stable but not yet superior. | No |
+| 008.6 | completed | [Quasi design audit and calibration closure](tasks/008-6-quasi-design-audit-and-calibration-closure.md) | Audit AAo/DAo signal extraction, compliance/impedance, and a small quasi design ablation matrix before Task 009. | No |
+| 008.7 | completed | [Freeze quasi superiority gate](quasi_improvement_task_series/008-7-freeze-quasi-superiority-gate.md) | Freeze machine-readable promotion criteria and current quasi status before further design work. | No |
+| 008.8 | completed | [Build open-loop aortic quasi diagnostic harness](quasi_improvement_task_series/008-8-openloop-aortic-quasi-diagnostic.md) | Isolate the quasi aortic chain before changing closed-loop topology. | No |
+| 008.9 | completed | [Resolve AAo/DAo flow signal definitions](quasi_improvement_task_series/008-9-resolve-aortic-flow-signal-policy.md) | Finalize approved aortic flow signal policy for gates and reports. | No |
+| 008.10 | blocked | [Correct quasi aortic chain design](quasi_improvement_task_series/008-10-correct-quasi-aortic-chain-design.md) | Corrected-chain candidate fixed passive drop and DAo chain health, but failed strict clinical DAo no-regression. | No |
+| 008.11 | planned | [Correct Fontan/pulmonary quasi design](quasi_improvement_task_series/008-11-correct-fontan-pulmonary-quasi-design.md) | Improve Fontan and pulmonary impedance behavior. | No |
+| 008.12 | planned | [Restore pump/preload compliance budget](quasi_improvement_task_series/008-12-restore-pump-preload-compliance-budget.md) | Fix preload and vascular storage before recalibration. | No |
+| 008.13 | planned | [Run constrained quasi closed-loop calibration](quasi_improvement_task_series/008-13-constrained-quasi-closed-loop-calibration.md) | Calibrate only after design corrections are in place. | No |
+| 008.14 | planned | [Validate and promote superior quasi model](quasi_improvement_task_series/008-14-validate-promote-superior-quasi-model.md) | Promote the quasi model only if it passes the frozen superiority gate. | No |
 | 009 | planned | [Run PhysioBlocks 1-D feasibility spike](tasks/009-physioblocks-1d-feasibility-spike.md) | Decide whether local blocks/generated configs are enough for true 1-D. | Maybe |
 | 010 | planned | [Prototype local 1-D numerics](tasks/010-prototype-local-1d-numerics.md) | Implement and validate wall-law/vessel residual prototypes. | Maybe |
 | 011 | planned | [Build 1-D open-loop submodels](tasks/011-build-1d-openloop-submodels.md) | Validate aorta, TCPC, and combined 1-D submodels before closed loop. | Maybe |
@@ -51,5 +61,11 @@ The roadmap therefore defers any PhysioBlocks fork/upstream work until Task 009 
 - Every model-behavior change must update the affected model README and schematic in the same change.
 - Prefer local repository extensions over PhysioBlocks internal changes until Task 009 justifies otherwise.
 - Tune only baseline configurations. Intervention scenarios are validation cases.
+- Do not treat the quasi 0-D/1-D family as scientifically superior to the full
+  0-D reference until it passes the frozen Task 008.7 superiority gate in
+  `models/quasi_0d_1d/calibration/quasi_superiority_gate.json`.
+- Do not proceed from blocked Task 008.10 to quasi promotion work until the
+  clinical DAo outlet failure is either fixed or explicitly reclassified by an
+  updated signal/acceptance policy.
 - Keep raw Aramburu data ignored; regenerate tracked processed data through `scripts/data/prepare_aramburu_2024.py`.
 - Use `pytest -q` as the default check, plus the relevant smoke/reference simulations for model changes.

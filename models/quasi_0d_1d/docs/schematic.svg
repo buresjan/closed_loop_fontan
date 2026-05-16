@@ -46,7 +46,7 @@
   <rect class="page" x="0" y="0" width="3400" height="1650"/>
   <text class="title" x="70" y="72">Quasi 0-D/1-D Fontan schematic</text>
   <text class="subtitle" x="70" y="107">Same closed-loop components as full 0-D, with aortic and Fontan pathways replaced by PhysioBlocks R-L-C chains. Nominal flow follows the arrows.</text>
-  <text class="calibration" x="70" y="129">Task 008 calibrated configs: AAo/arch x4 and DAo x6 geometry-based chains; SVC x3, IVC x5, RPA x3, LPA x4 preserve Task 005 chain totals.</text>
+  <text class="calibration" x="70" y="129">Task 008.5 corrective configs: AAo/arch x4 and DAo x6 geometry-based chains; SVC x3, IVC x5, RPA x3, LPA x4 preserve Task 005 chain totals.</text>
   <line class="section-line" x1="70" y1="138" x2="3330" y2="138"/>
 
   <text class="band-title" x="360" y="185">Pump</text>
@@ -363,6 +363,6 @@
 
   <line class="wire dash" x1="3105" y1="1450" x2="3175" y2="1450"/>
   <text class="legend-text" x="3140" y="1494" text-anchor="middle">Fenestration shunt path</text>
-  <text class="calibration" x="1700" y="1550" text-anchor="middle">Quasi R-L-C labels denote repeated hydraulic_rl_block + c_block cells; Task 008 retunes only global heart/systemic/pulmonary-bed scales.</text>
+  <text class="calibration" x="1700" y="1550" text-anchor="middle">Quasi R-L-C labels denote repeated hydraulic_rl_block + c_block cells; Task 008.5 adds pulmonary split and non-regression gates.</text>
   </g>
 </svg>

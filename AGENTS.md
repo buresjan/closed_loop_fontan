@@ -28,6 +28,12 @@ Schematics must follow the visual style of the current full 0-D schematic: clear
 - When completing a task, set its task file status to `completed`, add a short completion note with the validation commands/results, and update the roadmap task table status.
 - If implementation reveals that a task should be split, reordered, or blocked, record that in both the task file and `ROADMAP.md` before continuing.
 - Do not let roadmap/task status drift from the actual repository state.
+- For calibration tasks, keep model acceptance status explicit. A lower aggregate
+  objective is not enough to claim a model is superior if hard-target,
+  paper-comparison, waveform, stability, or mass-balance gates fail.
+- Before advancing past a calibration closure task, write the decision report
+  and update downstream task dependencies so later work uses the accepted
+  reference model, not an ambiguous candidate.
 
 ## Data Policy
 

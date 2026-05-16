@@ -1,13 +1,34 @@
 {
   "model_family": "quasi_0d_1d",
-  "task": "008",
-  "status": "selected_baseline_calibration",
+  "task": "008.5",
+  "status": "selected_corrective_calibration",
   "generated_by": "scripts/calibration/quasi.py",
   "factors": {
     "heart_contractility_scale": 0.96,
-    "upper_systemic_resistance_scale": 1.04,
+    "upper_systemic_resistance_scale": 1.0,
     "lower_systemic_resistance_scale": 1.12,
-    "pulmonary_bed_resistance_scale": 1.10
+    "right_pulmonary_total_resistance_scale": 1.15,
+    "left_pulmonary_total_resistance_scale": 1.15,
+    "right_pulmonary_proximal_fraction": 0.5,
+    "left_pulmonary_proximal_fraction": 0.5,
+    "aao_arch_resistance_scale": 1.0,
+    "aao_arch_inductance_scale": 1.0,
+    "aao_arch_capacitance_scale": 1.0,
+    "dao_resistance_scale": 1.0,
+    "dao_inductance_scale": 1.0,
+    "dao_capacitance_scale": 1.0,
+    "svc_resistance_scale": 1.0,
+    "svc_inductance_scale": 1.0,
+    "svc_capacitance_scale": 1.0,
+    "ivc_resistance_scale": 1.0,
+    "ivc_inductance_scale": 1.0,
+    "ivc_capacitance_scale": 1.0,
+    "rpa_resistance_scale": 1.0,
+    "rpa_inductance_scale": 1.0,
+    "rpa_capacitance_scale": 1.0,
+    "lpa_resistance_scale": 1.0,
+    "lpa_inductance_scale": 1.0,
+    "lpa_capacitance_scale": 1.0
   },
   "preserved_quantities": [
     "quasi chain segment counts",
@@ -17,8 +38,10 @@
     "LPA obstruction narrowing resistance multiplier"
   ],
   "notes": [
-    "Selected from a small controlled calibration screen against direct-measurement summary targets.",
-    "The calibration intentionally leaves quasi R/L/C chain totals unchanged and retunes only small global physiology scales.",
+    "Selected from the Task 008.5 corrective screen using hard-target non-regression before aggregate direct score.",
+    "The screen tested heart-frozen candidates first; none recovered the hard pump gates, so the Task 008 heart scale is retained and documented as a residual non-superiority limitation.",
+    "Pulmonary proximal/distal resistance split is now explicit and raises RPA/LPA pressure without using raw DAo pressure or raw IVC flow as hard targets.",
+    "The selected factors keep quasi R/L/C chain scales at 1.0 while exposing chain-specific knobs for later calibration.",
     "Intervention scenarios inherit the same baseline calibration and are not retuned."
   ]
 }

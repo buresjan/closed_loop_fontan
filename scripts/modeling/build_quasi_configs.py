@@ -262,7 +262,7 @@ def main() -> None:
     parser.add_argument(
         "--uncalibrated",
         action="store_true",
-        help="Build the raw Task 006 configs without Task 008 calibration factors.",
+        help="Build the raw Task 006 configs without Task 008/008.5 calibration factors.",
     )
     args = parser.parse_args()
 

@@ -35,6 +35,17 @@ def fragment_total(fragment: dict, chain: str, suffix: str) -> float:
     )
 
 
+def pulmonary_total(parameters: dict, side: str) -> float:
+    return (
+        parameters[f"{side}_lung.resistance_1"]
+        + parameters[f"{side}_lung.resistance_2"]
+    )
+
+
+def pulmonary_proximal_fraction(parameters: dict, side: str) -> float:
+    return parameters[f"{side}_lung.resistance_1"] / pulmonary_total(parameters, side)
+
+
 def test_task008_calibration_factors_are_tracked_and_applied():
     full = load(FULL_BASELINE)
     quasi = load(QUASI_BASELINE)
@@ -53,9 +64,19 @@ def test_task008_calibration_factors_are_tracked_and_applied():
         full["parameters"]["lower_rc2.resistance"]
         * DEFAULT_QUASI_FACTORS["lower_systemic_resistance_scale"]
     )
-    assert quasi["parameters"]["right_lung.resistance_1"] == pytest.approx(
-        full["parameters"]["right_lung.resistance_1"]
-        * DEFAULT_QUASI_FACTORS["pulmonary_bed_resistance_scale"]
+    assert pulmonary_total(quasi["parameters"], "right") == pytest.approx(
+        pulmonary_total(full["parameters"], "right")
+        * DEFAULT_QUASI_FACTORS["right_pulmonary_total_resistance_scale"]
+    )
+    assert pulmonary_total(quasi["parameters"], "left") == pytest.approx(
+        pulmonary_total(full["parameters"], "left")
+        * DEFAULT_QUASI_FACTORS["left_pulmonary_total_resistance_scale"]
+    )
+    assert pulmonary_proximal_fraction(quasi["parameters"], "right") == pytest.approx(
+        DEFAULT_QUASI_FACTORS["right_pulmonary_proximal_fraction"]
+    )
+    assert pulmonary_proximal_fraction(quasi["parameters"], "left") == pytest.approx(
+        DEFAULT_QUASI_FACTORS["left_pulmonary_proximal_fraction"]
     )
 
 
