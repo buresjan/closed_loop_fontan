@@ -18,7 +18,9 @@ Build the true coupled closed-loop model with 1-D aorta and TCPC pathways attach
   - `fontan_coupled_0d_1d_lpa_obstruction.jsonc`
 - Couple 1-D vessel ports to PhysioBlocks pressure nodes without prescribing both pressure and flow.
 - Implement the TCPC junction initially with mass conservation and pressure or total-pressure compatibility, with an optional loss coefficient.
-- Update `models/coupled_0d_1d/README.md`, schematic, and `docs/implementation_notes.md` in the same change.
+- Update `models/coupled_0d_1d/README.md`, schematic SVG/PNG,
+  `docs/implementation_notes.md`, and technical reference source/PDF in the
+  same change.
 - Extend metrics for 1-D vessel stored volume, inlet/outlet flow, negative area, and boundary sign diagnostics.
 
 ## Acceptance
@@ -27,7 +29,8 @@ Build the true coupled closed-loop model with 1-D aorta and TCPC pathways attach
 - Baseline can reach a periodic state after sufficient cycles.
 - No NaN/Inf and no negative vessel area.
 - TCPC, atrium, and ventricle mass-balance checks pass.
-- README and schematic match the implemented topology.
+- README, schematic, implementation notes, and technical reference PDF/source
+  match the implemented topology.
 
 ## PhysioBlocks Impact
 

@@ -12,12 +12,12 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.calibration.quasi import apply_quasi_calibration_factors
+from scripts.calibration.quasi import apply_accepted_quasi_design
 
 FULL_CONFIG_DIR = ROOT / "models/full_0d/configs"
 QUASI_CONFIG_DIR = ROOT / "models/quasi_0d_1d/configs"
 QUASI_FRAGMENT = (
-    ROOT / "models/quasi_0d_1d/config_fragments/quasi_vessel_chains.json"
+    ROOT / "models/quasi_0d_1d/config_fragments/quasi_vessel_chains_corrected.json"
 )
 
 CONFIG_MAP = {
@@ -225,7 +225,7 @@ def build_quasi_config(
         baseline_lpa_pathway_resistance,
     )
     if apply_task008_calibration:
-        config = apply_quasi_calibration_factors(config)
+        config = apply_accepted_quasi_design(config)
     validate_quasi_config(config, fragment)
     return config
 
@@ -262,7 +262,7 @@ def main() -> None:
     parser.add_argument(
         "--uncalibrated",
         action="store_true",
-        help="Build the raw Task 006 configs without Task 008/008.5 calibration factors.",
+        help="Build the raw quasi-chain configs without the accepted design/calibration factors.",
     )
     args = parser.parse_args()
 

@@ -3,7 +3,8 @@
     "ascending_aorta_flow",
     "descending_aorta_chain_health_flow"
   ],
-  "aortic_signal_policy": "/home/jan/Documents/closed_loop_fontan/models/quasi_0d_1d/calibration/aortic_signal_policy.json",
+  "aortic_signal_policy": "/home/bures/Documents/closed_loop_fontan/models/quasi_0d_1d/calibration/aortic_signal_policy.json",
+  "artifact": "quasi_0d_1d_superiority_gate",
   "candidate_model_family": "quasi_0d_1d",
   "criteria": [
     "stability_and_balance_gates_pass",
@@ -23,6 +24,7 @@
     "lpa_flow",
     "rpa_flow_fraction"
   ],
+  "gate_profile": "frozen",
   "hard_score_targets": [
     "edv",
     "esv",
@@ -36,8 +38,8 @@
   "notes": [
     "Direct DAo pressure and raw direct IVC flow cannot compensate for failed hard, paper, stability, or aortic-flow gates.",
     "A lower aggregate direct score is insufficient for superiority.",
-    "The gate is intentionally stricter than the Task 008.5 corrective non-regression gate.",
-    "Task 008.9 maps clinical DAo flow separately from DAo chain-health flow; the chain-health flow remains in the aortic waveform gate."
+    "Clinical DAo bed-entry flow is mapped separately from DAo chain-health flow; the chain-health flow remains in the aortic waveform gate.",
+    "An accepted aortic profile artifact can satisfy the quasi-specific vascular-improvement criterion only if it reports a passed corrected aortic profile."
   ],
   "pump_non_regression_targets": [
     "edv",
@@ -51,7 +53,6 @@
     "ivc_flow"
   ],
   "status": "frozen",
-  "task": "008.7",
   "tolerances": {
     "cycle_balance": 0.01,
     "periodicity": 0.02,

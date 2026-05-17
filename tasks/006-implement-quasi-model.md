@@ -26,14 +26,16 @@ Build `models/quasi_0d_1d` as a PhysioBlocks-only model using distributed R-L-C 
   - LPA.
 - Keep BCA/LCCA/LSA as resistive branches for the first quasi release.
 - Add `models/quasi_0d_1d/docs/implementation_notes.md`.
-- Update `models/quasi_0d_1d/README.md` and schematic in the same change.
+- Update `models/quasi_0d_1d/README.md`, schematic SVG/PNG, technical
+  reference source/PDF, and implementation notes in the same change.
 
 ## Acceptance
 
 - Quasi smoke case runs.
 - No `valve_rl_block` is used as a conduit in quasi configs.
 - Chain topology and total R/L/C are covered by tests.
-- README and schematic match the implemented topology.
+- README, schematic, implementation notes, and technical reference PDF/source
+  match the implemented topology.
 
 ## PhysioBlocks Impact
 
@@ -62,8 +64,10 @@ Completed on 2026-05-15.
   `quasi_lpa.narrowing_resistance_scale = 2.0`.
 - Updated `models/quasi_0d_1d/README.md`,
   `models/quasi_0d_1d/docs/implementation_notes.md`,
-  `models/quasi_0d_1d/docs/schematic.svg`, and
-  `models/quasi_0d_1d/docs/schematic.png`.
+  `models/quasi_0d_1d/docs/quasi_0d_1d_schematic.svg`, and
+  `models/quasi_0d_1d/docs/quasi_0d_1d_schematic.png`. The standardized
+  technical reference source/PDF now belong to the same model-local
+  documentation set.
 - Updated the root `README.md` to mark the quasi model family active.
 - Added `tests/test_quasi_configs.py`.
 

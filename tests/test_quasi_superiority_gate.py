@@ -13,6 +13,7 @@ from scripts.calibration.compare_quasi_to_full0d import (
     DEFAULT_QUASI_METRICS,
     DEFAULT_QUASI_PAPER,
     DEFAULT_WAVEFORMS,
+    DEFAULT_AORTIC_PROFILE,
     FLOW_FRACTION_ABSOLUTE_TOLERANCE,
     FONTAN_TARGETS,
     TARGET_RELATIVE_ERROR_TOLERANCE,
@@ -37,6 +38,7 @@ def current_status() -> dict:
         full_metrics=load(DEFAULT_FULL_METRICS),
         quasi_metrics=load(DEFAULT_QUASI_METRICS),
         waveforms=load(DEFAULT_WAVEFORMS),
+        aortic_profile=load(DEFAULT_AORTIC_PROFILE),
     )
 
 
@@ -64,7 +66,7 @@ def test_superiority_gate_definition_is_frozen_and_strict():
     assert gate["aortic_signal_policy"].endswith("aortic_signal_policy.json")
 
 
-def test_full0d_reference_scores_match_task_0086_values():
+def test_full0d_reference_scores_match_frozen_values():
     reference = full_reference_scores(
         load(DEFAULT_FULL_DIRECT),
         load(DEFAULT_FULL_PAPER),
@@ -79,29 +81,30 @@ def test_full0d_reference_scores_match_task_0086_values():
     assert scores["aortic_flow_waveform_nrmse"]["descending_aorta_chain_health_flow"] == pytest.approx(0.433747643475799)
 
 
-def test_current_quasi_is_not_superior_under_frozen_gate():
+def test_current_quasi_is_superior_under_frozen_gate():
     status = current_status()
 
-    assert status["status"] == "not_superior_to_full_0d"
-    assert status["accepted_as_superior"] is False
+    assert status["status"] == "accepted_superior_to_full_0d"
+    assert status["accepted_as_superior"] is True
     assert status["group_pass"]["stability"] is True
     assert status["group_pass"]["quasi_specific_vascular_improvement"] is True
-    assert status["group_pass"]["score_non_regression"] is False
-    assert status["group_pass"]["pump_non_regression"] is False
-    assert status["group_pass"]["aortic_waveform_no_regression"] is False
+    assert status["group_pass"]["score_non_regression"] is True
+    assert status["group_pass"]["pump_non_regression"] is True
+    assert status["group_pass"]["fontan_pulmonary_non_regression"] is True
+    assert status["group_pass"]["aortic_waveform_no_regression"] is True
 
     failed_pump = {
         row["target_name"]
         for row in status["gates"]["pump_non_regression"]
         if not row["pass"]
     }
-    assert {"edv", "esv", "stroke_volume", "cardiac_output"} <= failed_pump
+    assert failed_pump == set()
 
 
 def test_tracked_gate_outputs_match_current_evaluation():
     status_path = ROOT / "models/quasi_0d_1d/calibration/current_quasi_gate_status.json"
     if not status_path.exists():
-        pytest.skip("Task 008.7 generated outputs have not been written yet")
+        pytest.skip("generated superiority outputs have not been written yet")
 
     tracked = load(status_path)
     evaluated = current_status()

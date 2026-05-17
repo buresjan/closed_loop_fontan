@@ -12,12 +12,15 @@ Planned intent:
 Before implementation, define the coupling interfaces, 1-D solver assumptions,
 boundary variables, parameter set, run commands, calibration targets, and
 expected outputs here. Every model change must update this README, the SVG
-schematic, the PNG schematic export, and the implementation notes in `docs/`.
+schematic, the PNG schematic export, the implementation notes, and the
+technical reference source/PDF in `docs/`.
 
 Current documentation files:
 
 ```text
-models/coupled_0d_1d/docs/schematic.svg
-models/coupled_0d_1d/docs/schematic.png
+models/coupled_0d_1d/docs/coupled_0d_1d_schematic.svg
+models/coupled_0d_1d/docs/coupled_0d_1d_schematic.png
 models/coupled_0d_1d/docs/implementation_notes.md
+models/coupled_0d_1d/docs/coupled_0d_1d_technical_reference.md
+models/coupled_0d_1d/docs/coupled_0d_1d_technical_reference.pdf
 ```

@@ -4,28 +4,42 @@ import json
 from pathlib import Path
 
 from scripts.calibration.compare_waveforms import compare
-from scripts.calibration.map_aortic_signals import (
-    DEFAULT_POLICY_PATH,
-    aortic_superiority_waveforms,
-    load_policy,
-)
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_POLICY_PATH = ROOT / "models/quasi_0d_1d/calibration/aortic_signal_policy.json"
 
 
-def test_task0089_policy_defines_clinical_and_chain_health_dao_signals():
+def load_policy(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def aortic_superiority_waveforms(policy: dict) -> tuple[str, ...]:
+    return tuple(
+        row["canonical_name"]
+        for row in policy["signals"]
+        if row.get("quantity") == "flow" and row.get("include_in_superiority_gate")
+    )
+
+
+def test_policy_defines_clinical_and_chain_health_dao_signals():
     policy = load_policy(DEFAULT_POLICY_PATH)
     signals = {row["signal_id"]: row for row in policy["signals"]}
 
-    assert policy["task"] == "008.9"
+    assert policy["status"] == "active"
     assert policy["phase_policy"]["phase_shifted_nrmse_use"] == "diagnostic_only"
     assert signals["Q_AAo"]["model_columns"]["quasi_0d_1d"] == ["valve_arterial.flux"]
     assert signals["Q_DAo"]["model_columns"]["quasi_0d_1d"] == ["lower_ra4.flow"]
     assert signals["Q_DAo"]["comparison_role"] == "soft_target"
+    assert signals["Q_DAo"]["evidence"]["accepted_quasi"][
+        "model_signal"
+    ] == "lower_ra4.flow"
     assert signals["Q_DAo_chain_health"]["model_columns"]["quasi_0d_1d"] == [
         "quasi_dao_rl_06.flux"
     ]
     assert signals["Q_DAo_chain_health"]["include_in_no_strong_regression"] is True
+    assert signals["Q_DAo_chain_health"]["evidence"]["accepted_quasi"][
+        "improves_normalized_rmse"
+    ] is True
     assert aortic_superiority_waveforms(policy) == (
         "ascending_aorta_flow",
         "descending_aorta_chain_health_flow",
@@ -64,11 +78,11 @@ def test_compare_waveforms_regenerates_tracked_policy_mapping():
         ).read_text(encoding="utf-8")
     )
     regenerated = compare(
-        ROOT / "runs/simulations/QuasiBaseline/eden_QuasiBaseline_2/main.csv",
-        ROOT / "models/quasi_0d_1d/configs/fontan_quasi_baseline.jsonc",
+        ROOT / tracked["model_csv"],
+        ROOT / tracked["model_config"],
         "direct_measurement",
-        ROOT / "runs/simulations/Baseline/eden_Baseline_3/main.csv",
-        ROOT / "models/full_0d/configs/fontan_0d_baseline.jsonc",
+        ROOT / tracked["reference_csv"],
+        ROOT / tracked["reference_config"],
         DEFAULT_POLICY_PATH,
     )
 

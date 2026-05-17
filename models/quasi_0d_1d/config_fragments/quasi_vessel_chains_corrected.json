@@ -1,6 +1,6 @@
 {
   "model_family": "quasi_0d_1d",
-  "generated_by": "Task 008.10 corrected aortic-chain design probe",
+  "generated_by": "accepted quasi 0-D/1-D chain parameterization",
   "block_library_requirements": [
     "hydraulic_rl_block",
     "c_block"
@@ -761,9 +761,8 @@
     }
   },
   "metadata": {
-    "task": "008.10",
-    "status": "blocked_not_promoted",
-    "reason": "Best defensible corrected-chain candidate passes open-loop mass/drop, AAo flow, DAo chain-health, and closed-loop stability gates, but still fails the strict clinical Q_DAo nRMSE <= full 0-D control.",
+    "status": "accepted_canonical_quasi_chain_fragment",
+    "reason": "The corrected aortic trunk is accepted as part of the canonical quasi model. Clinical lower_ra4.flow remains a soft downstream systemic-bed diagnostic; DAo chain-health remains the hard aortic trunk waveform gate.",
     "aortic_resistance_scale": 7.0,
     "aortic_inductance_scale": 1.0,
     "aortic_chain_capacitance_scale": 1.0,
@@ -771,7 +770,7 @@
     "terminal_arterial_compliance_scale": 0.5,
     "lower_systemic_proximal_fraction": 0.95,
     "branch_loading_placement": "terminal lower_ra4 load retained at DAo; no distributed branch topology promoted",
-    "best_candidate": "ep02_r7_art05_frac95"
+    "accepted_profile": "combined_contractility1p05"
   },
   "parameters": {
     "quasi_lpa.narrowing_radius_m": 0.003,

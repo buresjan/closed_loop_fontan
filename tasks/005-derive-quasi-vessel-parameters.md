@@ -59,9 +59,11 @@ Completed on 2026-05-15.
 
 - Added `scripts/modeling/derive_quasi_vessel_parameters.py`.
 - Generated `models/quasi_0d_1d/calibration/parameter_priors.yaml`.
-- Generated `models/quasi_0d_1d/config_fragments/quasi_vessel_chains.json`.
+- Generated the first-pass chain fragment used to build the accepted
+  `models/quasi_0d_1d/config_fragments/quasi_vessel_chains_corrected.json`
+  fragment.
 - Updated `models/quasi_0d_1d/README.md` and
-  `models/quasi_0d_1d/docs/schematic.svg`.
+  `models/quasi_0d_1d/docs/quasi_0d_1d_schematic.svg`.
 - Added `tests/test_quasi_parameter_derivation.py`.
 
 Selected first-pass chain counts:

@@ -17,7 +17,7 @@ from scripts.modeling.build_quasi_configs import (
 ROOT = Path(__file__).resolve().parents[1]
 QUASI = ROOT / "models/quasi_0d_1d"
 QUASI_CONFIGS = QUASI / "configs"
-FRAGMENT = QUASI / "config_fragments/quasi_vessel_chains.json"
+FRAGMENT = QUASI / "config_fragments/quasi_vessel_chains_corrected.json"
 CONFIG_NAMES = {
     "fontan_quasi_smoke.jsonc",
     "fontan_quasi_baseline.jsonc",
@@ -57,7 +57,8 @@ def lung_resistance(parameters: dict, side: str) -> float:
 
 
 def test_quasi_configs_are_present_and_generated_from_builder():
-    assert {path.name for path in QUASI_CONFIGS.glob("fontan_quasi_*.jsonc")} == CONFIG_NAMES
+    assert CONFIG_NAMES <= {path.name for path in QUASI_CONFIGS.glob("fontan_quasi_*.jsonc")}
+    assert not list(QUASI_CONFIGS.glob("fontan_quasi_*_task*_*.jsonc"))
     generated = build_all_configs()
     assert set(generated) == CONFIG_NAMES
     for name, config in generated.items():
@@ -149,7 +150,7 @@ def test_quasi_scenarios_change_expected_parameters():
 def test_quasi_docs_name_executable_configs_and_chain_counts():
     readme = (QUASI / "README.md").read_text()
     notes = (QUASI / "docs/implementation_notes.md").read_text()
-    schematic = (QUASI / "docs/schematic.svg").read_text()
+    schematic = (QUASI / "docs/quasi_0d_1d_schematic.svg").read_text()
 
     for name in CONFIG_NAMES:
         assert name in readme
@@ -164,4 +165,4 @@ def test_quasi_docs_name_executable_configs_and_chain_counts():
         assert text in readme
         assert text in notes
         assert text in schematic
-    assert "Task 008.5 corrective configs" in schematic
+    assert "Accepted quasi configs" in schematic

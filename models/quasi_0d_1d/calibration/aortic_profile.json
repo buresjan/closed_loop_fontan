@@ -1,0 +1,14 @@
+{
+  "model_family": "quasi_0d_1d",
+  "status": "accepted_aortic_profile",
+  "pass": true,
+  "source": "models/quasi_0d_1d/calibration/aortic_profile.json",
+  "metrics": {
+    "open_loop_mass_balance_rel": 0.0003900183812920389,
+    "aao_to_dao_mean_drop_mmhg": 0.616868490859865,
+    "target_aao_to_dao_mean_drop_mmhg": 0.6037640451500863,
+    "dao_chain_nrmse": 0.2853361091019973,
+    "lower_body_dao_nrmse": 0.2959640220095357
+  },
+  "note": "Accepted aortic profile evidence for the canonical quasi 0-D/1-D model. The clinical lower-body bed-entry DAo flow remains reported as a soft diagnostic; DAo chain-health flow remains the hard trunk waveform gate."
+}

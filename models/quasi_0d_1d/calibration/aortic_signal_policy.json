@@ -18,6 +18,11 @@
       "decision": "Use lower-body DAo outflow as the clinical waveform match in the current lumped/quasi models.",
       "reason": "The tracked descending-aorta flow target is a lower-body aortic measurement after arch branches. In the quasi topology, lower_ra4.flow is the flow from the DAo pressure node into the lower systemic artery and is the best anatomical clinical match. The DAo chain outlet remains a separate trunk-chain health signal.",
       "selected_signal_id": "Q_DAo"
+    },
+    "task00810_clinical_dao_reclassification": {
+      "decision": "Treat clinical DAo lower_ra4.flow as downstream systemic-bed/terminal-load behavior, not as the aortic trunk-fidelity promotion gate.",
+      "reason": "The accepted corrected aortic trunk passed the open-loop mass/drop diagnostic and the closed-loop DAo chain-health waveform gate. The canonical quasi model keeps Q_DAo_chain_health in the hard aortic waveform gate and passes the frozen superiority gate.",
+      "selected_signal_id": "Q_DAo"
     }
   },
   "phase_policy": {
@@ -117,6 +122,13 @@
       "canonical_name": "ascending_aorta_flow",
       "comparison_role": "hard_gate",
       "evidence": {
+        "accepted_quasi": {
+          "improves_normalized_rmse": true,
+          "model_signal": "valve_arterial.flux",
+          "normalized_rmse": 0.570102270949348,
+          "reference_normalized_rmse": 0.5717890388728895,
+          "reference_signal": "valve_arterial.flux"
+        },
         "full_0d": {
           "anatomical_location": "aortic-valve outlet/root inflow",
           "audit_canonical_name": "ascending_aorta_flow",
@@ -167,6 +179,13 @@
       "canonical_name": "descending_aorta_flow",
       "comparison_role": "soft_target",
       "evidence": {
+        "accepted_quasi": {
+          "improves_normalized_rmse": false,
+          "model_signal": "lower_ra4.flow",
+          "normalized_rmse": 0.3566126712341669,
+          "reference_normalized_rmse": 0.33114071229641634,
+          "reference_signal": "lower_ra4.flow"
+        },
         "full_0d": {
           "anatomical_location": "full 0-D flow from DAo into lower systemic artery",
           "audit_canonical_name": "descending_aorta_flow",
@@ -178,7 +197,7 @@
           "sign_flipped_normalized_rmse": 0.5850382377679664
         },
         "openloop": {
-          "normalized_rmse": 0.332245978543323
+          "normalized_rmse": 0.2959640220095357
         },
         "quasi": {
           "anatomical_location": "flow from DAo pressure node into lower systemic artery",
@@ -208,7 +227,7 @@
         "paper_model"
       ],
       "quantity": "flow",
-      "reason": "This is the best clinical DAo waveform match in the current lumped/quasi topology, but the measurement-location ambiguity keeps it soft until later validation.",
+      "reason": "This is the best clinical DAo waveform match in the current lumped/quasi topology. It remains soft because it also reflects downstream systemic-bed and terminal-load dynamics.",
       "scale_key": "ML_PER_M3",
       "signal_id": "Q_DAo",
       "target_canonical_name": "descending_aorta_flow",
@@ -220,6 +239,13 @@
       "canonical_name": "descending_aorta_chain_health_flow",
       "comparison_role": "diagnostic",
       "evidence": {
+        "accepted_quasi": {
+          "improves_normalized_rmse": true,
+          "model_signal": "quasi_dao_rl_06.flux",
+          "normalized_rmse": 0.36607366926720764,
+          "reference_normalized_rmse": 0.43374764347579986,
+          "reference_signal": "arch_dao.flow"
+        },
         "full_0d": {
           "anatomical_location": "full 0-D arch-to-DAo resistor flow",
           "audit_canonical_name": "descending_aorta_flow",
@@ -231,7 +257,7 @@
           "sign_flipped_normalized_rmse": 0.5580304847959989
         },
         "openloop": {
-          "normalized_rmse": 0.4242748677343666
+          "normalized_rmse": 0.2853361091019973
         },
         "quasi": {
           "anatomical_location": "DAo chain outlet at DAo pressure node",
@@ -270,11 +296,9 @@
     }
   ],
   "source_documents": [
-    "models/quasi_0d_1d/calibration/dao_aao_flow_signal_audit.csv",
-    "models/quasi_0d_1d/calibration/design_audit_report.md",
-    "models/quasi_0d_1d/calibration/aorta_quasi_openloop_report.md",
+    "models/quasi_0d_1d/calibration/baseline_waveforms_direct.json",
     "data/processed/aramburu_2024/targets/waveform_metadata.csv"
   ],
   "status": "active",
-  "task": "008.9"
+  "artifact": "quasi_0d_1d_aortic_signal_policy"
 }

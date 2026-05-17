@@ -16,9 +16,13 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.metrics import MMHG_PER_PA, ML_PER_M3, with_resistor_flows
-from scripts.calibration.map_aortic_signals import load_policy, waveform_signal_specs
 
 WAVEFORMS = ROOT / "data/processed/aramburu_2024/targets/waveform_targets.csv"
+DEFAULT_POLICY = ROOT / "models/quasi_0d_1d/calibration/aortic_signal_policy.json"
+SCALE_BY_KEY = {
+    "MMHG_PER_PA": MMHG_PER_PA,
+    "ML_PER_M3": ML_PER_M3,
+}
 
 NON_AORTIC_MODEL_SIGNAL_MAP: dict[str, tuple[tuple[str, ...], float]] = {
     "svc_pressure": (("svc.blood_pressure",), MMHG_PER_PA),
@@ -63,6 +67,45 @@ def base_signal_specs() -> dict[str, dict[str, Any]]:
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text())
+
+
+def load_policy(path: Path | None = None) -> dict[str, Any]:
+    return load_json(path or DEFAULT_POLICY)
+
+
+def model_family_from_config(config_path: Path | None) -> str:
+    if config_path is not None and "full_0d" in config_path.parts:
+        return "full_0d"
+    return "quasi_0d_1d"
+
+
+def waveform_signal_specs(
+    _config: dict[str, Any],
+    *,
+    config_path: Path | None = None,
+    policy: dict[str, Any] | None = None,
+) -> dict[str, dict[str, Any]]:
+    policy = policy or load_policy()
+    family = model_family_from_config(config_path)
+    specs: dict[str, dict[str, Any]] = {}
+    for row in policy.get("signals", []):
+        if not row.get("include_in_waveform_compare", False):
+            continue
+        canonical_name = str(row["canonical_name"])
+        specs[canonical_name] = {
+            "columns": tuple(row["model_columns"][family]),
+            "scale": SCALE_BY_KEY[str(row["scale_key"])],
+            "target_canonical_name": row["target_canonical_name"],
+            "signal_policy_id": row["signal_id"],
+            "comparison_role": row["comparison_role"],
+            "include_in_no_strong_regression": bool(
+                row.get("include_in_no_strong_regression", False)
+            ),
+            "include_in_superiority_gate": bool(
+                row.get("include_in_superiority_gate", False)
+            ),
+        }
+    return specs
 
 
 def display_path(path: Path | None) -> str | None:

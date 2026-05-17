@@ -13,13 +13,23 @@ This repository develops closed-loop Fontan circulation models and calibration/r
 Every model family must have:
 
 - a model-local `README.md` describing model scope, topology, parameters, run commands, and current limitations;
-- a model-local SVG schematic under `docs/`;
-- a PNG export of that schematic under `docs/`;
-- a model-local `docs/implementation_notes.md` explaining parameter naming, units, block conventions, topology assumptions, calibration targets, and current limitations.
+- a model-local SVG schematic under `docs/`, named `docs/{model}_schematic.svg`;
+- a PNG export of that schematic under `docs/`, named `docs/{model}_schematic.png`;
+- a model-local `docs/implementation_notes.md` explaining parameter naming, units, block conventions, topology assumptions, calibration targets, and current limitations;
+- a model-local technical reference source named `docs/{model}_technical_reference.md`;
+- a generated technical reference PDF named `docs/{model}_technical_reference.pdf`.
 
-Every change that modifies a model topology, parameterization, interface, or behavior must update that model's README, SVG schematic, PNG schematic export, and implementation notes in the same change. Do not leave diagrams or prose stale.
+Every change that modifies a model topology, parameterization, interface, or behavior must update that model's README, SVG schematic, PNG schematic export, implementation notes, technical reference source, and generated technical reference PDF in the same change. Do not leave diagrams, equations, parameter inventories, or prose stale.
 
 Schematics must follow the visual style of the current full 0-D schematic: clear labels, visible topology, consistent block/edge styling, and no overlapping text or components. Edit the SVG source first, then regenerate the PNG export from that SVG.
+
+Technical reference PDFs must be long-form, standardized model-definition
+documents. They must explain how the model is built, include the governing
+mathematical equations for the block/segment types used, list every segment or
+block in the accepted topology, and list the free parameters and accepted values
+or state explicitly that the model family is not executable yet. Regenerate the
+technical reference markdown/PDF with
+`python3 scripts/docs/build_model_reference_pdfs.py` after model changes.
 
 ## Roadmap and Task Tracking
 

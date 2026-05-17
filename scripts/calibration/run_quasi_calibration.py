@@ -94,7 +94,6 @@ def write_objective_reports() -> None:
             str(CALIBRATION_DIR / "baseline_vs_paper.json"),
         ]
     )
-    run([sys.executable, "scripts/calibration/map_aortic_signals.py"])
     run(
         [
             sys.executable,
@@ -114,9 +113,7 @@ def write_objective_reports() -> None:
     run(
         [
             sys.executable,
-            "scripts/calibration/quasi_non_regression.py",
-            "--out",
-            str(CALIBRATION_DIR / "non_regression_gate.json"),
+            "scripts/calibration/compare_quasi_to_full0d.py",
         ]
     )
 

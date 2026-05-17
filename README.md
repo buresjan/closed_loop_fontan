@@ -10,7 +10,7 @@ The repository is organized for three model families:
 | `models/quasi_0d_1d` | active | Calibrated PhysioBlocks-only quasi 0-D/1-D model with R-L-C aortic and Fontan chains. |
 | `models/coupled_0d_1d` | planned | Future coupled 0-D/1-D model with the aorta and TCPC represented by 1-D models. |
 
-Each model family owns its README, schematic, configs, and model-specific notes. Model changes must keep the schematic and README synchronized.
+Each model family owns its README, schematic, configs, implementation notes, and standardized technical reference PDF/source. Model changes must keep those artifacts synchronized.
 
 ## Setup
 

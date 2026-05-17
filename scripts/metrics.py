@@ -224,7 +224,7 @@ def compute(csv: Path, config: Path) -> dict[str, Any]:
             out[f'mean_{node}_pressure_mmHg'] = float(sub[col].mean() * MMHG_PER_PA)
             out[f'min_{node}_pressure_mmHg'] = float(sub[col].min() * MMHG_PER_PA)
             out[f'max_{node}_pressure_mmHg'] = float(sub[col].max() * MMHG_PER_PA)
-    for name in ['right_lung', 'left_lung']:
+    for name in RCR_BEDS:
         col = f'{name}.pressure_mid'
         if col in sub:
             out[f'mean_{name}_pressure_mid_mmHg'] = float(sub[col].mean() * MMHG_PER_PA)

@@ -4,8 +4,6 @@ Status: completed
 
 Depends on: Tasks 004, 006, and 007
 
-Superseded by: Task 008.5 corrective quasi calibration and non-regression gate
-
 ## Goal
 
 Tune the quasi model from the calibrated full 0-D physiology while improving impedance, inertance, distributed compliance, and waveform timing.
@@ -39,39 +37,42 @@ No PhysioBlocks internal changes.
 
 Completed on 2026-05-15.
 
-Task 008 was later reviewed as stable but scientifically provisional. Task
-008.5 keeps the executable quasi model but replaces the acceptance logic with a
-hard-target non-regression gate and a corrective calibration report.
+Task 008 now records the accepted canonical quasi 0-D/1-D model.
 
-- Added Task 008 quasi calibration helpers:
+- Added quasi calibration helpers:
   - `scripts/calibration/quasi.py`
   - `scripts/calibration/run_quasi_calibration.py`
   - `scripts/calibration/compare_waveforms.py`
 - Updated `scripts/modeling/build_quasi_configs.py` so the default tracked
-  configs include Task 008 calibration factors; `--uncalibrated` remains
-  available for raw Task 006 assembly checks.
-- Selected small global physiology scales:
-  - heart contractility: `0.96`
-  - upper systemic resistance: `1.04`
+  configs include the accepted calibration factors; `--uncalibrated` remains
+  available for raw assembly checks.
+- Selected accepted physiology/design scales:
+  - heart contractility: `1.05`
   - lower systemic resistance: `1.12`
-  - pulmonary bed resistance: `1.10`
-- Preserved all quasi chain segment counts and total chain resistance,
-  inertance, and compliance from the Task 005 fragment.
+  - pulmonary bed resistance: `1.15`
+  - pulmonary proximal resistance fraction: `0.65`
+  - endpoint aortic compliance scale: `0.02`
+  - lower systemic proximal resistance fraction: `0.95`
+- Preserved all quasi chain segment counts and total chain inertance and
+  compliance from the accepted fragment.
 - Regenerated calibrated quasi configs, baseline/intervention reference
   outputs, baseline objective reports, waveform comparison, and scenario
   comparison.
 - Added `models/quasi_0d_1d/calibration/calibration_report.md`,
   `calibration_factors.json`, `baseline_objective.json`,
   `baseline_vs_paper.json`, and `baseline_waveforms_direct.json`.
-- Updated the quasi README, implementation notes, SVG schematic, and PNG
-  schematic export.
+- Updated the quasi README, implementation notes, SVG schematic, PNG schematic
+  export, and standardized technical reference source/PDF.
 - Added `tests/test_quasi_calibration.py`.
 
-Baseline direct-measurement weighted RMS relative error:
+Accepted comparison scores:
 
-- before Task 008: `0.0817`
-- after Task 008: `0.0610`
-- full 0-D reference: `0.0614`
+- full 0-D hard score: `0.0433`
+- quasi hard score: `0.0244`
+- full 0-D direct score: `0.0614`
+- quasi direct score: `0.0470`
+- full 0-D paper score: `0.0793`
+- quasi paper score: `0.0714`
 
 Validation:
 

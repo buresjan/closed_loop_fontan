@@ -28,9 +28,11 @@ def test_configs_are_strict_json_and_forward_simulations():
 
 def test_full_0d_reference_files_are_present_and_documented():
     assert {path.name for path in FULL_0D_CONFIGS.glob('fontan_0d_*.jsonc')} == FULL_0D_CONFIG_NAMES
-    assert (FULL_0D / 'docs' / 'fontan_closed_loop_schematic.svg').exists()
-    assert (FULL_0D / 'docs' / 'fontan_closed_loop_schematic.png').exists()
+    assert (FULL_0D / 'docs' / 'full_0d_schematic.svg').exists()
+    assert (FULL_0D / 'docs' / 'full_0d_schematic.png').exists()
     assert (FULL_0D / 'docs' / 'implementation_notes.md').exists()
+    assert (FULL_0D / 'docs' / 'full_0d_technical_reference.md').exists()
+    assert (FULL_0D / 'docs' / 'full_0d_technical_reference.pdf').exists()
     for name in [
         'parameter_priors.yaml',
         'parameter_bounds.yaml',
@@ -40,27 +42,41 @@ def test_full_0d_reference_files_are_present_and_documented():
 
     readme = (FULL_0D / 'README.md').read_text()
     assert '## Reference policy' in readme
-    assert 'models/full_0d/docs/fontan_closed_loop_schematic.svg' in readme
-    assert 'models/full_0d/docs/fontan_closed_loop_schematic.png' in readme
+    assert 'models/full_0d/docs/full_0d_schematic.svg' in readme
+    assert 'models/full_0d/docs/full_0d_schematic.png' in readme
     assert 'models/full_0d/docs/implementation_notes.md' in readme
+    assert 'models/full_0d/docs/full_0d_technical_reference.md' in readme
+    assert 'models/full_0d/docs/full_0d_technical_reference.pdf' in readme
 
-def test_each_model_family_has_readme_and_schematic():
+def test_each_model_family_has_standard_documentation():
     for model_dir in (ROOT / 'models').iterdir():
         if not model_dir.is_dir():
             continue
         assert (model_dir / 'README.md').exists()
         docs = model_dir / 'docs'
-        has_svg = (
-            (docs / 'schematic.svg').exists()
-            or (docs / 'fontan_closed_loop_schematic.svg').exists()
+        assert (docs / f'{model_dir.name}_schematic.svg').exists(), (
+            f'{model_dir.name} is missing an SVG schematic'
         )
-        has_png = (
-            (docs / 'schematic.png').exists()
-            or (docs / 'fontan_closed_loop_schematic.png').exists()
+        assert (docs / f'{model_dir.name}_schematic.png').exists(), (
+            f'{model_dir.name} is missing a PNG schematic export'
         )
-        assert has_svg, f'{model_dir.name} is missing an SVG schematic'
-        assert has_png, f'{model_dir.name} is missing a PNG schematic export'
         assert (docs / 'implementation_notes.md').exists(), f'{model_dir.name} is missing implementation notes'
+        technical_md = docs / f'{model_dir.name}_technical_reference.md'
+        technical_pdf = docs / f'{model_dir.name}_technical_reference.pdf'
+        assert technical_md.exists(), f'{model_dir.name} is missing technical reference source'
+        assert technical_pdf.exists(), f'{model_dir.name} is missing technical reference PDF'
+        assert technical_pdf.read_bytes().startswith(b'%PDF')
+        assert technical_pdf.stat().st_size > 10_000
+
+        technical_text = technical_md.read_text()
+        for heading in [
+            '## Model Construction',
+            '## Governing Equations',
+            '## Segment Inventory',
+            '## Free Parameters',
+            '## Documentation and Regeneration',
+        ]:
+            assert heading in technical_text
 
 def test_uses_real_physioblocks_full_schema():
     cfg = load('fontan_0d_baseline.jsonc')

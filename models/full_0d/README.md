@@ -67,10 +67,11 @@ while quasi 0-D/1-D and coupled 0-D/1-D variants are developed separately.
 
 Changes that alter full 0-D topology, parameterization, block conventions,
 scenario behavior, or accepted metrics must update this README, the schematic,
-and the relevant reference outputs in the same change. Cleanup of the current
-`rc_block` pure-resistor workaround or `valve_rl_block` bidirectional-conduit
-workaround is allowed only if it preserves the accepted reference behavior or
-creates a deliberately named new reference output set.
+the technical reference PDF/source, and the relevant reference outputs in the
+same change. Cleanup of the current `rc_block` pure-resistor workaround or
+`valve_rl_block` bidirectional-conduit workaround is allowed only if it
+preserves the accepted reference behavior or creates a deliberately named new
+reference output set.
 
 Task 004 calibrated the baseline to the Aramburu 2024 direct-measurement
 targets with scale factors recorded in `calibration/parameter_priors.yaml`.
@@ -85,9 +86,11 @@ models/full_0d/configs/fontan_0d_baseline.jsonc
 models/full_0d/configs/fontan_0d_vasodilation.jsonc
 models/full_0d/configs/fontan_0d_fenestration.jsonc
 models/full_0d/configs/fontan_0d_lpa_obstruction.jsonc
-models/full_0d/docs/fontan_closed_loop_schematic.svg
-models/full_0d/docs/fontan_closed_loop_schematic.png
+models/full_0d/docs/full_0d_schematic.svg
+models/full_0d/docs/full_0d_schematic.png
 models/full_0d/docs/implementation_notes.md
+models/full_0d/docs/full_0d_technical_reference.md
+models/full_0d/docs/full_0d_technical_reference.pdf
 models/full_0d/calibration/calibration_report.md
 models/full_0d/reference_outputs/*.json
 ```

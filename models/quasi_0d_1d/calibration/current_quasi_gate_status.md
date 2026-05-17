@@ -1,35 +1,34 @@
 # Current Quasi Superiority Gate Status
 
-Task 008.7 status: `not_superior_to_full_0d`
+Status: `accepted_superior_to_full_0d`
 
-Accepted as superior: `False`
+Gate profile: `frozen`
 
-Failed gate groups: `score_non_regression, pump_non_regression, fontan_pulmonary_non_regression, aortic_waveform_no_regression`
+Accepted as superior: `True`
+
+Failed gate groups: `none`
 
 ## Summary Scores
 
 | Score | Full 0-D reference | Current quasi | Pass |
 |---|---:|---:|---|
-| Hard clinical summary | 0.0433 | 0.0561 | False |
-| Aggregate direct | 0.0614 | 0.0592 | True |
-| Paper-model | 0.0793 | 0.0805 | False |
-| AAo flow nRMSE | 0.5718 | 0.5602 | True |
-| DAo chain-health flow nRMSE | 0.4337 | 0.9520 | False |
+| Hard clinical summary | 0.0433 | 0.0244 | True |
+| Aggregate direct | 0.0614 | 0.0470 | True |
+| Paper-model | 0.0793 | 0.0714 | True |
+| AAo flow nRMSE | 0.5718 | 0.5701 | True |
+| DAo chain-health flow nRMSE | 0.4337 | 0.3661 | True |
 
 ## Gate Groups
 
 | Gate group | Pass |
 |---|---|
 | Stability and balance | True |
-| Score non-regression | False |
-| Pump target non-regression | False |
-| Fontan/pulmonary target non-regression | False |
-| Aortic flow waveform no-regression | False |
+| Score non-regression | True |
+| Pump target non-regression | True |
+| Fontan/pulmonary target non-regression | True |
+| Aortic flow waveform no-regression | True |
 | Quasi-specific vascular improvement | True |
 
 ## Interpretation
 
-The current quasi model is not superior to the full 0-D reference under the
-frozen Task 008.7 gate. Later quasi candidates must pass this same gate without
-relaxing thresholds or allowing soft/problematic targets to compensate for
-hard pump, paper-model, stability, or aortic-flow failures.
+The current quasi model is accepted as superior to the full 0-D reference under the frozen comparison gate. The acceptance depends on all hard clinical, paper-model, waveform, stability, balance, and quasi-specific vascular-improvement groups passing.

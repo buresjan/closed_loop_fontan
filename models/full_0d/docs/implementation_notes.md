@@ -303,3 +303,11 @@ The calibration scripts are under `scripts/calibration/`. The selected factors,
 baseline target comparison, numerical periodicity checks, and validation
 scenario responses are documented in
 `models/full_0d/calibration/calibration_report.md`.
+
+## Technical Reference Convention
+
+`docs/full_0d_technical_reference.md` and the generated
+`docs/full_0d_technical_reference.pdf` provide the standardized long-form model
+definition with equations, segment inventory, and free-parameter list.
+Regenerate them with `python3 scripts/docs/build_model_reference_pdfs.py --model
+full_0d` whenever topology or parameter values change.

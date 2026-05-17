@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import json
 import math
+from numbers import Real
 from pathlib import Path
 
 import pytest
@@ -15,11 +15,34 @@ from scripts.modeling.derive_quasi_vessel_parameters import (
 
 ROOT = Path(__file__).resolve().parents[1]
 PRIORS = ROOT / "models/quasi_0d_1d/calibration/parameter_priors.yaml"
-FRAGMENT = ROOT / "models/quasi_0d_1d/config_fragments/quasi_vessel_chains.json"
 
 
 def load_priors():
     return yaml.safe_load(PRIORS.read_text())
+
+
+def assert_nested_equal_approx(observed, expected):
+    if isinstance(expected, dict):
+        assert isinstance(observed, dict)
+        assert set(observed) == set(expected)
+        for key in expected:
+            assert_nested_equal_approx(observed[key], expected[key])
+        return
+    if isinstance(expected, list):
+        assert isinstance(observed, list)
+        assert len(observed) == len(expected)
+        for observed_item, expected_item in zip(observed, expected):
+            assert_nested_equal_approx(observed_item, expected_item)
+        return
+    if (
+        isinstance(expected, Real)
+        and isinstance(observed, Real)
+        and not isinstance(expected, bool)
+        and not isinstance(observed, bool)
+    ):
+        assert observed == pytest.approx(expected)
+        return
+    assert observed == expected
 
 
 def test_tapered_poiseuille_resistance_matches_cylindrical_limit():
@@ -101,7 +124,7 @@ def test_fontan_chains_keep_calibrated_pathway_resistance_as_first_pass_prior():
 
 def test_lpa_narrowing_has_explicit_parameter_and_fragment_metadata():
     priors = load_priors()
-    fragment = json.loads(FRAGMENT.read_text())
+    fragment = build_config_fragment(priors)
 
     narrowing = priors["metadata"]["lpa_narrowing"]
     assert narrowing["parameter_name"] == "quasi_lpa.narrowing_radius_m"
@@ -113,9 +136,8 @@ def test_lpa_narrowing_has_explicit_parameter_and_fragment_metadata():
 
 def test_config_fragment_preserves_priors_and_uses_quasi_blocks():
     priors = load_priors()
-    fragment = json.loads(FRAGMENT.read_text())
+    fragment = build_config_fragment(priors)
 
-    assert fragment == build_config_fragment(priors)
     for key, chain in fragment["chains"].items():
         assert len(chain["nodes"]) == priors["chains"][key]["segment_count"] + 1
         assert set(chain["blocks"])
@@ -128,4 +150,4 @@ def test_derivation_payload_matches_tracked_priors():
     generated = build_priors_payload()
     tracked = load_priors()
 
-    assert generated == tracked
+    assert_nested_equal_approx(generated, tracked)

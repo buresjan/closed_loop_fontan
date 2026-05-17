@@ -28,10 +28,13 @@ and `quasi_0d_1d`:
 
 ```text
 README.md
-docs/schematic.svg
-docs/schematic.png
+docs/coupled_0d_1d_schematic.svg
+docs/coupled_0d_1d_schematic.png
+docs/coupled_0d_1d_technical_reference.md
+docs/coupled_0d_1d_technical_reference.pdf
 docs/implementation_notes.md
 ```
 
 When the coupled topology is implemented, update the README, SVG schematic,
-PNG export, and implementation notes in the same change.
+PNG export, implementation notes, technical reference source, and technical
+reference PDF in the same change.

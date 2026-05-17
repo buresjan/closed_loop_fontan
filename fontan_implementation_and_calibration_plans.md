@@ -41,7 +41,10 @@ models/quasi_0d_1d/configs/
   fontan_quasi_fenestration.jsonc
   fontan_quasi_lpa_obstruction.jsonc
 models/quasi_0d_1d/docs/
-  schematic.svg
+  quasi_0d_1d_schematic.svg
+  quasi_0d_1d_schematic.png
+  quasi_0d_1d_technical_reference.md
+  quasi_0d_1d_technical_reference.pdf
   implementation_notes.md
 models/quasi_0d_1d/reference_outputs/
 models/quasi_0d_1d/calibration/
@@ -309,7 +312,10 @@ models/coupled_0d_1d/configs/
   fontan_coupled_0d_1d_fenestration.jsonc
   fontan_coupled_0d_1d_lpa_obstruction.jsonc
 models/coupled_0d_1d/docs/
-  schematic.svg
+  coupled_0d_1d_schematic.svg
+  coupled_0d_1d_schematic.png
+  coupled_0d_1d_technical_reference.md
+  coupled_0d_1d_technical_reference.pdf
   implementation_notes.md
 models/coupled_0d_1d/reference_outputs/
 models/coupled_0d_1d/calibration/

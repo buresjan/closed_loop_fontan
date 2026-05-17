@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="3400" height="1650" viewBox="0 0 3400 1650" role="img" aria-labelledby="title desc">
   <title id="title">Quasi 0-D/1-D Fontan schematic with R-L-C vessel chains</title>
-  <desc id="desc">Closed-loop Fontan network with active atrium, AAo, aortic arch, upper and lower vascular beds, quasi R-L-C aortic and Fontan chains, and pulmonary Windkessel beds.</desc>
+  <desc id="desc">Closed-loop Fontan network with active atrium, AAo, aortic arch, upper and lower vascular beds, accepted quasi R-L-C aortic and Fontan chains, pulmonary Windkessel beds, and fenestration.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M 1 1 L 11 6 L 1 11 z" fill="#182230"/>
@@ -46,7 +46,7 @@
   <rect class="page" x="0" y="0" width="3400" height="1650"/>
   <text class="title" x="70" y="72">Quasi 0-D/1-D Fontan schematic</text>
   <text class="subtitle" x="70" y="107">Same closed-loop components as full 0-D, with aortic and Fontan pathways replaced by PhysioBlocks R-L-C chains. Nominal flow follows the arrows.</text>
-  <text class="calibration" x="70" y="129">Task 008.5 corrective configs: AAo/arch x4 and DAo x6 geometry-based chains; SVC x3, IVC x5, RPA x3, LPA x4 preserve Task 005 chain totals.</text>
+  <text class="calibration" x="70" y="129">Accepted quasi configs: corrected AAo/arch x4 and DAo x6; SVC x3, IVC x5, RPA x3, LPA x4; proximal pulmonary split and preload restoration included.</text>
   <line class="section-line" x1="70" y1="138" x2="3330" y2="138"/>
 
   <text class="band-title" x="360" y="185">Pump</text>
@@ -363,6 +363,9 @@
 
   <line class="wire dash" x1="3105" y1="1450" x2="3175" y2="1450"/>
   <text class="legend-text" x="3140" y="1494" text-anchor="middle">Fenestration shunt path</text>
-  <text class="calibration" x="1700" y="1550" text-anchor="middle">Quasi R-L-C labels denote repeated hydraulic_rl_block + c_block cells; Task 008.5 adds pulmonary split and non-regression gates.</text>
+  <text class="calibration" x="1700" y="1540" text-anchor="middle">
+    <tspan x="1700" dy="0">Quasi R-L-C labels denote repeated hydraulic_rl_block + c_block cells; accepted model passes the frozen full 0-D comparison gate.</tspan>
+    <tspan x="1700" dy="30">Clinical DAo bed-entry flow is reported as a soft diagnostic; DAo chain-health remains the hard aortic trunk waveform gate.</tspan>
+  </text>
   </g>
 </svg>
