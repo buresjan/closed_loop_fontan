@@ -1,0 +1,195 @@
+{
+  "generated_by": "scripts/modeling/derive_1d_geometry.py",
+  "inputs": {
+    "aorta_geometry": "data/processed/aramburu_2024/model_inputs/aorta_geometry.csv",
+    "fontan_cross_geometry": "data/processed/aramburu_2024/model_inputs/fontan_cross_geometry.csv"
+  },
+  "constants": {
+    "density_kg_m-3": 1060.0,
+    "dynamic_viscosity_pa_s": 0.0035,
+    "aortic_wave_speed_m_s": 5.35,
+    "fontan_wave_speed_m_s": 2.81
+  },
+  "submodels": {
+    "submodel_aorta_1d_openloop": {
+      "config": "models/coupled_0d_1d/configs/submodel_aorta_1d_openloop.jsonc",
+      "segment_count": 4,
+      "segments": [
+        {
+          "segment_id": "aorta_01_ascending_aorta",
+          "source_segment": "Ascending aorta",
+          "length_m": 0.029,
+          "radius_in_m": 0.0125,
+          "radius_out_m": 0.00775,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 3291870.015781517
+        },
+        {
+          "segment_id": "aorta_02_thoracic_aorta",
+          "source_segment": "Thoracic aorta",
+          "length_m": 0.09,
+          "radius_in_m": 0.00775,
+          "radius_out_m": 0.00525,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 5172130.461559674
+        },
+        {
+          "segment_id": "aorta_03_brachiocephalic",
+          "source_segment": "Brachiocephalic",
+          "length_m": 0.025,
+          "radius_in_m": 0.0045,
+          "radius_out_m": 0.00525,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 7001849.315284676
+        },
+        {
+          "segment_id": "aorta_04_carotic_left",
+          "source_segment": "Carotic left",
+          "length_m": 0.03,
+          "radius_in_m": 0.00325,
+          "radius_out_m": 0.0025,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 11807755.120157143
+        }
+      ]
+    },
+    "submodel_tcpc_1d_openloop": {
+      "config": "models/coupled_0d_1d/configs/submodel_tcpc_1d_openloop.jsonc",
+      "segment_count": 5,
+      "segments": [
+        {
+          "segment_id": "tcpc_01_ivc",
+          "source_segment": "IVC",
+          "length_m": 0.055,
+          "radius_in_m": 0.0155,
+          "radius_out_m": 0.011,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 702723.7543325709
+        },
+        {
+          "segment_id": "tcpc_02_rpa",
+          "source_segment": "RPA",
+          "length_m": 0.012,
+          "radius_in_m": 0.0065,
+          "radius_out_m": 0.0065,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 1452981.9116586228
+        },
+        {
+          "segment_id": "tcpc_03_lpa_i",
+          "source_segment": "LPA I",
+          "length_m": 0.022,
+          "radius_in_m": 0.00525,
+          "radius_out_m": 0.003,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 2208872.3583823047
+        },
+        {
+          "segment_id": "tcpc_04_lpa_ii",
+          "source_segment": "LPA II",
+          "length_m": 0.014,
+          "radius_in_m": 0.003,
+          "radius_out_m": 0.004,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 2671274.7429555343
+        },
+        {
+          "segment_id": "tcpc_05_svc",
+          "source_segment": "SVC",
+          "length_m": 0.015,
+          "radius_in_m": 0.011,
+          "radius_out_m": 0.00725,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 1013819.4379165678
+        }
+      ]
+    },
+    "submodel_aorta_tcpc_1d_openloop": {
+      "config": "models/coupled_0d_1d/configs/submodel_aorta_tcpc_1d_openloop.jsonc",
+      "segment_count": 9,
+      "segments": [
+        {
+          "segment_id": "combined_aorta_01_ascending_aorta",
+          "source_segment": "Ascending aorta",
+          "length_m": 0.029,
+          "radius_in_m": 0.0125,
+          "radius_out_m": 0.00775,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 3291870.015781517
+        },
+        {
+          "segment_id": "combined_aorta_02_thoracic_aorta",
+          "source_segment": "Thoracic aorta",
+          "length_m": 0.09,
+          "radius_in_m": 0.00775,
+          "radius_out_m": 0.00525,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 5172130.461559674
+        },
+        {
+          "segment_id": "combined_aorta_03_brachiocephalic",
+          "source_segment": "Brachiocephalic",
+          "length_m": 0.025,
+          "radius_in_m": 0.0045,
+          "radius_out_m": 0.00525,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 7001849.315284676
+        },
+        {
+          "segment_id": "combined_aorta_04_carotic_left",
+          "source_segment": "Carotic left",
+          "length_m": 0.03,
+          "radius_in_m": 0.00325,
+          "radius_out_m": 0.0025,
+          "wave_speed_m_s": 5.35,
+          "wall_stiffness_pa_m-1": 11807755.120157143
+        },
+        {
+          "segment_id": "combined_tcpc_05_ivc",
+          "source_segment": "IVC",
+          "length_m": 0.055,
+          "radius_in_m": 0.0155,
+          "radius_out_m": 0.011,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 702723.7543325709
+        },
+        {
+          "segment_id": "combined_tcpc_06_rpa",
+          "source_segment": "RPA",
+          "length_m": 0.012,
+          "radius_in_m": 0.0065,
+          "radius_out_m": 0.0065,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 1452981.9116586228
+        },
+        {
+          "segment_id": "combined_tcpc_07_lpa_i",
+          "source_segment": "LPA I",
+          "length_m": 0.022,
+          "radius_in_m": 0.00525,
+          "radius_out_m": 0.003,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 2208872.3583823047
+        },
+        {
+          "segment_id": "combined_tcpc_08_lpa_ii",
+          "source_segment": "LPA II",
+          "length_m": 0.014,
+          "radius_in_m": 0.003,
+          "radius_out_m": 0.004,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 2671274.7429555343
+        },
+        {
+          "segment_id": "combined_tcpc_09_svc",
+          "source_segment": "SVC",
+          "length_m": 0.015,
+          "radius_in_m": 0.011,
+          "radius_out_m": 0.00725,
+          "wave_speed_m_s": 2.81,
+          "wall_stiffness_pa_m-1": 1013819.4379165678
+        }
+      ]
+    }
+  }
+}

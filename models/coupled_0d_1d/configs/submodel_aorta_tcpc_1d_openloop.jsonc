@@ -1,0 +1,834 @@
+{
+  "type": "open_loop_1d_submodel",
+  "model_family": "coupled_0d_1d",
+  "status": "reference_validation_spec",
+  "submodel_id": "submodel_aorta_tcpc_1d_openloop",
+  "title": "Combined aorta-TCPC 1-D open-loop reference submodel",
+  "generated_by": "scripts/modeling/derive_1d_geometry.py",
+  "run_with": "python3 scripts/calibration/validate_1d_submodels.py",
+  "constants": {
+    "density_kg_m-3": 1060.0,
+    "dynamic_viscosity_pa_s": 0.0035,
+    "aortic_wave_speed_m_s": 5.35,
+    "fontan_wave_speed_m_s": 2.81,
+    "prototype_cells_per_segment": 3
+  },
+  "topology": {
+    "nodes": [
+      "aao_inlet",
+      "arch_junction",
+      "bca_outlet",
+      "dao_outlet",
+      "ivc_inlet",
+      "left_carotid_outlet",
+      "lpa_junction",
+      "lpa_outlet",
+      "rpa_outlet",
+      "svc_inlet",
+      "tcpc_junction"
+    ],
+    "segments": [
+      {
+        "segment_id": "combined_aorta_01_ascending_aorta",
+        "source_segment": "Ascending aorta",
+        "domain_no": 1,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_01.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.0145,
+          0.029
+        ],
+        "node_1": "aao_inlet",
+        "node_2": "arch_junction",
+        "length_m": 0.029,
+        "radius_in_m": 0.0125,
+        "radius_out_m": 0.00775,
+        "reference_area_m2": 0.00033978288043982105,
+        "wave_speed_m_s": 5.35,
+        "wall_stiffness_pa_m-1": 3291870.015781517,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 29679.33565110298,
+        "inertance_pa_s2_m-3": 90469.53737106941,
+        "capacitance_m3_pa-1": 3.2477759556341947e-10,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.009666666666666667,
+            "radius_in_m": 0.0125,
+            "radius_out_m": 0.010916666666666667,
+            "reference_area_m2": 0.0004326343966459194,
+            "wall_stiffness_pa_m-1": 2917312.161133889,
+            "inertance_pa_s2_m-3": 23684.35507233337,
+            "capacitance_m3_pa-1": 1.3784288653076908e-10,
+            "poiseuille_resistance_pa_s_m-3": 4655.177162163544
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.009666666666666667,
+            "radius_in_m": 0.010916666666666667,
+            "radius_out_m": 0.009333333333333334,
+            "reference_area_m2": 0.00032403128394057224,
+            "wall_stiffness_pa_m-1": 3370931.707589892,
+            "inertance_pa_s2_m-3": 31622.461084794268,
+            "capacitance_m3_pa-1": 1.0324053716236343e-10,
+            "poiseuille_resistance_pa_s_m-3": 8367.170441647639
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.009666666666666667,
+            "radius_in_m": 0.009333333333333334,
+            "radius_out_m": 0.00775,
+            "reference_area_m2": 0.00023117976773447393,
+            "wall_stiffness_pa_m-1": 3990878.5670843665,
+            "inertance_pa_s2_m-3": 44323.37123219052,
+            "capacitance_m3_pa-1": 7.365684915273416e-11,
+            "poiseuille_resistance_pa_s_m-3": 16656.988047291805
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_aorta_02_thoracic_aorta",
+        "source_segment": "Thoracic aorta",
+        "domain_no": 2,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_02.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.045,
+          0.09
+        ],
+        "node_1": "arch_junction",
+        "node_2": "dao_outlet",
+        "length_m": 0.09,
+        "radius_in_m": 0.00775,
+        "radius_out_m": 0.00525,
+        "reference_area_m2": 0.0001376410281354028,
+        "wave_speed_m_s": 5.35,
+        "wall_stiffness_pa_m-1": 5172130.461559674,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 509348.8879917621,
+        "inertance_pa_s2_m-3": 693107.2899728075,
+        "capacitance_m3_pa-1": 4.0829775137933286e-10,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.03,
+            "radius_in_m": 0.00775,
+            "radius_out_m": 0.0069166666666666664,
+            "reference_area_m2": 0.0001694932869842993,
+            "wall_stiffness_pa_m-1": 4660871.975727885,
+            "inertance_pa_s2_m-3": 187618.05004670026,
+            "capacitance_m3_pa-1": 1.6759471815216554e-10,
+            "poiseuille_resistance_pa_s_m-3": 93455.25200703136
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.03,
+            "radius_in_m": 0.0069166666666666664,
+            "radius_out_m": 0.006083333333333334,
+            "reference_area_m2": 0.00013327770500541698,
+            "wall_stiffness_pa_m-1": 5256112.741651535,
+            "inertance_pa_s2_m-3": 238599.54670368542,
+            "capacitance_m3_pa-1": 1.317848028306834e-10,
+            "poiseuille_resistance_pa_s_m-3": 151857.13330332862
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.03,
+            "radius_in_m": 0.006083333333333334,
+            "radius_out_m": 0.00525,
+            "reference_area_m2": 0.00010142544615652049,
+            "wall_stiffness_pa_m-1": 6025179.108686951,
+            "inertance_pa_s2_m-3": 313530.787440915,
+            "capacitance_m3_pa-1": 1.002893351382955e-10,
+            "poiseuille_resistance_pa_s_m-3": 264036.50268140197
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_aorta_03_brachiocephalic",
+        "source_segment": "Brachiocephalic",
+        "domain_no": 3,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_03.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.0125,
+          0.025
+        ],
+        "node_1": "arch_junction",
+        "node_2": "bca_outlet",
+        "length_m": 0.025,
+        "radius_in_m": 0.0045,
+        "radius_out_m": 0.00525,
+        "reference_area_m2": 7.5103699374881e-05,
+        "wave_speed_m_s": 5.35,
+        "wall_stiffness_pa_m-1": 7001849.315284676,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 402381.22531437327,
+        "inertance_pa_s2_m-3": 352845.46860634576,
+        "capacitance_m3_pa-1": 6.188535817982043e-11,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.008333333333333333,
+            "radius_in_m": 0.0045,
+            "radius_out_m": 0.00475,
+            "reference_area_m2": 6.72497177409065e-05,
+            "wall_stiffness_pa_m-1": 7399428.739340267,
+            "inertance_pa_s2_m-3": 131351.23283885868,
+            "capacitance_m3_pa-1": 1.847122891205969e-11,
+            "poiseuille_resistance_pa_s_m-3": 162718.80592596487
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.008333333333333333,
+            "radius_in_m": 0.00475,
+            "radius_out_m": 0.005,
+            "reference_area_m2": 7.471100029318226e-05,
+            "wall_stiffness_pa_m-1": 7020226.90415157,
+            "inertance_pa_s2_m-3": 118233.36990094373,
+            "capacitance_m3_pa-1": 2.0520591535879453e-11,
+            "poiseuille_resistance_pa_s_m-3": 131789.39908700314
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.008333333333333333,
+            "radius_in_m": 0.005,
+            "radius_out_m": 0.00525,
+            "reference_area_m2": 8.256498192715676e-05,
+            "wall_stiffness_pa_m-1": 6677985.625399948,
+            "inertance_pa_s2_m-3": 106986.43816244727,
+            "capacitance_m3_pa-1": 2.2677815350426573e-11,
+            "poiseuille_resistance_pa_s_m-3": 107873.02030140522
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_aorta_04_carotic_left",
+        "source_segment": "Carotic left",
+        "domain_no": 4,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_04.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.015,
+          0.03
+        ],
+        "node_1": "arch_junction",
+        "node_2": "left_carotid_outlet",
+        "length_m": 0.03,
+        "radius_in_m": 0.00325,
+        "radius_out_m": 0.0025,
+        "reference_area_m2": 2.64090132442392e-05,
+        "wave_speed_m_s": 5.35,
+        "wall_stiffness_pa_m-1": 11807755.120157143,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 4143725.35458352,
+        "inertance_pa_s2_m-3": 1204134.350113849,
+        "capacitance_m3_pa-1": 2.6113194275092855e-11,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.01,
+            "radius_in_m": 0.00325,
+            "radius_out_m": 0.003,
+            "reference_area_m2": 3.0728703142925166e-05,
+            "wall_stiffness_pa_m-1": 10946399.875445016,
+            "inertance_pa_s2_m-3": 344954.35588990984,
+            "capacitance_m3_pa-1": 1.0128165809298716e-11,
+            "poiseuille_resistance_pa_s_m-3": 939563.0237339453
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.01,
+            "radius_in_m": 0.003,
+            "radius_out_m": 0.00275,
+            "reference_area_m2": 2.601631416254047e-05,
+            "wall_stiffness_pa_m-1": 11896536.483914474,
+            "inertance_pa_s2_m-3": 407436.6543152521,
+            "capacitance_m3_pa-1": 8.57496466282479e-12,
+            "poiseuille_resistance_pa_s_m-3": 1312790.9748797487
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.01,
+            "radius_in_m": 0.00275,
+            "radius_out_m": 0.0025,
+            "reference_area_m2": 2.1696624263854508e-05,
+            "wall_stiffness_pa_m-1": 13027087.821824487,
+            "inertance_pa_s2_m-3": 488555.26422417106,
+            "capacitance_m3_pa-1": 7.151196945223694e-12,
+            "poiseuille_resistance_pa_s_m-3": 1891371.3559698258
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_tcpc_05_ivc",
+        "source_segment": "IVC",
+        "domain_no": 5,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_05.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.0275,
+          0.055
+        ],
+        "node_1": "ivc_inlet",
+        "node_2": "tcpc_junction",
+        "length_m": 0.055,
+        "radius_in_m": 0.0155,
+        "radius_out_m": 0.011,
+        "reference_area_m2": 0.0005674501730546563,
+        "wave_speed_m_s": 2.81,
+        "wall_stiffness_pa_m-1": 702723.7543325709,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 17530.08177499004,
+        "inertance_pa_s2_m-3": 102740.29821184775,
+        "capacitance_m3_pa-1": 3.72882427484575e-09,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.018333333333333333,
+            "radius_in_m": 0.0155,
+            "radius_out_m": 0.014,
+            "reference_area_m2": 0.0006852598975642736,
+            "wall_stiffness_pa_m-1": 639470.9826650546,
+            "inertance_pa_s2_m-3": 28359.06989801719,
+            "capacitance_m3_pa-1": 1.5009915477752788e-09,
+            "poiseuille_resistance_pa_s_m-3": 3481.9983064863195
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.018333333333333333,
+            "radius_in_m": 0.014,
+            "radius_out_m": 0.0125,
+            "reference_area_m2": 0.0005533130061135023,
+            "wall_stiffness_pa_m-1": 711644.4411859348,
+            "inertance_pa_s2_m-3": 35121.77215900638,
+            "capacitance_m3_pa-1": 1.21197541020938e-09,
+            "poiseuille_resistance_pa_s_m-3": 5358.346339829668
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.018333333333333333,
+            "radius_in_m": 0.0125,
+            "radius_out_m": 0.011,
+            "reference_area_m2": 0.000435503281603885,
+            "wall_stiffness_pa_m-1": 802144.8227804314,
+            "inertance_pa_s2_m-3": 44622.70240941388,
+            "capacitance_m3_pa-1": 9.539252873826843e-10,
+            "poiseuille_resistance_pa_s_m-3": 8689.737128674053
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_tcpc_06_rpa",
+        "source_segment": "RPA",
+        "domain_no": 6,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_06.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.006,
+          0.012
+        ],
+        "node_1": "tcpc_junction",
+        "node_2": "rpa_outlet",
+        "length_m": 0.012,
+        "radius_in_m": 0.0065,
+        "radius_out_m": 0.0065,
+        "reference_area_m2": 0.00013273228961416876,
+        "wave_speed_m_s": 2.81,
+        "wall_stiffness_pa_m-1": 1452981.9116586228,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 59915.057180212854,
+        "inertance_pa_s2_m-3": 95831.99413627971,
+        "capacitance_m3_pa-1": 1.903002360336504e-10,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.004,
+            "radius_in_m": 0.0065,
+            "radius_out_m": 0.0065,
+            "reference_area_m2": 0.00013273228961416876,
+            "wall_stiffness_pa_m-1": 1452981.9116586228,
+            "inertance_pa_s2_m-3": 31943.998045426568,
+            "capacitance_m3_pa-1": 6.343341201121679e-11,
+            "poiseuille_resistance_pa_s_m-3": 19971.685726737618
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.004,
+            "radius_in_m": 0.0065,
+            "radius_out_m": 0.0065,
+            "reference_area_m2": 0.00013273228961416876,
+            "wall_stiffness_pa_m-1": 1452981.9116586228,
+            "inertance_pa_s2_m-3": 31943.998045426568,
+            "capacitance_m3_pa-1": 6.343341201121679e-11,
+            "poiseuille_resistance_pa_s_m-3": 19971.685726737618
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.004,
+            "radius_in_m": 0.0065,
+            "radius_out_m": 0.0065,
+            "reference_area_m2": 0.00013273228961416876,
+            "wall_stiffness_pa_m-1": 1452981.9116586228,
+            "inertance_pa_s2_m-3": 31943.998045426568,
+            "capacitance_m3_pa-1": 6.343341201121679e-11,
+            "poiseuille_resistance_pa_s_m-3": 19971.685726737618
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_tcpc_07_lpa_i",
+        "source_segment": "LPA I",
+        "domain_no": 7,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_07.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.011,
+          0.022
+        ],
+        "node_1": "tcpc_junction",
+        "node_2": "lpa_junction",
+        "length_m": 0.022,
+        "radius_in_m": 0.00525,
+        "radius_out_m": 0.003,
+        "reference_area_m2": 5.743224069843841e-05,
+        "wave_speed_m_s": 2.81,
+        "wall_stiffness_pa_m-1": 2208872.3583823047,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 875131.6397171891,
+        "inertance_pa_s2_m-3": 406043.7084885332,
+        "capacitance_m3_pa-1": 1.5095932185361687e-10,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.007333333333333333,
+            "radius_in_m": 0.00525,
+            "radius_out_m": 0.0045000000000000005,
+            "reference_area_m2": 7.510369937488101e-05,
+            "wall_stiffness_pa_m-1": 1931602.8431625236,
+            "inertance_pa_s2_m-3": 103501.3374578614,
+            "capacitance_m3_pa-1": 6.580278132080737e-11,
+            "poiseuille_resistance_pa_s_m-3": 118031.82609221611
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.007333333333333333,
+            "radius_in_m": 0.0045000000000000005,
+            "radius_out_m": 0.0037500000000000003,
+            "reference_area_m2": 5.38979489631499e-05,
+            "wall_stiffness_pa_m-1": 2280144.5568771684,
+            "inertance_pa_s2_m-3": 144223.17514620032,
+            "capacitance_m3_pa-1": 4.722317247728529e-11,
+            "poiseuille_resistance_pa_s_m-3": 232071.0165553601
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.007333333333333333,
+            "radius_in_m": 0.0037500000000000003,
+            "radius_out_m": 0.003,
+            "reference_area_m2": 3.6226490286707306e-05,
+            "wall_stiffness_pa_m-1": 2781220.170969233,
+            "inertance_pa_s2_m-3": 214575.94351020048,
+            "capacitance_m3_pa-1": 3.174016510768355e-11,
+            "poiseuille_resistance_pa_s_m-3": 525028.7970696129
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_tcpc_08_lpa_ii",
+        "source_segment": "LPA II",
+        "domain_no": 8,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_08.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.007,
+          0.014
+        ],
+        "node_1": "lpa_junction",
+        "node_2": "lpa_outlet",
+        "length_m": 0.014,
+        "radius_in_m": 0.003,
+        "radius_out_m": 0.004,
+        "reference_area_m2": 3.9269908169872414e-05,
+        "wave_speed_m_s": 2.81,
+        "wall_stiffness_pa_m-1": 2671274.7429555343,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 890579.9747703898,
+        "inertance_pa_s2_m-3": 377897.4968773963,
+        "capacitance_m3_pa-1": 6.56854858104316e-11,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.004666666666666667,
+            "radius_in_m": 0.003,
+            "radius_out_m": 0.0033333333333333335,
+            "reference_area_m2": 3.1590459461097363e-05,
+            "wall_stiffness_pa_m-1": 2978314.3191851284,
+            "inertance_pa_s2_m-3": 156587.3605845565,
+            "capacitance_m3_pa-1": 1.7613441380278693e-11,
+            "poiseuille_resistance_pa_s_m-3": 417465.38060588215
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.004666666666666667,
+            "radius_in_m": 0.0033333333333333335,
+            "radius_out_m": 0.0036666666666666666,
+            "reference_area_m2": 3.8571776469074686e-05,
+            "wall_stiffness_pa_m-1": 2695340.767313521,
+            "inertance_pa_s2_m-3": 128245.75685884489,
+            "capacitance_m3_pa-1": 2.1505914613489457e-11,
+            "poiseuille_resistance_pa_s_m-3": 279272.8017799197
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.004666666666666667,
+            "radius_in_m": 0.0036666666666666666,
+            "radius_out_m": 0.004,
+            "reference_area_m2": 4.625122517784973e-05,
+            "wall_stiffness_pa_m-1": 2461426.5454791794,
+            "inertance_pa_s2_m-3": 106952.12175775369,
+            "capacitance_m3_pa-1": 2.5787635170021292e-11,
+            "poiseuille_resistance_pa_s_m-3": 193841.792384588
+          }
+        ]
+      },
+      {
+        "segment_id": "combined_tcpc_09_svc",
+        "source_segment": "SVC",
+        "domain_no": 9,
+        "nektar_domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_09.csv.gz",
+        "nektar_distance_m": [
+          0.0,
+          0.0075,
+          0.015
+        ],
+        "node_1": "tcpc_junction",
+        "node_2": "svc_inlet",
+        "length_m": 0.015,
+        "radius_in_m": 0.011,
+        "radius_out_m": 0.00725,
+        "reference_area_m2": 0.0002726313374693392,
+        "wave_speed_m_s": 2.81,
+        "wall_stiffness_pa_m-1": 1013819.4379165678,
+        "density_kg_m-3": 1060.0,
+        "dynamic_viscosity_pa_s": 0.0035,
+        "poiseuille_resistance_pa_s_m-3": 22255.774324294194,
+        "inertance_pa_s2_m-3": 58320.51497670605,
+        "capacitance_m3_pa-1": 4.885944484702728e-10,
+        "prototype_block": {
+          "model_type": "fixed_3cell_1d_vessel_block",
+          "cell_count": 3,
+          "state": [
+            "area_01",
+            "area_02",
+            "area_03",
+            "flow_00",
+            "flow_01",
+            "flow_02",
+            "flow_03"
+          ]
+        },
+        "cells": [
+          {
+            "cell_index": 1,
+            "length_m": 0.005,
+            "radius_in_m": 0.011,
+            "radius_out_m": 0.00975,
+            "reference_area_m2": 0.0003393901813581223,
+            "wall_stiffness_pa_m-1": 908654.6716946418,
+            "inertance_pa_s2_m-3": 15616.244343873563,
+            "capacitance_m3_pa-1": 2.0274528968451963e-10,
+            "poiseuille_resistance_pa_s_m-3": 3893.0277680309127
+          },
+          {
+            "cell_index": 2,
+            "length_m": 0.005,
+            "radius_in_m": 0.00975,
+            "radius_out_m": 0.0085,
+            "reference_area_m2": 0.00026281386042687117,
+            "wall_stiffness_pa_m-1": 1032581.5668365682,
+            "inertance_pa_s2_m-3": 20166.364100400035,
+            "capacitance_m3_pa-1": 1.570000406379691e-10,
+            "poiseuille_resistance_pa_s_m-3": 6529.078518906117
+          },
+          {
+            "cell_index": 3,
+            "length_m": 0.005,
+            "radius_in_m": 0.0085,
+            "radius_out_m": 0.00725,
+            "reference_area_m2": 0.00019605501653808806,
+            "wall_stiffness_pa_m-1": 1195527.364383147,
+            "inertance_pa_s2_m-3": 27033.228190671452,
+            "capacitance_m3_pa-1": 1.1711956711020705e-10,
+            "poiseuille_resistance_pa_s_m-3": 11833.668037357162
+          }
+        ]
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "name": "ascending_aorta_inflow",
+      "path": "data/processed/aramburu_2024/model_inputs/aorta_waves_clinical.csv",
+      "time_column": "time_s",
+      "flow_column": "ascending_aorta_flow_ml_s",
+      "pressure_column": "ascending_aorta_pressure_mmHg",
+      "role": "measured aortic inlet waveform"
+    },
+    {
+      "name": "ivc_svc_inflows",
+      "path": "data/processed/aramburu_2024/model_inputs/fontan_cross_inflows_clinical.csv",
+      "time_column": "time_s",
+      "flow_columns": [
+        "ivc_flow_ml_s",
+        "svc_flow_ml_s"
+      ],
+      "role": "measured TCPC inlet waveforms"
+    },
+    {
+      "name": "dao_ivc_coupling",
+      "parameter_path": "data/processed/aramburu_2024/model_inputs/coupling_dao_ivc_parameters.csv",
+      "waveform_path": "data/processed/aramburu_2024/model_inputs/coupling_dao_ivc_waveforms.csv",
+      "role": "reference coupling-bed behavior"
+    },
+    {
+      "name": "supao_svc_coupling",
+      "parameter_path": "data/processed/aramburu_2024/model_inputs/coupling_supao_svc_parameters.csv",
+      "waveform_path": "data/processed/aramburu_2024/model_inputs/coupling_supao_svc_waveforms.csv",
+      "role": "reference coupling-bed behavior"
+    }
+  ],
+  "validation": {
+    "kind": "combined",
+    "reference_table": "data/processed/aramburu_2024/comparison/03_aorta_tcpc_1d_last_cycle_clinical.csv",
+    "clinical_table": "data/processed/aramburu_2024/measurements_clinical.csv",
+    "signals": [
+      {
+        "name": "ascending_aorta_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "ascending_aorta_pressure_mmHg",
+        "clinical_column": "ascending_aorta_pressure_mmHg",
+        "mean_abs_tolerance": 3.0,
+        "rmse_tolerance": 6.0
+      },
+      {
+        "name": "aortic_arch_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "aortic_arch_pressure_mmHg",
+        "clinical_column": "aortic_arch_pressure_mmHg",
+        "mean_abs_tolerance": 3.0,
+        "rmse_tolerance": 6.0
+      },
+      {
+        "name": "descending_aorta_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "descending_aorta_pressure_mmHg",
+        "clinical_column": "descending_aorta_pressure_mmHg",
+        "mean_abs_tolerance": 3.0,
+        "rmse_tolerance": 6.0
+      },
+      {
+        "name": "descending_aorta_flow",
+        "quantity": "flow",
+        "unit": "ml/s",
+        "reference_column": "descending_aorta_flow_ml_s",
+        "clinical_column": "descending_aorta_flow_ml_s",
+        "mean_abs_tolerance": 4.0,
+        "rmse_tolerance": 15.0
+      },
+      {
+        "name": "ivc_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "ivc_pressure_mmHg",
+        "clinical_column": "ivc_pressure_mmHg",
+        "mean_abs_tolerance": 1.5,
+        "rmse_tolerance": 3.0
+      },
+      {
+        "name": "ivc_flow",
+        "quantity": "flow",
+        "unit": "ml/s",
+        "reference_column": "ivc_flow_ml_s",
+        "clinical_column": "ivc_flow_ml_s",
+        "mean_abs_tolerance": 4.0,
+        "rmse_tolerance": 8.0
+      },
+      {
+        "name": "svc_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "svc_pressure_mmHg",
+        "clinical_column": "svc_pressure_mmHg",
+        "mean_abs_tolerance": 1.5,
+        "rmse_tolerance": 3.0
+      },
+      {
+        "name": "svc_flow",
+        "quantity": "flow",
+        "unit": "ml/s",
+        "reference_column": "svc_flow_ml_s",
+        "clinical_column": "svc_flow_ml_s",
+        "mean_abs_tolerance": 4.0,
+        "rmse_tolerance": 8.0
+      },
+      {
+        "name": "rpa_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "rpa_pressure_mmHg",
+        "clinical_column": "rpa_pressure_mmHg",
+        "mean_abs_tolerance": 1.5,
+        "rmse_tolerance": 3.0
+      },
+      {
+        "name": "rpa_flow",
+        "quantity": "flow",
+        "unit": "ml/s",
+        "reference_column": "rpa_flow_ml_s",
+        "clinical_column": "rpa_flow_ml_s",
+        "mean_abs_tolerance": 4.0,
+        "rmse_tolerance": 8.0
+      },
+      {
+        "name": "lpa_pressure",
+        "quantity": "pressure",
+        "unit": "mmHg",
+        "reference_column": "lpa_pressure_mmHg",
+        "clinical_column": "lpa_pressure_mmHg",
+        "mean_abs_tolerance": 1.5,
+        "rmse_tolerance": 3.0
+      },
+      {
+        "name": "lpa_flow",
+        "quantity": "flow",
+        "unit": "ml/s",
+        "reference_column": "lpa_flow_ml_s",
+        "clinical_column": "lpa_flow_ml_s",
+        "mean_abs_tolerance": 4.0,
+        "rmse_tolerance": 8.0
+      }
+    ]
+  },
+  "notes": [
+    "Uses combined Nektar domains 1-4 for aorta and 5-9 for TCPC.",
+    "This remains open-loop validation; no closed-loop heart or beds are inserted.",
+    "No normal LSA branch is added to the patient-specific aorta.",
+    "DAo flow is screened with a broad waveform RMSE tolerance because the accepted signal policy treats downstream DAo/bed-entry flow as sensitive to terminal-load dynamics."
+  ]
+}

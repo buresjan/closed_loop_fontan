@@ -1,6 +1,6 @@
 # 009 - PhysioBlocks 1-D Feasibility Spike
 
-Status: planned
+Status: completed
 
 Depends on: Task 008
 
@@ -34,4 +34,31 @@ Local custom blocks are enough for scalar lumped blocks and quasi chains. The ri
 
 ## PhysioBlocks Impact
 
-Maybe. This task decides whether internals need to change.
+No immediate PhysioBlocks fork/upstream work is required. Task 010 should start
+with local generated scalar/fixed-size 1-D components. A PhysioBlocks internal
+change should be reconsidered only if later prototypes show concrete blockers
+around config-dependent state sizing, dense Jacobian scaling, area positivity,
+or boundary-coupling controls.
+
+## Completion Notes
+
+Completed on 2026-05-17.
+
+- Added a feasibility-only fixed-size 1-D probe block in
+  `fontan_blocks/one_d_feasibility.py`.
+- Verified local PhysioBlocks extensions can assemble fixed scalar state terms,
+  vector residuals, analytic gradients, inlet/outlet flux coupling, and vector
+  saved quantities without modifying installed PhysioBlocks.
+- Confirmed `number_of_cells` can be a parameter but cannot resize internal
+  state because state sizing is class/decorator driven.
+- Wrote the decision memo in
+  `models/coupled_0d_1d/docs/physioblocks_feasibility.md`.
+- Selected the clean next path: local generated scalar/fixed-size 1-D
+  components for Task 010, no immediate PhysioBlocks fork.
+
+Validation:
+
+- `python3 -m py_compile fontan_blocks/one_d_feasibility.py scripts/docs/build_model_reference_pdfs.py`
+- `python3 -m pytest tests/test_physioblocks_1d_feasibility.py -q`
+- `python3 scripts/docs/build_model_reference_pdfs.py --check`
+- `python3 -m pytest -q`

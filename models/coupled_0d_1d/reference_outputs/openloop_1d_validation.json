@@ -1,0 +1,896 @@
+{
+  "generated_by": "scripts/calibration/validate_1d_submodels.py",
+  "model_family": "coupled_0d_1d",
+  "scope": "Open-loop reference validation for the aorta, TCPC, and combined aorta-TCPC 1-D submodel specifications.",
+  "submodels": [
+    {
+      "config": "models/coupled_0d_1d/configs/submodel_aorta_1d_openloop.jsonc",
+      "submodel_id": "submodel_aorta_1d_openloop",
+      "status": "reference_validation_spec",
+      "segment_count": 4,
+      "input_checks": [
+        {
+          "name": "ascending_aorta_inflow",
+          "path": "data/processed/aramburu_2024/model_inputs/aorta_waves_clinical.csv",
+          "exists": true,
+          "passed": true
+        }
+      ],
+      "geometry_checks": [
+        {
+          "segment_id": "aorta_01_ascending_aorta",
+          "source_segment": "Ascending aorta",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/01_aorta/domain_01.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.029,
+          "domain_length_m": 0.029,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "aorta_02_thoracic_aorta",
+          "source_segment": "Thoracic aorta",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/01_aorta/domain_02.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.09,
+          "domain_length_m": 0.09,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "aorta_03_brachiocephalic",
+          "source_segment": "Brachiocephalic",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/01_aorta/domain_03.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.025,
+          "domain_length_m": 0.025,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "aorta_04_carotic_left",
+          "source_segment": "Carotic left",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/01_aorta/domain_04.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.03,
+          "domain_length_m": 0.03,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        }
+      ],
+      "domain_checks": [
+        {
+          "segment_id": "aorta_01_ascending_aorta",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00015571713,
+          "max_abs_flow_m3_s": 0.000169482,
+          "passed": true
+        },
+        {
+          "segment_id": "aorta_02_thoracic_aorta",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 7.1672306e-05,
+          "max_abs_flow_m3_s": 0.000102789,
+          "passed": true
+        },
+        {
+          "segment_id": "aorta_03_brachiocephalic",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 5.2495782e-05,
+          "max_abs_flow_m3_s": 6.22119e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "aorta_04_carotic_left",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 1.6234664e-05,
+          "max_abs_flow_m3_s": 1.40326e-05,
+          "passed": true
+        }
+      ],
+      "waveform_checks": [
+        {
+          "name": "ascending_aorta_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "paao_mmhg",
+          "clinical_column": "ascending_aorta_pressure_mmHg",
+          "reference_mean": 52.10829099398813,
+          "clinical_mean": 50.40287288772364,
+          "mean_abs_error": 1.7054181062644886,
+          "rmse": 3.524994336294808,
+          "clinical_amplitude": 29.134748130347738,
+          "normalized_rmse": 0.12098935334961948,
+          "max_abs_error": 8.481999609220438,
+          "mean_abs_tolerance": 3.0,
+          "rmse_tolerance": 6.0,
+          "passed": true
+        },
+        {
+          "name": "aortic_arch_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "parch_mmhg",
+          "clinical_column": "aortic_arch_pressure_mmHg",
+          "reference_mean": 52.01511724856058,
+          "clinical_mean": 51.732483304804546,
+          "mean_abs_error": 0.2826339437560321,
+          "rmse": 2.9301768295257307,
+          "clinical_amplitude": 29.81564159549918,
+          "normalized_rmse": 0.09827649759407008,
+          "max_abs_error": 7.246071871891374,
+          "mean_abs_tolerance": 3.0,
+          "rmse_tolerance": 6.0,
+          "passed": true
+        },
+        {
+          "name": "descending_aorta_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "pdao_mmhg",
+          "clinical_column": "descending_aorta_pressure_mmHg",
+          "reference_mean": 51.346328937943724,
+          "clinical_mean": 53.146443563458895,
+          "mean_abs_error": 1.800114625515171,
+          "rmse": 3.5064626977906395,
+          "clinical_amplitude": 26.18942568561861,
+          "normalized_rmse": 0.13388849148059562,
+          "max_abs_error": 7.282071728673479,
+          "mean_abs_tolerance": 3.0,
+          "rmse_tolerance": 6.0,
+          "passed": true
+        },
+        {
+          "name": "descending_aorta_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "qdao_ml_per_s",
+          "clinical_column": "descending_aorta_flow_ml_s",
+          "reference_mean": 17.15558921911422,
+          "clinical_mean": 19.182811202639687,
+          "mean_abs_error": 2.027221983525468,
+          "rmse": 13.570011772336992,
+          "clinical_amplitude": 90.16666664229496,
+          "normalized_rmse": 0.15049920638822456,
+          "max_abs_error": 36.7155747463423,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 15.0,
+          "passed": true
+        }
+      ],
+      "flow_fraction_checks": [],
+      "mass_balance": {
+        "kind": "aorta",
+        "inflow_mean_ml_s": 41.88434434873296,
+        "outflow_mean_ml_s": 17.15558921911422,
+        "abs_error_ml_s": 24.72875512961874,
+        "tolerance_ml_s": 30.0,
+        "passed": true,
+        "notes": "Aorta tolerance is broad because branch outlets carry the remaining inflow. TCPC/combined checks compare caval inflow against pulmonary outflow."
+      },
+      "boundary_signs": {
+        "kind": "aorta",
+        "values": {
+          "descending_aorta_flow_mean_ml_s": 17.15558921911422
+        },
+        "passed": true
+      },
+      "passed": true
+    },
+    {
+      "config": "models/coupled_0d_1d/configs/submodel_tcpc_1d_openloop.jsonc",
+      "submodel_id": "submodel_tcpc_1d_openloop",
+      "status": "reference_validation_spec",
+      "segment_count": 5,
+      "input_checks": [
+        {
+          "name": "ivc_svc_inflows",
+          "path": "data/processed/aramburu_2024/model_inputs/fontan_cross_inflows_clinical.csv",
+          "exists": true,
+          "passed": true
+        }
+      ],
+      "geometry_checks": [
+        {
+          "segment_id": "tcpc_01_ivc",
+          "source_segment": "IVC",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/02_tcpc/domain_01.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.055,
+          "domain_length_m": 0.055,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_02_rpa",
+          "source_segment": "RPA",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/02_tcpc/domain_02.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.012,
+          "domain_length_m": 0.012,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_03_lpa_i",
+          "source_segment": "LPA I",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/02_tcpc/domain_03.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.022,
+          "domain_length_m": 0.022,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_04_lpa_ii",
+          "source_segment": "LPA II",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/02_tcpc/domain_04.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.014,
+          "domain_length_m": 0.014,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_05_svc",
+          "source_segment": "SVC",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/02_tcpc/domain_05.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.015,
+          "domain_length_m": 0.015,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        }
+      ],
+      "domain_checks": [
+        {
+          "segment_id": "tcpc_01_ivc",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00032960771,
+          "max_abs_flow_m3_s": 4.22256e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_02_rpa",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00011469177,
+          "max_abs_flow_m3_s": 2.90914e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_03_lpa_i",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 2.4302455e-05,
+          "max_abs_flow_m3_s": 1.78363e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_04_lpa_ii",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 2.4266635e-05,
+          "max_abs_flow_m3_s": 1.69033e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "tcpc_05_svc",
+          "row_count": 27003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00014555171,
+          "max_abs_flow_m3_s": 3.5062e-05,
+          "passed": true
+        }
+      ],
+      "waveform_checks": [
+        {
+          "name": "ivc_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "pivc_mmhg",
+          "clinical_column": "ivc_pressure_mmHg",
+          "reference_mean": 8.748101657086881,
+          "clinical_mean": 8.539233256374764,
+          "mean_abs_error": 0.20886840071211665,
+          "rmse": 0.6873363798396666,
+          "clinical_amplitude": 1.1161264637266228,
+          "normalized_rmse": 0.6158230291796204,
+          "max_abs_error": 1.3379311096580206,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "svc_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "psvc_mmhg",
+          "clinical_column": "svc_pressure_mmHg",
+          "reference_mean": 8.687272251736362,
+          "clinical_mean": 8.8694042094045,
+          "mean_abs_error": 0.1821319576681386,
+          "rmse": 0.6129881999732989,
+          "clinical_amplitude": 0.8879391769659062,
+          "normalized_rmse": 0.6903493120642379,
+          "max_abs_error": 1.0875821195817164,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "rpa_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "prpa_mmhg",
+          "clinical_column": "rpa_pressure_mmHg",
+          "reference_mean": 8.570929832686376,
+          "clinical_mean": 8.482440768563476,
+          "mean_abs_error": 0.08848906412289992,
+          "rmse": 0.6236091937351798,
+          "clinical_amplitude": 1.7000000000000002,
+          "normalized_rmse": 0.36682893749128215,
+          "max_abs_error": 1.2436706468118688,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "rpa_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "qrpa_ml_per_s",
+          "clinical_column": "rpa_flow_ml_s",
+          "reference_mean": 24.94418344988345,
+          "clinical_mean": 24.429599686629942,
+          "mean_abs_error": 0.5145837632535084,
+          "rmse": 7.810897778075281,
+          "clinical_amplitude": 23.49977593160544,
+          "normalized_rmse": 0.3323817980566448,
+          "max_abs_error": 15.05500639447688,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 8.0,
+          "passed": true
+        },
+        {
+          "name": "lpa_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "plpa_mmhg",
+          "clinical_column": "lpa_pressure_mmHg",
+          "reference_mean": 7.822094555860399,
+          "clinical_mean": 8.45525641025641,
+          "mean_abs_error": 0.6331618543960111,
+          "rmse": 0.9060921320186225,
+          "clinical_amplitude": 2.99,
+          "normalized_rmse": 0.3030408468289707,
+          "max_abs_error": 2.295882397059927,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "lpa_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "qlpa_ml_per_s",
+          "clinical_column": "lpa_flow_ml_s",
+          "reference_mean": 14.563802797202797,
+          "clinical_mean": 16.877011898553807,
+          "mean_abs_error": 2.31320910135101,
+          "rmse": 4.133468993103568,
+          "clinical_amplitude": 14.332961726867143,
+          "normalized_rmse": 0.28838903444187525,
+          "max_abs_error": 10.239468305039168,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 8.0,
+          "passed": true
+        }
+      ],
+      "flow_fraction_checks": [
+        {
+          "name": "rpa_flow_fraction",
+          "unit": "1",
+          "reference_value": 0.6313706624751877,
+          "clinical_value": 0.5914210522025144,
+          "abs_error": 0.0399496102726733,
+          "tolerance": 0.08,
+          "passed": true
+        }
+      ],
+      "mass_balance": {
+        "kind": "tcpc",
+        "inflow_mean_ml_s": 39.43281591884167,
+        "outflow_mean_ml_s": 39.50798624708625,
+        "abs_error_ml_s": 0.0751703282445817,
+        "tolerance_ml_s": 5.0,
+        "passed": true,
+        "notes": "Aorta tolerance is broad because branch outlets carry the remaining inflow. TCPC/combined checks compare caval inflow against pulmonary outflow."
+      },
+      "boundary_signs": {
+        "kind": "tcpc",
+        "values": {
+          "rpa_flow_mean_ml_s": 24.94418344988345,
+          "lpa_flow_mean_ml_s": 14.563802797202797
+        },
+        "passed": true
+      },
+      "passed": true
+    },
+    {
+      "config": "models/coupled_0d_1d/configs/submodel_aorta_tcpc_1d_openloop.jsonc",
+      "submodel_id": "submodel_aorta_tcpc_1d_openloop",
+      "status": "reference_validation_spec",
+      "segment_count": 9,
+      "input_checks": [
+        {
+          "name": "ascending_aorta_inflow",
+          "path": "data/processed/aramburu_2024/model_inputs/aorta_waves_clinical.csv",
+          "exists": true,
+          "passed": true
+        },
+        {
+          "name": "ivc_svc_inflows",
+          "path": "data/processed/aramburu_2024/model_inputs/fontan_cross_inflows_clinical.csv",
+          "exists": true,
+          "passed": true
+        },
+        {
+          "name": "dao_ivc_coupling",
+          "path": "data/processed/aramburu_2024/model_inputs/coupling_dao_ivc_parameters.csv",
+          "exists": true,
+          "passed": true
+        },
+        {
+          "name": "dao_ivc_coupling",
+          "path": "data/processed/aramburu_2024/model_inputs/coupling_dao_ivc_waveforms.csv",
+          "exists": true,
+          "passed": true
+        },
+        {
+          "name": "supao_svc_coupling",
+          "path": "data/processed/aramburu_2024/model_inputs/coupling_supao_svc_parameters.csv",
+          "exists": true,
+          "passed": true
+        },
+        {
+          "name": "supao_svc_coupling",
+          "path": "data/processed/aramburu_2024/model_inputs/coupling_supao_svc_waveforms.csv",
+          "exists": true,
+          "passed": true
+        }
+      ],
+      "geometry_checks": [
+        {
+          "segment_id": "combined_aorta_01_ascending_aorta",
+          "source_segment": "Ascending aorta",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_01.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.029,
+          "domain_length_m": 0.029,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_aorta_02_thoracic_aorta",
+          "source_segment": "Thoracic aorta",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_02.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.09,
+          "domain_length_m": 0.09,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_aorta_03_brachiocephalic",
+          "source_segment": "Brachiocephalic",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_03.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.025,
+          "domain_length_m": 0.025,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_aorta_04_carotic_left",
+          "source_segment": "Carotic left",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_04.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.03,
+          "domain_length_m": 0.03,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_05_ivc",
+          "source_segment": "IVC",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_05.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.055,
+          "domain_length_m": 0.055,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_06_rpa",
+          "source_segment": "RPA",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_06.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.012,
+          "domain_length_m": 0.012,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_07_lpa_i",
+          "source_segment": "LPA I",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_07.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.022,
+          "domain_length_m": 0.022,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_08_lpa_ii",
+          "source_segment": "LPA II",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_08.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.014,
+          "domain_length_m": 0.014,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_09_svc",
+          "source_segment": "SVC",
+          "domain_file": "data/processed/aramburu_2024/nektar_1d/03_aorta_tcpc/domain_09.csv.gz",
+          "domain_exists": true,
+          "length_m": 0.015,
+          "domain_length_m": 0.015,
+          "length_abs_error_m": 0.0,
+          "positive_geometry": true,
+          "passed": true
+        }
+      ],
+      "domain_checks": [
+        {
+          "segment_id": "combined_aorta_01_ascending_aorta",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00015451644,
+          "max_abs_flow_m3_s": 0.000169474,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_aorta_02_thoracic_aorta",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 7.9196452e-05,
+          "max_abs_flow_m3_s": 9.84881e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_aorta_03_brachiocephalic",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 5.1985538e-05,
+          "max_abs_flow_m3_s": 7.16881e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_aorta_04_carotic_left",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 1.6338456e-05,
+          "max_abs_flow_m3_s": 1.7767e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_05_ivc",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00032821747,
+          "max_abs_flow_m3_s": 0.000112051,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_06_rpa",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00011428993,
+          "max_abs_flow_m3_s": 6.92299e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_07_lpa_i",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 2.3147296e-05,
+          "max_abs_flow_m3_s": 3.53393e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_08_lpa_ii",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 2.3584573e-05,
+          "max_abs_flow_m3_s": 3.29881e-05,
+          "passed": true
+        },
+        {
+          "segment_id": "combined_tcpc_09_svc",
+          "row_count": 108003,
+          "required_columns_present": true,
+          "min_area_m2": 0.00014362194,
+          "max_abs_flow_m3_s": 3.95236e-05,
+          "passed": true
+        }
+      ],
+      "waveform_checks": [
+        {
+          "name": "ascending_aorta_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "ascending_aorta_pressure_mmHg",
+          "clinical_column": "ascending_aorta_pressure_mmHg",
+          "reference_mean": 51.0447259433234,
+          "clinical_mean": 50.40287288772364,
+          "mean_abs_error": 0.6418530555997606,
+          "rmse": 3.159499271816214,
+          "clinical_amplitude": 29.134748130347738,
+          "normalized_rmse": 0.10844436539079508,
+          "max_abs_error": 6.96411166202175,
+          "mean_abs_tolerance": 3.0,
+          "rmse_tolerance": 6.0,
+          "passed": true
+        },
+        {
+          "name": "aortic_arch_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "aortic_arch_pressure_mmHg",
+          "clinical_column": "aortic_arch_pressure_mmHg",
+          "reference_mean": 50.725579240879625,
+          "clinical_mean": 51.732483304804546,
+          "mean_abs_error": 1.006904063924921,
+          "rmse": 2.893697439322715,
+          "clinical_amplitude": 29.81564159549918,
+          "normalized_rmse": 0.09705299918011938,
+          "max_abs_error": 5.892160767244079,
+          "mean_abs_tolerance": 3.0,
+          "rmse_tolerance": 6.0,
+          "passed": true
+        },
+        {
+          "name": "descending_aorta_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "descending_aorta_pressure_mmHg",
+          "clinical_column": "descending_aorta_pressure_mmHg",
+          "reference_mean": 50.47216696151669,
+          "clinical_mean": 53.146443563458895,
+          "mean_abs_error": 2.6742766019422035,
+          "rmse": 4.031005560248678,
+          "clinical_amplitude": 26.18942568561861,
+          "normalized_rmse": 0.15391729504256457,
+          "max_abs_error": 8.001064999974659,
+          "mean_abs_tolerance": 3.0,
+          "rmse_tolerance": 6.0,
+          "passed": true
+        },
+        {
+          "name": "descending_aorta_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "descending_aorta_flow_ml_s",
+          "clinical_column": "descending_aorta_flow_ml_s",
+          "reference_mean": 17.879646597202797,
+          "clinical_mean": 19.182811202639687,
+          "mean_abs_error": 1.3031646054368906,
+          "rmse": 13.318650990539227,
+          "clinical_amplitude": 90.16666664229496,
+          "normalized_rmse": 0.14771147128435352,
+          "max_abs_error": 36.70557474634229,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 15.0,
+          "passed": true
+        },
+        {
+          "name": "ivc_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "ivc_pressure_mmHg",
+          "clinical_column": "ivc_pressure_mmHg",
+          "reference_mean": 8.907579682499055,
+          "clinical_mean": 8.539233256374764,
+          "mean_abs_error": 0.36834642612429036,
+          "rmse": 0.4657026004883101,
+          "clinical_amplitude": 1.1161264637266228,
+          "normalized_rmse": 0.41724895486608266,
+          "max_abs_error": 1.0711227780694497,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "ivc_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "ivc_flow_ml_s",
+          "clinical_column": "ivc_flow_ml_s",
+          "reference_mean": 17.876080885780887,
+          "clinical_mean": 18.84377590619485,
+          "mean_abs_error": 0.9676950204139629,
+          "rmse": 6.341735356074424,
+          "clinical_amplitude": 22.33281494995732,
+          "normalized_rmse": 0.2839648906904386,
+          "max_abs_error": 15.167133330000016,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 8.0,
+          "passed": true
+        },
+        {
+          "name": "svc_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "svc_pressure_mmHg",
+          "clinical_column": "svc_pressure_mmHg",
+          "reference_mean": 8.814666782753484,
+          "clinical_mean": 8.8694042094045,
+          "mean_abs_error": 0.05473742665101611,
+          "rmse": 0.18017180193092222,
+          "clinical_amplitude": 0.8879391769659062,
+          "normalized_rmse": 0.20291007155081323,
+          "max_abs_error": 0.45036780202044824,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "svc_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "svc_flow_ml_s",
+          "clinical_column": "svc_flow_ml_s",
+          "reference_mean": 23.576296270396274,
+          "clinical_mean": 20.58904001264682,
+          "mean_abs_error": 2.987256257749454,
+          "rmse": 6.145487678642991,
+          "clinical_amplitude": 19.16528229658609,
+          "normalized_rmse": 0.3206573001921128,
+          "max_abs_error": 9.943384249153873,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 8.0,
+          "passed": true
+        },
+        {
+          "name": "rpa_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "rpa_pressure_mmHg",
+          "clinical_column": "rpa_pressure_mmHg",
+          "reference_mean": 8.762777023971053,
+          "clinical_mean": 8.482440768563476,
+          "mean_abs_error": 0.2803362554075761,
+          "rmse": 0.5482786433286974,
+          "clinical_amplitude": 1.7000000000000002,
+          "normalized_rmse": 0.32251684901688077,
+          "max_abs_error": 1.0606442661066522,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "rpa_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "rpa_flow_ml_s",
+          "clinical_column": "rpa_flow_ml_s",
+          "reference_mean": 26.059623076923078,
+          "clinical_mean": 24.429599686629942,
+          "mean_abs_error": 1.630023390293136,
+          "rmse": 6.666270250939544,
+          "clinical_amplitude": 23.49977593160544,
+          "normalized_rmse": 0.2836737792879935,
+          "max_abs_error": 11.729306394476883,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 8.0,
+          "passed": true
+        },
+        {
+          "name": "lpa_pressure",
+          "quantity": "pressure",
+          "unit": "mmHg",
+          "reference_column": "lpa_pressure_mmHg",
+          "clinical_column": "lpa_pressure_mmHg",
+          "reference_mean": 8.120896553882378,
+          "clinical_mean": 8.45525641025641,
+          "mean_abs_error": 0.3343598563740322,
+          "rmse": 0.8555903621238478,
+          "clinical_amplitude": 2.99,
+          "normalized_rmse": 0.2861506227838955,
+          "max_abs_error": 1.8801470036750931,
+          "mean_abs_tolerance": 1.5,
+          "rmse_tolerance": 3.0,
+          "passed": true
+        },
+        {
+          "name": "lpa_flow",
+          "quantity": "flow",
+          "unit": "ml/s",
+          "reference_column": "lpa_flow_ml_s",
+          "clinical_column": "lpa_flow_ml_s",
+          "reference_mean": 15.769351748251749,
+          "clinical_mean": 16.877011898553807,
+          "mean_abs_error": 1.107660150302058,
+          "rmse": 3.9168091862378387,
+          "clinical_amplitude": 14.332961726867143,
+          "normalized_rmse": 0.2732728420599755,
+          "max_abs_error": 8.037053741085069,
+          "mean_abs_tolerance": 4.0,
+          "rmse_tolerance": 8.0,
+          "passed": true
+        }
+      ],
+      "flow_fraction_checks": [
+        {
+          "name": "rpa_flow_fraction",
+          "unit": "1",
+          "reference_value": 0.6230041062646139,
+          "clinical_value": 0.5914210522025144,
+          "abs_error": 0.03158305406209949,
+          "tolerance": 0.08,
+          "passed": true
+        }
+      ],
+      "mass_balance": {
+        "kind": "combined",
+        "inflow_mean_ml_s": 41.452377156177164,
+        "outflow_mean_ml_s": 41.828974825174825,
+        "abs_error_ml_s": 0.3765976689976611,
+        "tolerance_ml_s": 5.0,
+        "passed": true,
+        "notes": "Aorta tolerance is broad because branch outlets carry the remaining inflow. TCPC/combined checks compare caval inflow against pulmonary outflow."
+      },
+      "boundary_signs": {
+        "kind": "combined",
+        "values": {
+          "descending_aorta_flow_mean_ml_s": 17.879646597202797,
+          "rpa_flow_mean_ml_s": 26.059623076923078,
+          "lpa_flow_mean_ml_s": 15.769351748251749
+        },
+        "passed": true
+      },
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limitations": [
+    "This validation screens reference open-loop Nektar/clinical data and geometry specs.",
+    "It does not promote a closed-loop coupled Fontan model.",
+    "It does not yet calibrate generated multi-segment local PhysioBlocks networks."
+  ]
+}

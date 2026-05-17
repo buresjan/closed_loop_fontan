@@ -97,29 +97,57 @@ MODEL_SPECS = {
     "coupled_0d_1d": ModelSpec(
         name="coupled_0d_1d",
         title="Coupled 0-D/1-D Fontan Model Technical Reference",
-        status="Reserved future model family; no executable coupled model is accepted yet.",
-        baseline_config=None,
-        scenario_glob=None,
+        status=(
+            "Executable Task 012 prototype with true 1-D aorta and TCPC "
+            "segments inserted into the closed loop; not accepted as a "
+            "periodic calibrated model yet."
+        ),
+        baseline_config=ROOT / "models/coupled_0d_1d/configs/fontan_coupled_0d_1d_baseline.jsonc",
+        scenario_glob="configs/fontan_coupled_0d_1d_*.jsonc",
         overview=(
-            "This model family is a reserved placeholder for a future coupled "
-            "0-D/1-D closed-loop Fontan model.",
-            "No coupled baseline config, coupling interface, 1-D solver, or "
-            "reference output is accepted at this stage.",
-            "This technical reference records the documentation standard that "
-            "future coupled-model work must satisfy before the model can be "
-            "treated as created and executable.",
+            "Task 010 provides a local fixed three-cell true 1-D vessel "
+            "prototype with area and face-flow states, nonlinear momentum, a "
+            "pressure-area wall law, pressure/flow coupling, and tested "
+            "Jacobian assembly.",
+            "Task 011 provides open-loop reference specifications for aorta, "
+            "TCPC, and combined aorta-TCPC 1-D submodels using tracked "
+            "Aramburu/Nektar geometry, measured inflows, reference outputs, "
+            "clinical comparison targets, and documented validation gates.",
+            "Task 012 generates executable closed-loop configs by replacing "
+            "selected full 0-D aortic and TCPC shortcut pathways with local "
+            "true 1-D finite-volume blocks.",
+            "The current Task 012 topology uses a tapered six-cell composite "
+            "LPA, a massless aortic total-pressure junction, a massless "
+            "wall-pressure-blended dissipative TCPC total-pressure junction, "
+            "and a retained calibrated 0-D LSA terminal branch.",
+            "The executable closed-loop configs use a log-area state "
+            "parameterization, $A = \\exp(g)$, so Newton iterations remain "
+            "inside the positive vessel-area domain.",
+            "All generated coupled scenarios cap the time step at "
+            "$2.5\\times 10^{-4}\\,\\mathrm{s}$ because the inherited full "
+            "0-D scenario step is too coarse for the inserted 1-D vessel and "
+            "TCPC junction dynamics.",
+            "The prototype smoke case and selected TCPC longer diagnostic run, "
+            "but the model is not accepted for calibration because full "
+            "baseline periodic atrium and ventricle balance have not been "
+            "demonstrated.",
         ),
         accepted_components=(
-            "planned 0-D heart, atrium, systemic beds, pulmonary beds, and fenestration",
-            "planned true 1-D aortic subdomain",
-            "planned true 1-D TCPC/Fontan subdomain",
-            "planned coupling interfaces between 0-D and 1-D domains",
+            "0-D heart, atrium, systemic beds, pulmonary beds, and fenestration inherited from full 0-D",
+            "validated local fixed three-cell true 1-D vessel numerics prototype",
+            "validated open-loop reference specs for aorta, TCPC, and combined aorta-TCPC",
+            "generated true 1-D aortic blocks for AAo, thoracic aorta, BCA, and left carotid",
+            "generated true 1-D TCPC blocks for SVC, IVC, RPA, LPA I, and LPA II",
+            "massless total-pressure junction for the aortic arch split",
+            "massless wall-pressure-blended dissipative total-pressure junction for the TCPC confluence",
+            "retained full 0-D LSA terminal branch because no patient-specific LSA 1-D geometry is available",
+            "explicit residual interface loss blocks preserving full 0-D path resistance not represented by 1-D Poiseuille friction",
         ),
         limitations=(
-            "No equations are instantiated in an executable coupled config yet.",
-            "No free parameters are accepted for simulation yet.",
-            "The equations and segment inventory below are requirements for the "
-            "future implementation, not evidence of a validated coupled model.",
+            "The coupled model is executable but not accepted as periodic, calibrated, or clinically validated.",
+            "The aortic total-pressure junction is an algebraic no-loss coupler; the TCPC junction adds branch wall-pressure blending and signed dynamic minor losses but is still not Nektar's full characteristic/Riemann boundary treatment or a 3-D TCPC loss model.",
+            "The current smoke run is a startup integration test; it is not a physiological cycle validation.",
+            "Atrium and ventricle cycle-balance gates remain failed on the startup smoke output.",
         ),
     ),
 }
@@ -541,6 +569,209 @@ def free_parameter_section(cfg: dict[str, Any] | None) -> list[str]:
     return lines
 
 
+def coupled_1d_prototype_section(spec: ModelSpec) -> list[str]:
+    if spec.name != "coupled_0d_1d":
+        return []
+    return [
+        "## Local True 1-D Prototype Equations",
+        "",
+        "Task 010 adds a local fixed three-cell true 1-D vessel prototype in "
+        "`fontan_blocks.one_d`. Task 012 also adds a log-area executable "
+        "variant for closed-loop coupling and a fixed six-cell tapered "
+        "log-area variant for the composite LPA. These forms solve the same "
+        "1-D finite-volume equations.",
+        "",
+        "For vessel length $L$ and $N = 3$ finite-volume cells:",
+        "",
+        r"$$\Delta x = \frac{L}{3}.$$",
+        "",
+        "The area states are cell-centered $A_i(t)$ for $i=1,2,3$ and the "
+        "flow states are staggered face flows $Q_j(t)$ for $j=0,1,2,3$.",
+        "In the closed-loop executable block, the nonlinear state is "
+        "$g_i(t) = \\log A_i(t)$ and $A_i(t)=\\exp(g_i(t))$.",
+        "",
+        "The nonlinear wall law is:",
+        "",
+        r"$$P(A) = P_{\mathrm{ext}} + \beta(\sqrt{A} - \sqrt{A_0}),$$",
+        "",
+        "with wave speed:",
+        "",
+        r"$$c(A) = \sqrt{\frac{A}{\rho}\frac{dP}{dA}}, \quad "
+        r"\frac{dP}{dA} = \frac{\beta}{2\sqrt{A}}.$$",
+        "",
+        "The finite-volume continuity residual is:",
+        "",
+        r"$$R_{A_i} = \frac{A_i^{n+1}-A_i^n}{\Delta t} + "
+        r"\frac{Q_i^{n+1/2}-Q_{i-1}^{n+1/2}}{\Delta x}.$$",
+        "",
+        "The face momentum residual is:",
+        "",
+        r"$$R_{Q_j} = \frac{Q_j^{n+1}-Q_j^n}{\Delta t} + "
+        r"\left[\frac{\partial}{\partial x}\left(\alpha\frac{Q^2}{A}\right)"
+        r"\right]_j^{n+1/2} + \frac{A_{f,j}^{n+1/2}}{\rho}"
+        r"\left[\frac{\partial P}{\partial x}\right]_j^{n+1/2} + "
+        r"\kappa\frac{Q_j^{n+1/2}}{A_{f,j}^{n+1/2}}.$$",
+        "",
+        "Boundary pressure gradients use half-cell distances and PhysioBlocks "
+        r"terminal fluxes use $Q_{\mathrm{node\,1}}=-Q_0$ and "
+        r"$Q_{\mathrm{node\,2}}=Q_3$.",
+        "",
+        "The log-area Jacobian columns use the chain rule:",
+        "",
+        r"$$\frac{\partial R}{\partial g_i} = "
+        r"\frac{\partial R}{\partial A_i}A_i.$$",
+        "",
+        "Prototype free parameters are `length` in $\\mathrm{m}$, "
+        "`reference_area` in $\\mathrm{m^2}$, `wall_stiffness` in "
+        "$\\mathrm{Pa\\,m^{-1}}$, `external_pressure` in $\\mathrm{Pa}$, "
+        "`density` in $\\mathrm{kg\\,m^{-3}}$, `friction_coefficient` in "
+        "$\\mathrm{m^2\\,s^{-1}}$, and dimensionless `momentum_correction`.",
+        "",
+        "The complete Task 010 equation notes, validation status, saved "
+        "quantities, and limitations are maintained in "
+        "`docs/one_d_numerics.md`.",
+        "",
+    ]
+
+
+def coupled_openloop_section(spec: ModelSpec) -> list[str]:
+    if spec.name != "coupled_0d_1d":
+        return []
+    return [
+        "## Open-Loop 1-D Reference Specs",
+        "",
+        "Task 011 adds strict-JSON reference specs for three open-loop 1-D "
+        "submodels:",
+        "",
+        "- `models/coupled_0d_1d/configs/submodel_aorta_1d_openloop.jsonc`",
+        "- `models/coupled_0d_1d/configs/submodel_tcpc_1d_openloop.jsonc`",
+        "- `models/coupled_0d_1d/configs/submodel_aorta_tcpc_1d_openloop.jsonc`",
+        "",
+        "These files are generated by "
+        "`scripts/modeling/derive_1d_geometry.py`. They bind the tracked "
+        "patient-specific geometry, measured inflows, Nektar reference domain "
+        "files, paper/comparison reference tables, clinical comparison targets, "
+        "and validation tolerances. They are not PhysioBlocks launcher configs "
+        "and they do not promote a coupled closed-loop model.",
+        "",
+        "The aorta spec contains four source segments: ascending aorta, "
+        "thoracic aorta, brachiocephalic, and left carotid. A normal LSA branch "
+        "is not added because it is absent from the patient-specific geometry "
+        "table.",
+        "",
+        "The TCPC spec contains five source segments: IVC, RPA, LPA I, LPA II, "
+        "and SVC. The combined spec maps aorta domains 1-4 and TCPC domains "
+        "5-9 in the tracked combined Nektar output.",
+        "",
+        "Validation is run with:",
+        "",
+        "```bash",
+        "python3 scripts/calibration/validate_1d_submodels.py",
+        "```",
+        "",
+        "The current report is "
+        "`models/coupled_0d_1d/reference_outputs/openloop_1d_validation.json` "
+        "and all three open-loop specs pass the current reference screen. The "
+        "detailed Task 011 policy, inputs, tolerances, and limitations are "
+        "maintained in `docs/openloop_1d_submodels.md`.",
+        "",
+    ]
+
+
+def coupled_closedloop_section(spec: ModelSpec) -> list[str]:
+    if spec.name != "coupled_0d_1d":
+        return []
+    return [
+        "## Task 012 Closed-Loop Prototype",
+        "",
+        "Task 012 generates executable closed-loop configs with:",
+        "",
+        "```bash",
+        "python3 scripts/modeling/build_coupled_configs.py",
+        "python3 scripts/modeling/build_coupled_configs.py --check",
+        "```",
+        "",
+        "The generator starts from the full 0-D scenario configs, removes the "
+        "aortic and TCPC shortcut blocks, and inserts seven three-cell true "
+        "1-D log-area vessel blocks, one six-cell tapered LPA block, one "
+        "massless aortic total-pressure junction, one massless "
+        "wall-pressure-blended dissipative TCPC total-pressure junction, "
+        "and three downstream aortic residual "
+        "interface loss blocks. The calibrated full 0-D LSA terminal branch is "
+        "retained as a non-1-D aortic outlet because no patient-specific LSA "
+        "1-D geometry is available.",
+        "",
+        "Aortic 1-D blocks:",
+        "",
+        "| Block | Nodes | Source segment |",
+        "| --- | --- | --- |",
+        "| `coupled_aao` | `aao -> coupled_aao_arch` | Ascending aorta |",
+        "| `coupled_dao` | `coupled_dao_arch -> coupled_dao_out` | Thoracic aorta |",
+        "| `coupled_bca` | `coupled_bca_arch -> coupled_bca_out` | Brachiocephalic |",
+        "| `coupled_lcca` | `coupled_lcca_arch -> coupled_lcca_out` | Carotic left |",
+        "| `coupled_aortic_arch_junction` | AAo/DAo/BCA/LCCA/LSA ports | total-pressure junction |",
+        "",
+        "TCPC 1-D blocks and junction:",
+        "",
+        "| Block | Nodes | Source segment |",
+        "| --- | --- | --- |",
+        "| `coupled_svc` | `svc -> coupled_svc_tcpc` | SVC |",
+        "| `coupled_ivc` | `ivc -> coupled_ivc_tcpc` | IVC |",
+        "| `coupled_rpa` | `coupled_rpa_tcpc -> rpa` | RPA |",
+        "| `coupled_lpa` | `coupled_lpa_tcpc -> lpa` | LPA I + LPA II |",
+        "| `coupled_tcpc_junction` | SVC/IVC/RPA/LPA branch ports | dissipative total-pressure junction |",
+        "",
+        "Residual aortic loss blocks preserve the full 0-D shortcut resistance "
+        "not already represented by 1-D Poiseuille friction. For a retained "
+        "path:",
+        "",
+        r"$$R_{\mathrm{loss}} = "
+        r"\max(R_{\mathrm{full\,0D}} - R_{\mathrm{1D}}, 0).$$",
+        "",
+        "The TCPC junction enforces algebraic mass balance with effective "
+        "branch total-pressure compatibility:",
+        "",
+        r"$$Q_{\mathrm{SVC}} + Q_{\mathrm{IVC}} "
+        r"- Q_{\mathrm{RPA}} - Q_{\mathrm{LPA}} = 0,$$",
+        "",
+        r"$$H_k^\ast - H_{\mathrm{RPA}}^\ast = 0,\qquad "
+        r"k \in \{\mathrm{SVC},\mathrm{IVC},\mathrm{LPA}\},$$",
+        "",
+        r"$$H_i^\ast = H_i + L_i,$$",
+        "",
+        r"$$H_i = wP_{\mathrm{wall},i} + (1-w)P_{\mathrm{node},i}"
+        r" + \frac{1}{2}\rho\left(\frac{Q_i}{A_i}\right)^2,$$",
+        "",
+        r"$$L_i = \frac{1}{2}\rho K"
+        r"\frac{q_{\mathrm{out},i}"
+        r"\sqrt{q_{\mathrm{out},i}^2+\epsilon_Q^2}}{A_i^2}.$$",
+        "",
+        "The current generated TCPC settings are "
+        "`wall_pressure_weight = 0.75`, `loss_coefficient = 2.0`, and "
+        "`characteristic_scale = 0.0`. The aortic junction remains a no-loss "
+        "total-pressure coupler.",
+        "",
+        "All generated coupled scenarios cap `time.step_size` at "
+        "`0.00025 s` and `time.min_step` at `1.5625e-05 s`; the inherited "
+        "full 0-D `0.002 s` step can make the first coupled nonlinear solve "
+        "intractable.",
+        "",
+        "The current startup smoke run completes 0.025 s with no NaNs, no "
+        "negative saved 1-D areas, near-zero aortic/TCPC junction mass "
+        "residuals, passing TCPC balance, and bounded TCPC effective "
+        "total-pressure spread around 0.36 mmHg. The run is not accepted as "
+        "physiological validation because atrium/ventricle balance and "
+        "periodicity remain unproven. The tracked report is "
+        "`models/coupled_0d_1d/reference_outputs/closed_loop_smoke_validation.json`.",
+        "",
+        "A 2.0 s baseline-derived diagnostic also completes with no NaNs, no "
+        "negative 1-D areas, passing TCPC balance, and TCPC total-pressure "
+        "spread around 0.36 mmHg. It is not accepted as periodic validation "
+        "because atrium/ventricle balance and cavity periodicity still fail.",
+        "",
+    ]
+
+
 def artifacts_section(spec: ModelSpec) -> list[str]:
     md_name = f"{spec.name}_technical_reference.md"
     pdf_name = f"{spec.name}_technical_reference.pdf"
@@ -552,6 +783,26 @@ def artifacts_section(spec: ModelSpec) -> list[str]:
         docs_dir(spec) / md_name,
         docs_dir(spec) / pdf_name,
     ]
+    if spec.name == "coupled_0d_1d":
+        paths.insert(3, docs_dir(spec) / "physioblocks_feasibility.md")
+        paths.insert(4, docs_dir(spec) / "one_d_numerics.md")
+        paths.insert(5, docs_dir(spec) / "openloop_1d_submodels.md")
+        paths.extend(
+            [
+                model_dir(spec) / "configs/fontan_coupled_0d_1d_smoke.jsonc",
+                model_dir(spec) / "configs/fontan_coupled_0d_1d_baseline.jsonc",
+                model_dir(spec) / "configs/fontan_coupled_0d_1d_vasodilation.jsonc",
+                model_dir(spec) / "configs/fontan_coupled_0d_1d_fenestration.jsonc",
+                model_dir(spec) / "configs/fontan_coupled_0d_1d_lpa_obstruction.jsonc",
+                model_dir(spec) / "configs/submodel_aorta_1d_openloop.jsonc",
+                model_dir(spec) / "configs/submodel_tcpc_1d_openloop.jsonc",
+                model_dir(spec) / "configs/submodel_aorta_tcpc_1d_openloop.jsonc",
+                model_dir(spec) / "calibration/one_d_openloop_geometry.json",
+                model_dir(spec) / "reference_outputs/openloop_1d_validation.json",
+                model_dir(spec) / "reference_outputs/smoke_metrics.json",
+                model_dir(spec) / "reference_outputs/closed_loop_smoke_validation.json",
+            ]
+        )
     lines = ["## Documentation and Regeneration", ""]
     lines.append("Model-local documentation artifacts:")
     lines.append("")
@@ -606,6 +857,9 @@ def technical_reference_markdown(spec: ModelSpec) -> str:
     ]
     lines.extend(topology_section(spec, cfg))
     lines.extend(equation_section())
+    lines.extend(coupled_1d_prototype_section(spec))
+    lines.extend(coupled_openloop_section(spec))
+    lines.extend(coupled_closedloop_section(spec))
     lines.extend(quasi_chain_section(cfg))
     lines.extend(segment_inventory_section(cfg))
     lines.extend(free_parameter_section(cfg))
