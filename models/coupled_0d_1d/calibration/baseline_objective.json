@@ -1,0 +1,251 @@
+{
+  "weighted_rms_relative_error": 0.07006708213879634,
+  "targets": [
+    {
+      "metric": "EDV_ml",
+      "target_name": "edv",
+      "target_statistic": "max",
+      "model_value": 72.36704173216829,
+      "target_value": 74.39998007606457,
+      "unit": "ml",
+      "error": -2.0329383438962765,
+      "relative_error": -0.02732444742347853,
+      "absolute_relative_error": 0.02732444742347853,
+      "weight": 3.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "ESV_ml",
+      "target_name": "esv",
+      "target_statistic": "min",
+      "model_value": 35.906736876718135,
+      "target_value": 37.60003540359129,
+      "unit": "ml",
+      "error": -1.693298526873157,
+      "relative_error": -0.04503449288538237,
+      "absolute_relative_error": 0.04503449288538237,
+      "weight": 3.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "SV_from_volume_ml",
+      "target_name": "stroke_volume",
+      "target_statistic": "edv_minus_esv",
+      "model_value": 36.460304855450154,
+      "target_value": 36.79994467247327,
+      "unit": "ml",
+      "error": -0.3396398170231194,
+      "relative_error": -0.009229356729907623,
+      "absolute_relative_error": 0.009229356729907623,
+      "weight": 4.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "CO_from_valve_arterial.flux_L_min",
+      "target_name": "cardiac_output",
+      "target_statistic": "from_stroke_volume",
+      "model_value": 2.546669507876757,
+      "target_value": 2.573422704368758,
+      "unit": "L/min",
+      "error": -0.026753196492000697,
+      "relative_error": -0.010395958832019034,
+      "absolute_relative_error": 0.010395958832019034,
+      "weight": 4.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_aao_pressure_mmHg",
+      "target_name": "ascending_aorta_pressure",
+      "target_statistic": "mean",
+      "model_value": 47.45424125259194,
+      "target_value": 50.40287288772364,
+      "unit": "mmHg",
+      "error": -2.9486316351316972,
+      "relative_error": -0.058501261261436545,
+      "absolute_relative_error": 0.058501261261436545,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_dao_pressure_mmHg",
+      "target_name": "descending_aorta_pressure",
+      "target_statistic": "mean",
+      "model_value": 44.31504947938515,
+      "target_value": 53.146443563458895,
+      "unit": "mmHg",
+      "error": -8.831394084073743,
+      "relative_error": -0.16617093246378226,
+      "absolute_relative_error": 0.16617093246378226,
+      "weight": 1.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_svc_pressure_mmHg",
+      "target_name": "svc_pressure",
+      "target_statistic": "mean",
+      "model_value": 8.74141372701094,
+      "target_value": 8.869404209404498,
+      "unit": "mmHg",
+      "error": -0.12799048239355848,
+      "relative_error": -0.014430561441527977,
+      "absolute_relative_error": 0.014430561441527977,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_ivc_pressure_mmHg",
+      "target_name": "ivc_pressure",
+      "target_statistic": "mean",
+      "model_value": 8.724380314255848,
+      "target_value": 8.539233256374764,
+      "unit": "mmHg",
+      "error": 0.18514705788108365,
+      "relative_error": 0.021681930019052525,
+      "absolute_relative_error": 0.021681930019052525,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_rpa_pressure_mmHg",
+      "target_name": "rpa_pressure",
+      "target_statistic": "mean",
+      "model_value": 8.213721458715996,
+      "target_value": 8.482440768563476,
+      "unit": "mmHg",
+      "error": -0.26871930984748005,
+      "relative_error": -0.03167947966620324,
+      "absolute_relative_error": 0.03167947966620324,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_lpa_pressure_mmHg",
+      "target_name": "lpa_pressure",
+      "target_statistic": "mean",
+      "model_value": 7.73411004750675,
+      "target_value": 8.45525641025641,
+      "unit": "mmHg",
+      "error": -0.7211463627496606,
+      "relative_error": -0.08528970947290189,
+      "absolute_relative_error": 0.08528970947290189,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_right_lung_pressure_mid_mmHg",
+      "target_name": "wedge_pressure",
+      "target_statistic": "mean",
+      "model_value": 7.051263402438931,
+      "target_value": 6.016592147383402,
+      "unit": "mmHg",
+      "error": 1.034671255055529,
+      "relative_error": 0.17196965154194546,
+      "absolute_relative_error": 0.17196965154194546,
+      "weight": 1.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_svc_outlet_flow_ml_s",
+      "target_name": "svc_flow",
+      "target_statistic": "beat_integral",
+      "model_value": 20.549520042319386,
+      "target_value": 20.589040012646816,
+      "unit": "ml/s",
+      "error": -0.03951997032742938,
+      "relative_error": -0.0019194663910096943,
+      "absolute_relative_error": 0.0019194663910096943,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_ivc_outlet_flow_ml_s",
+      "target_name": "ivc_flow",
+      "target_statistic": "beat_integral",
+      "model_value": 21.921068720210283,
+      "target_value": 18.84377590619485,
+      "unit": "ml/s",
+      "error": 3.0772928140154328,
+      "relative_error": 0.1633055301301784,
+      "absolute_relative_error": 0.1633055301301784,
+      "weight": 1.5,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_rpa_outlet_flow_ml_s",
+      "target_name": "rpa_flow",
+      "target_statistic": "beat_integral",
+      "model_value": 26.911645344699618,
+      "target_value": 24.429599686629945,
+      "unit": "ml/s",
+      "error": 2.482045658069673,
+      "relative_error": 0.10159993163654128,
+      "absolute_relative_error": 0.10159993163654128,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "mean_lpa_outlet_flow_ml_s",
+      "target_name": "lpa_flow",
+      "target_statistic": "beat_integral",
+      "model_value": 15.558937104593213,
+      "target_value": 16.87701189855381,
+      "unit": "ml/s",
+      "error": -1.318074793960598,
+      "relative_error": -0.07809882471396158,
+      "absolute_relative_error": 0.07809882471396158,
+      "weight": 2.0,
+      "source_id": "direct_measurement"
+    },
+    {
+      "metric": "rpa_flow_fraction",
+      "target_name": "rpa_flow_fraction",
+      "target_statistic": "rpa_over_rpa_plus_lpa",
+      "model_value": 0.6336537855631424,
+      "target_value": 0.5914210522025144,
+      "unit": "1",
+      "error": 0.04223273336062805,
+      "relative_error": 0.071408911135897,
+      "absolute_relative_error": 0.071408911135897,
+      "weight": 3.0,
+      "source_id": "direct_measurement"
+    }
+  ],
+  "penalties": [
+    {
+      "metric": "periodicity_cavity_volume",
+      "value": 0.00024257533848672484,
+      "threshold": 0.02,
+      "pass": true
+    },
+    {
+      "metric": "periodicity_valve_arterial.flux",
+      "value": 0.0010911304978085486,
+      "threshold": 0.02,
+      "pass": true
+    },
+    {
+      "metric": "periodicity_valve_atrium.flux",
+      "value": 0.0008235401311557643,
+      "threshold": 0.02,
+      "pass": true
+    },
+    {
+      "metric": "tcpc_cycle_balance_rel",
+      "value": 9.1130746331995e-07,
+      "threshold": 0.01,
+      "pass": true
+    },
+    {
+      "metric": "atrium_cycle_balance_rel",
+      "value": 3.9825278506877785e-06,
+      "threshold": 0.01,
+      "pass": true
+    },
+    {
+      "metric": "ventricle_cycle_balance_rel",
+      "value": 0.0003381919503314924,
+      "threshold": 0.01,
+      "pass": true
+    }
+  ]
+}

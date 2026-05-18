@@ -11,7 +11,7 @@ This document is generated from repository sources by `scripts/docs/build_model_
 
 ### Scope and Status
 
-Executable Task 012 prototype with true 1-D aorta and TCPC segments inserted into the closed loop; not accepted as a periodic calibrated model yet.
+Executable Task 012 prototype with true 1-D aorta and TCPC segments inserted into the closed loop. The Task 012 baseline completes 20 s with stability, mass-balance, and periodicity checks passing; Task 013 calibration is in progress.
 
 Task 010 provides a local fixed three-cell true 1-D vessel prototype with area and face-flow states, nonlinear momentum, a pressure-area wall law, pressure/flow coupling, and tested Jacobian assembly.
 
@@ -25,7 +25,7 @@ The executable closed-loop configs use a log-area state parameterization, $A = \
 
 All generated coupled scenarios cap the time step at $2.5\times 10^{-4}\,\mathrm{s}$ because the inherited full 0-D scenario step is too coarse for the inserted 1-D vessel and TCPC junction dynamics.
 
-The prototype smoke case and selected TCPC longer diagnostic run, but the model is not accepted for calibration because full baseline periodic atrium and ventricle balance have not been demonstrated.
+The prototype smoke case and 20 s baseline both run. The 20 s baseline passes no-NaN, positive-area, TCPC balance, atrium balance, ventricle balance, and periodicity checks, but the model is not accepted as calibrated while Task 013 remains in progress.
 
 ### Schematic
 
@@ -301,9 +301,9 @@ The current generated TCPC settings are `wall_pressure_weight = 0.75`, `loss_coe
 
 All generated coupled scenarios cap `time.step_size` at `0.00025 s` and `time.min_step` at `1.5625e-05 s`; the inherited full 0-D `0.002 s` step can make the first coupled nonlinear solve intractable.
 
-The current startup smoke run completes 0.025 s with no NaNs, no negative saved 1-D areas, near-zero aortic/TCPC junction mass residuals, passing TCPC balance, and bounded TCPC effective total-pressure spread around 0.36 mmHg. The run is not accepted as physiological validation because atrium/ventricle balance and periodicity remain unproven. The tracked report is `models/coupled_0d_1d/reference_outputs/closed_loop_smoke_validation.json`.
+The current startup smoke run completes 0.025 s with no NaNs, no negative saved 1-D areas, near-zero aortic/TCPC junction mass residuals, passing TCPC balance, and bounded TCPC effective total-pressure spread around 0.36 mmHg. The smoke run remains a startup integration test rather than a physiological cycle validation. The tracked report is `models/coupled_0d_1d/reference_outputs/closed_loop_smoke_validation.json`.
 
-A 2.0 s baseline-derived diagnostic also completes with no NaNs, no negative 1-D areas, passing TCPC balance, and TCPC total-pressure spread around 0.36 mmHg. It is not accepted as periodic validation because atrium/ventricle balance and cavity periodicity still fail.
+The 20 s baseline completes with no NaNs, no negative saved 1-D areas, passing TCPC, atrium, and ventricle balance, and cavity-volume periodicity of 0.000243. The tracked metrics are `models/coupled_0d_1d/reference_outputs/baseline_20s_metrics.json`. This establishes numerical viability, but Task 013 calibration and scenario validation are still in progress.
 
 ## Segment Inventory
 
@@ -547,9 +547,9 @@ python3 scripts/docs/build_model_reference_pdfs.py --model coupled_0d_1d
 
 ## Current Limitations
 
-- The coupled model is executable but not accepted as periodic, calibrated, or clinically validated.
+- The coupled model is executable and periodic at baseline but not accepted as calibrated or clinically validated.
 - The aortic total-pressure junction is an algebraic no-loss coupler; the TCPC junction adds branch wall-pressure blending and signed dynamic minor losses but is still not Nektar's full characteristic/Riemann boundary treatment or a 3-D TCPC loss model.
 - The current smoke run is a startup integration test; it is not a physiological cycle validation.
-- Atrium and ventricle cycle-balance gates remain failed on the startup smoke output.
+- Task 013 calibration and scenario validation remain in progress.
 
 The model parameters and standardized data are for computational development and calibration workflows. Simulation outputs must not be presented as clinically validated without separate validation and documentation.

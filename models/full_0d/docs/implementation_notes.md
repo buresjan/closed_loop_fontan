@@ -1,6 +1,85 @@
-# Implementation notes
+# Full 0-D Implementation Notes
 
-## Constructed closed loop
+## Status
+
+Accepted go-to full 0-D reference model. This document is the engineering
+contract for the model-local topology, block conventions, parameter policy, and
+validation artifacts.
+
+## Scope and Canonical Configs
+
+The full 0-D model is a closed-loop PhysioBlocks Fontan circulation with an
+active single ventricle, active atrium, lumped systemic beds, Fontan conduit
+states, pulmonary RCR beds, and optional fenestration.
+
+Canonical configs:
+
+```text
+models/full_0d/configs/fontan_0d_smoke.jsonc
+models/full_0d/configs/fontan_0d_baseline.jsonc
+models/full_0d/configs/fontan_0d_vasodilation.jsonc
+models/full_0d/configs/fontan_0d_fenestration.jsonc
+models/full_0d/configs/fontan_0d_lpa_obstruction.jsonc
+```
+
+## Topology and Naming
+
+Pressure nodes use lower-case anatomical names. The main loop is atrium,
+ventricle, aortic tree, systemic beds, caval return, TCPC, pulmonary arteries,
+pulmonary beds, and back to the atrium. Upper-systemic outflow uses BCA, LCCA,
+and LSA branches into a shared upper bed. Lower-systemic outflow uses DAo into
+a separate lower bed.
+
+## Block and Numerical Conventions
+
+The model uses PhysioBlocks `c_block`, `rc_block`, `rcr_block`,
+`valve_rl_block`, and `spherical_cavity_block` components plus the local
+`time_varying_elastance_atrium_block`. Pure resistive links are represented by
+`rc_block` with `zero_capacitance = 0.0`; bidirectional Fontan R-L conduit links
+use symmetric `valve_rl_block` conductances.
+
+## Parameter and Unit Conventions
+
+Pressures are stored in pascal inside configs and reported in millimetres of
+mercury in metrics. Flows are stored in cubic metres per second and reported as
+millilitres per second or litres per minute. Volumes are stored in cubic metres
+and reported in millilitres. Resistances, compliances, and inertances use the
+corresponding SI-derived PhysioBlocks units.
+
+## Calibration and Validation Policy
+
+The accepted Task 004 baseline is calibrated against processed Aramburu 2024
+direct-measurement targets. Baseline is the calibration case. Vasodilation,
+fenestration, and LPA obstruction are validation cases and must not be retuned
+independently.
+
+## Scenario Policy
+
+All final scenario configs keep the same topology and change only intervention
+parameters. The high-resistance baseline fenestration block remains present so
+the block set is stable across baseline and scenario configs.
+
+## Documentation Regeneration
+
+When full 0-D topology, parameterization, behavior, or accepted reference
+outputs change, update this file, `README.md`, the SVG schematic, PNG schematic
+export, and the generated technical reference together.
+
+```bash
+python3 scripts/docs/build_model_reference_pdfs.py --model full_0d
+python3 scripts/docs/check_model_docs.py --model full_0d
+```
+
+## Current Limitations
+
+The full 0-D model is a calibrated computational-development reference, not a
+clinically validated simulator. Its aortic and Fontan pathways are lumped
+approximations, and descending-aorta pressure remains the largest direct-target
+residual.
+
+## Detailed Engineering Notes
+
+### Constructed closed loop
 
 The complete topology is defined by the scenario configurations, with
 `models/full_0d/configs/fontan_0d_baseline.jsonc` as the reference. The baseline and final
@@ -46,7 +125,7 @@ LPA C -> left pulmonary RCR bed -> active atrium E(t)
 optional high-resistance baseline path: IVC -> fenestration R -> atrial node
 ```
 
-## Block inventory
+### Block inventory
 
 The model uses these block classes:
 
@@ -113,7 +192,7 @@ lpa_conduit_out      : lpa_conduit -> lpa
 fenestration         : ivc -> atrial
 ```
 
-## Heart and valve convention
+### Heart and valve convention
 
 The ventricle remains the PhysioBlocks active spherical cavity. The `cavity`
 block uses `spherical_dynamics`, `velocity_law_hht`,
@@ -126,7 +205,7 @@ The atrioventricular and aortic valves use `valve_rl_block` with inertance,
 large forward conductance, and small reverse conductance. The AV valve connects
 `atrial -> cavity`; the aortic valve connects `cavity -> aao`.
 
-## RC-block resistor convention
+### RC-block resistor convention
 
 For an `rc_block`, PhysioBlocks defines local-node fluxes as:
 
@@ -145,7 +224,7 @@ node 1 = target / downstream
 With `zero_capacitance = 0.0`, the block acts as a pure resistor while the
 separate `c_block`s provide compartmental storage.
 
-## Aortic-tree convention
+### Aortic-tree convention
 
 The systemic arterial outlet is no longer a single `aorta` node. The arterial
 tree is represented as:
@@ -185,7 +264,7 @@ final scenario configurations run for 20 seconds before metrics are derived
 from the last cycle. The smoke case remains intentionally short and only checks
 that the network executes without numerical failure.
 
-## TCPC-conduit convention
+### TCPC-conduit convention
 
 PhysioBlocks 1.2.0 does not provide a generic `rlc_block`. The Fontan conduits
 therefore use the existing `valve_rl_block` as a symmetric bidirectional RL
@@ -212,7 +291,7 @@ Fontan pathway load while adding conduit pressure and inertial flow states. The
 old `tcpc_compliance` is split across the central junction and the four conduit
 compliances.
 
-## Pulmonary Windkessel convention
+### Pulmonary Windkessel convention
 
 The right and left pulmonary beds use PhysioBlocks' `rcr_block` instead of a
 single pure resistor:
@@ -237,7 +316,7 @@ Derived metrics report both proximal and distal pulmonary flows. The legacy
 `right_lung.flow` and `left_lung.flow` aliases are retained as distal flow to
 keep scenario comparisons and atrial mass-balance checks stable.
 
-## Active-atrium convention
+### Active-atrium convention
 
 The old passive atrial `c_block` is replaced by the local
 `time_varying_elastance_atrium_block` registered in `fontan_blocks/active_atrium.py`.
@@ -271,13 +350,13 @@ PhysioBlocks launcher configuration and to `PYTHONPATH` before starting a
 simulation. This keeps the block definition versioned with the model instead of
 patching the installed PhysioBlocks package.
 
-## Why the fenestration block is present in baseline
+### Why the fenestration block is present in baseline
 
 The baseline includes a fenestration path with extremely high resistance. This
 keeps the set of block names stable across configurations. The fenestration
 scenario lowers `fenestration.resistance` to open the shunt.
 
-## Scenario variants
+### Scenario variants
 
 All final scenario files keep the same topology and change only parameters:
 
@@ -291,7 +370,7 @@ All final scenario files keep the same topology and change only parameters:
 - `fontan_0d_smoke.jsonc`: same topology as baseline, with a shorter run used
   only as a numerical smoke check.
 
-## Task 004 calibration state
+### Task 004 calibration state
 
 The accepted Task 004 baseline is a scale-factor calibration against
 `data/processed/aramburu_2024/targets`. It changes heart rate, ventricular
@@ -304,7 +383,7 @@ baseline target comparison, numerical periodicity checks, and validation
 scenario responses are documented in
 `models/full_0d/calibration/calibration_report.md`.
 
-## Technical Reference Convention
+### Technical Reference Convention
 
 `docs/full_0d_technical_reference.md` and the generated
 `docs/full_0d_technical_reference.pdf` provide the standardized long-form model

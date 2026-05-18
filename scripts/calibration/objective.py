@@ -9,8 +9,6 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
-
 ROOT = Path(__file__).resolve().parents[2]
 TARGETS = ROOT / "data/processed/aramburu_2024/targets/summary_targets.csv"
 
@@ -145,12 +143,13 @@ def write_json(path: Path, data: dict[str, Any]) -> None:
 
 
 def load_summary_targets(source_id: str = "direct_measurement") -> dict[tuple[str, str], dict[str, Any]]:
-    df = pd.read_csv(TARGETS)
-    df = df[df["source_id"] == source_id]
-    return {
-        (str(row.canonical_name), str(row.statistic)): row._asdict()
-        for row in df.itertuples(index=False)
-    }
+    with TARGETS.open(newline="", encoding="utf-8") as f:
+        rows = csv.DictReader(f)
+        return {
+            (str(row["canonical_name"]), str(row["statistic"])): dict(row)
+            for row in rows
+            if row["source_id"] == source_id
+        }
 
 
 def scale_parameters(params: dict[str, Any], names: list[str], scale: float) -> None:

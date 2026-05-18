@@ -1,6 +1,8 @@
 # 013 - Calibrate And Validate Coupled 0-D/1-D Model
 
-Status: planned
+Status: in_progress
+
+Started on: 2026-05-17
 
 Depends on: Task 012
 
@@ -17,6 +19,13 @@ residuals, passing TCPC balance, and passing atrium/ventricle balance after the
 total-pressure junction/tapered-LPA/retained-LSA update. The accepted Task 012
 reference metrics are tracked in
 `models/coupled_0d_1d/reference_outputs/baseline_20s_metrics.json`.
+
+Task 013 operating policy:
+
+- use short smoke and 2 s runs for local candidate screening;
+- submit expensive 20 s baseline/scenario runs only for promising candidates;
+- do not wait interactively on 20 s runs;
+- inspect completed 20 s outputs after they finish.
 
 - Use:
   - `comparison/04_aorta_tcpc_closedloop_1d_last_cycle_clinical.csv`

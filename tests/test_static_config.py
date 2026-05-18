@@ -4,6 +4,8 @@ from pathlib import Path
 import fontan_blocks
 from physioblocks.registers.type_register import is_registered
 from scripts.calibration.objective import apply_calibration_factors
+from scripts.docs.check_model_docs import MODELS as DOCUMENTED_MODELS
+from scripts.docs.check_model_docs import check_model
 
 ROOT = Path(__file__).resolve().parents[1]
 FULL_0D = ROOT / 'models' / 'full_0d'
@@ -77,6 +79,13 @@ def test_each_model_family_has_standard_documentation():
             '## Documentation and Regeneration',
         ]:
             assert heading in technical_text
+
+def test_model_documentation_contract_checker_passes():
+    assert (ROOT / 'models' / 'README.md').exists()
+    errors = []
+    for model in DOCUMENTED_MODELS:
+        errors.extend(check_model(model))
+    assert errors == []
 
 def test_uses_real_physioblocks_full_schema():
     cfg = load('fontan_0d_baseline.jsonc')
